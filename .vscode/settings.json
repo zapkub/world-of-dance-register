@@ -1,0 +1,17 @@
+{
+  "typescript.validate.enable": true,
+  "tslint.autoFixOnSave": true,
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.next": false,
+    "**/.db": true,
+    "**/.DS_Store": true,
+    "**/*.js.map": true,
+    "**/*.js": true,
+    "**/.next/**/*.js": false
+  }
+}

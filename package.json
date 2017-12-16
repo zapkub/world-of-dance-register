@@ -1,0 +1,48 @@
+{
+  "name": "world-of-dance-casting",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon"
+  },
+  "devDependencies": {
+    "@types/express": "^4.0.39",
+    "@types/google-cloud__storage": "^1.1.7",
+    "@types/jest": "^21.1.8",
+    "@types/mongoose": "^4.7.29",
+    "@types/react": "^16.0.29",
+    "@types/react-dom": "^16.0.3",
+    "@types/recompose": "^0.24.3",
+    "jest": "^21.2.1",
+    "mongo-in-memory": "^0.0.5",
+    "nodemon": "^1.12.5",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.2"
+  },
+  "dependencies": {
+    "@google-cloud/storage": "^1.5.1",
+    "bcrypt-nodejs": "^0.0.3",
+    "body-parser": "^1.18.2",
+    "connect-mongo": "^2.0.0",
+    "connect-multiparty": "^2.1.0",
+    "cors": "^2.8.4",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "express-ping": "^1.4.0",
+    "express-session": "^1.15.6",
+    "hoist-non-react-statics": "^2.3.1",
+    "isomorphic-fetch": "^2.2.1",
+    "mongodb-migrations": "^0.8.5",
+    "mongoose": "^4.13.7",
+    "next": "^4.2.1",
+    "next-routes": "^1.2.0",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "recompose": "^0.26.0",
+    "redux": "^3.7.2",
+    "redux-saga": "^0.16.0"
+  }
+}
