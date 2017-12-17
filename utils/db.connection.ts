@@ -4,6 +4,7 @@ const mm = require('mongodb-migrations')
 
 let _inmemoryURI
 let _mongoServerInstance
+( mongoose as any ).Promise = global.Promise
 
 async function createInMemoryMongo(): Promise<any> {
   const MongoInMemory = require('mongo-in-memory')

@@ -106,7 +106,7 @@ export default function enchanceSession(
     '/facebook/callback',
     passport.authenticate('facebook'),
     (req, res: express.Response) => {
-     res.redirect('/') 
+     res.redirect('/profile') 
     }
   )
 

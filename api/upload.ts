@@ -11,6 +11,10 @@ const storage = Storage({
 })
 
 
+function uploadFileToGCS() {
+
+}
+
 const multipartMiddleware = multipart();
 export default async function (server: express.Application, context: APIContext) {
   try {
@@ -21,13 +25,15 @@ export default async function (server: express.Application, context: APIContext)
     } else {
       server.post('/upload', multipartMiddleware, async function (req: any, res) {
 
+        res.json({ msg: 'done, your file is under processing...' })
         if (req.files.vid) {
           console.log('upload file..', req.files)
-          await bucket.upload(req.files.vid.path, {
+          const result = await bucket.upload(req.files.vid.path, {
             destination: `/junior/${req.user._id}` 
           })
+          console.log('upload file to storage complete')
+          console.log(result)
         }
-        res.json({ msg: 'done' })
       })
     }
   } catch (e) {

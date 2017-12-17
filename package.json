@@ -4,7 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "watch": "tsc -w",
+    "clean": "scripts bin/clean.sh"
   },
   "devDependencies": {
     "@types/express": "^4.0.39",
