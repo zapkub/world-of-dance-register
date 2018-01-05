@@ -1,7 +1,14 @@
 import * as React from 'react'
+
 const { Router } = require('../routes').default
 
 const hoistnonstatic = require('hoist-non-react-statics')
+
+declare global {
+  interface WithSessionPropTypes {
+    user?: User
+  }
+}
 
 export default function withData(component: any): any {
   class enhancedComponent extends React.Component<{ user: any }, {}> {
@@ -23,13 +30,12 @@ export default function withData(component: any): any {
     }
     constructor(props) {
       super(props)
-      if (typeof window !== 'undefined') {
-        (window as any).user = props.user
-      }
       /**
        * Prepare state for fetch data
        */
-
+      if (typeof window !== 'undefined') {
+        (window as any).user = props.user
+      }
     }
     displayName = `withSession.${component.displayName}`
     render() {

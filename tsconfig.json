@@ -26,6 +26,10 @@
       "esnext.asynciterable"
     ]
   },
+  "include": [
+    "./**/*",
+    "./.storybook/**/*"
+  ],
   "exclude": [
     "node_modules",
     "node_modules/**",

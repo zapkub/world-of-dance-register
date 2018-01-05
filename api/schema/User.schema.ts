@@ -1,17 +1,19 @@
 import { Schema, Document } from 'mongoose'
 
 declare global {
-  interface User {
+  interface BasicProfile {
+    email?: string
+    firstname?: string
+    lastname?: string
+    mobileNo?: string
+  }
+  interface User extends BasicProfile {
     _id: any
-    email: string
-    tel: string
-    facebookId: string
-    facebookUrl: string
-    profileImageURL: string
+    facebookId?: string
+    facebookUrl?: string
+    profileImageURL?: string
     name: string
-    firstName: string
-    lastName: string
-    gender: string
+    gender?: string
   }
   interface UserDocument extends Document, User {}
 }
@@ -20,6 +22,10 @@ const UserSchema = new Schema({
   email: { type: String, required: true },
   mobileNo: { type: String },
   facebookId: { type: String },
+  firstname: { type: String },
+  lastname: { type: String },
+  gender: { type: String },
+  facebookUrl: { type: String },
   profileImageURL: {
     type: String
   }

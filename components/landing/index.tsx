@@ -1,19 +1,18 @@
 import * as React from 'react'
 import { compose } from 'recompose'
 import withSession from '../../utils/withSession'
+import Welcome from './components/Welcome'
+import AboutShow from './components/AboutShow'
+import Menubar from '../Menubar'
+import AuditionType from './components/AuditionType';
 
+const LandingPage = () => (
+  <div>
+    <Menubar /> 
+    <Welcome />
+    <AboutShow />
+    <AuditionType />
+  </div>
+)
 
-
-class LandingPage extends React.Component {
-  render() {
-    return (
-      <div>
-        {'Landing'}
-        <a href='/facebook'> login </a>
-      </div>
-    )
-  }
-}
-export default compose(
-  withSession
-)(LandingPage)
+export default compose(withSession)(LandingPage)

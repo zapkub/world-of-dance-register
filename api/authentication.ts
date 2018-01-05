@@ -16,6 +16,7 @@ const facebookLoginStrategy = (exports.facebookLoginStrategy = (
     },
     async function (accessToken, refreshToken, _, fbProfile, cb) {
       try {
+        console.log(fbProfile)
         const profile = fbProfile._json
         const { User } = context.models
         let user = await User.findOne(
@@ -35,8 +36,8 @@ const facebookLoginStrategy = (exports.facebookLoginStrategy = (
            */
           try {
             const newUser = await User.create({
-              lastName: profile.last_name,
-              firstName: profile.first_name,
+              lastname: profile.last_name,
+              firstname: profile.first_name,
               gender: profile.gender,
               email: profile.email,
               name: profile.name,
@@ -65,8 +66,11 @@ const deserializeSession = (exports.deserializeSession = (
    */
   const user = await User.findById(id, {
     email: true,
+    firstname: true,
+    lastname: true,
+    mobileNo: true,
     _id: true,
-  })
+  }).lean()
   return done(null, user)
 })
 
@@ -98,7 +102,7 @@ export default function enchanceSession(
   app.get(
     '/facebook',
     passport.authenticate('facebook', {
-      scope: ['email'],
+      scope: ['email', 'public_profile', 'user_birthday'],
       authType: 'rerequest'
     })
   )

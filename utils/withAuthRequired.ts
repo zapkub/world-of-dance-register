@@ -5,11 +5,16 @@ const hoistnonstatic = require('hoist-non-react-statics')
 
 export default function withData(redirectPath: string): any {
   return (component: any) => {
-    class enhancedComponent extends React.Component<{user: any}, {}> {
-      static getInitialProps (ctx) {
+    class enhancedComponent extends React.Component<{ user: any }, {}> {
+      static getInitialProps(ctx) {
         const initialProps: any = {}
-        initialProps.user = ctx.req.user
-        if(component.getInitialProps) {
+
+        if (typeof window === 'undefined') {
+          initialProps.user = ctx.req.user
+        } else {
+          initialProps.user = ( window as any ).user
+        }
+        if (component.getInitialProps) {
           return {
             ...component.getInitialProps(ctx),
             ...initialProps
@@ -18,23 +23,25 @@ export default function withData(redirectPath: string): any {
           return initialProps
         }
       }
-      constructor(props){
+      constructor(props) {
         super(props)
         /**
          * Prepare state for fetch data
          */
-  
+        if(typeof window !== 'undefined') {
+          (window as any).user = props.user
+        }
       }
-      componentDidMount(){
-        if(!this.props.user) {
+      componentDidMount() {
+        if (!this.props.user) {
           console.warn('user not found')
-          Router.replace('/')
-        } 
+          Router.replaceRoute(redirectPath)
+        }
       }
 
       render() {
-        if(!this.props.user) {
-          return React.createElement('div',{}, 'unauthorized')
+        if (!this.props.user) {
+          return React.createElement('div', {}, 'unauthorized')
         }
         return React.createElement(component, {
           ...this.props
