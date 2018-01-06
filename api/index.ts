@@ -4,8 +4,7 @@ import logger from '../utils/Logger'
 import config from '../config'
 import enhanceAuthentication from './authentication'
 import enhanceUploadAPI from './upload'
-
-import UserSchema from './schema/User.schema'
+import createGraphQL from './graphql'
 
 declare global {
   interface Models {
@@ -25,11 +24,14 @@ export async function prepare(app: any) {
     config
   })
 
-  const models = {
-    User: connection.model<UserDocument>('User', UserSchema)
-  }
 
-  const context = {
+ 
+  const  { graphiqlHandler,models, graphqlHandler } = createGraphQL({
+    connection,
+    logger,
+    config,
+  })
+ const context = {
     logger,
     config,
     connection,
@@ -37,6 +39,8 @@ export async function prepare(app: any) {
   }
   enhanceAuthentication(app, context)
   enhanceUploadAPI(app, context)
+  app.all('/graphql', graphqlHandler)
+  app.get('/graphiql', graphiqlHandler)
 }
 
 

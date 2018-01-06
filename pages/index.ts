@@ -1,3 +1,4 @@
 import Landing from '../components/landing'
+import withApolloClient from '../components/withData';
 
-export default Landing
+export default withApolloClient(Landing)

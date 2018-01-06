@@ -2,6 +2,12 @@ import styled, { css } from 'styled-components'
 import * as React from 'react'
 import theme from './theme'
 
+const fluid = css`
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+`
+
 const ButtonRoot = css`
   font-family: 'WOD', 'Kanit', sans-serif;
   font-weight: 500;
@@ -10,6 +16,7 @@ const ButtonRoot = css`
   border: none;
   min-width: 250px;
   font-size: 14px;
+  cursor: pointer;
 `
 
 const FacebookButtonComponent = styled.button`
@@ -26,17 +33,26 @@ const FacebookButtonComponent = styled.button`
     opacity: 0.8;
   }
 `
-export const FacebookButton = (props: React.ButtonHTMLAttributes<{}>) => (
+export const FacebookButton = (props: React.ButtonHTMLAttributes<{fluid: boolean }>) => (
   <FacebookButtonComponent>{props.children}</FacebookButtonComponent>
 )
 
 export const Button = styled.button`
-  ${ButtonRoot} border: 2px solid ${theme.blue};
+  ${ButtonRoot} 
+  ${(props: { fluid?: boolean }) => props.fluid ? fluid : ''}
+  border: 2px solid ${theme.blue};
   color: ${theme.blue};
   background: none;
   font-size: 1.428em;
+
   &:hover {
     background-color: ${theme.blue};
     color: white;
+  }
+  &:disabled {
+    border-color: ${theme.borderGray};
+    color: ${theme.borderGray};
+    pointer-events: none;
+    cursor: default;
   }
 `

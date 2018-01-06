@@ -1,5 +1,6 @@
 import Login from '../components/login/index'
+import withApolloClient from '../components/withData';
 
 
 
-export default Login
+export default withApolloClient(Login)

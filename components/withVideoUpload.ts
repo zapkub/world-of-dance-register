@@ -1,7 +1,7 @@
 import { compose, withProps, withState } from 'recompose'
 
 declare global {
-  interface WithVideoUploadPropType {
+  interface WithVideoUploadPropType extends React.HTMLAttributes<any> {
     setFiles?: (files: FileList) => void
     confirmUploadVideo?: () => void
     videoFile?: any

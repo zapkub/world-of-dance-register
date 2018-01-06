@@ -6,12 +6,12 @@ declare global {
     firstname?: string
     lastname?: string
     mobileNo?: string
+    profileImageURL?: string
   }
   interface User extends BasicProfile {
     _id: any
     facebookId?: string
     facebookUrl?: string
-    profileImageURL?: string
     name: string
     gender?: string
   }

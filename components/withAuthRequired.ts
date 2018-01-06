@@ -6,17 +6,19 @@ const hoistnonstatic = require('hoist-non-react-statics')
 export default function withData(redirectPath: string): any {
   return (component: any) => {
     class enhancedComponent extends React.Component<{ user: any }, {}> {
-      static getInitialProps(ctx) {
+      static async getInitialProps(ctx) {
         const initialProps: any = {}
-
+        console.log('init auth')
         if (typeof window === 'undefined') {
           initialProps.user = ctx.req.user
         } else {
-          initialProps.user = ( window as any ).user
+          initialProps.user = (window as any).user
         }
         if (component.getInitialProps) {
+          const componentInitProps = await component.getInitialProps(ctx)
+          console.log(componentInitProps)
           return {
-            ...component.getInitialProps(ctx),
+            ...componentInitProps,
             ...initialProps
           }
         } else {
@@ -28,8 +30,8 @@ export default function withData(redirectPath: string): any {
         /**
          * Prepare state for fetch data
          */
-        if(typeof window !== 'undefined') {
-          (window as any).user = props.user
+        if (typeof window !== 'undefined') {
+          ;(window as any).user = props.user
         }
       }
       componentDidMount() {
@@ -49,6 +51,8 @@ export default function withData(redirectPath: string): any {
       }
     }
 
-    return hoistnonstatic(enhancedComponent, component)
+    const result = hoistnonstatic(enhancedComponent, component) as any
+    result.getInitialProps = enhancedComponent.getInitialProps
+    return result
   }
 }

@@ -2,12 +2,11 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { LogoOneHd, Logo, LogoOneHdSmall } from './Logo'
 import Link from 'next/link'
-import theme from './theme'
+import theme, { MENUBAR_HEIGHT } from './theme'
 import { DefaultViewport } from './Viewport'
 import MenuListData from './landing/components/MenuListData'
 import routes from '../routes'
 
-export const MENUBAR_HEIGHT = 83
 
 const MenubarContainer = styled.div`
   height: ${MENUBAR_HEIGHT}px;
@@ -129,7 +128,7 @@ export default class Menubar extends React.Component<
           <LogoOneHdSmall style={{ margin: 8 }} />
         </div>
         <div className="stick-menubar__content">
-          <DefaultViewport style={{ width: '100%' }}>
+          <DefaultViewport style={{ width: '100%', padding: 0 }}>
             <div className="stick-menubar__content-inner">
               <Logo />
               <MenuList />

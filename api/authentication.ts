@@ -65,10 +65,6 @@ const deserializeSession = (exports.deserializeSession = (
    * Actual session is this logic
    */
   const user = await User.findById(id, {
-    email: true,
-    firstname: true,
-    lastname: true,
-    mobileNo: true,
     _id: true,
   }).lean()
   return done(null, user)

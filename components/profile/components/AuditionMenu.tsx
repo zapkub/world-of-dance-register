@@ -4,6 +4,7 @@ import { Text } from '../../Text'
 import { DefaultViewport } from '../../Viewport'
 import { Button } from '../../Button';
 import theme from '../../theme';
+import routes from '../../../routes';
 
 const AuditionInfoList: AuditionInfo[] = [
   {
@@ -84,7 +85,11 @@ const AuditionItem = (props: AuditionInfo) => (
     <h2>{props.subtitle}</h2>
     <Text className='age-label' dangerouslySetInnerHTML={{ __html: props.ageLabel }} />
     <Text className='audition-menu__description' dangerouslySetInnerHTML={{ __html: props.description }} />
+    <routes.Link route={'register'} params={{type: props.title.toLowerCase()}}>
+      <a>
     <Button>{'สมัครออดิชั่น'}</Button>
+    </a>
+    </routes.Link>
   </AuditionItemContainer>
 )
 

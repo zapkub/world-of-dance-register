@@ -14,7 +14,7 @@ const ONE_HD_LOGO_2X = '/static/images/one-hd-logo@2x.png'
 const ONE_HD_LOGO_SMALL = '/static/images/one-hd-logo-small.png'
 const ONE_HD_LOGO_SMALL_2X = '/static/images/one-hd-logo-small@2x.png'
 
-const LogoContainer = styled.div`
+export const LogoContainer = styled.div`
   display: inline-block;
   img {
     opacity: 0;
@@ -31,6 +31,12 @@ const LogoContainer = styled.div`
   }
 ` as any
 
+export const Image = ( props: { src: string, srcHD: string } ) => (
+  <LogoContainer src={props.src} srcHD={props.srcHD}>
+    <img src={props.src} />
+  </LogoContainer>
+)
+
 export const Logo = props => (
   <LogoContainer src={WOD_LOGO_URL} srcHD={WOD_LOGO_URL_2X}>
     <img src={WOD_LOGO_URL} />
@@ -43,14 +49,18 @@ export const LogoFull = props => (
   </LogoContainer>
 )
 
-export const LogoOneHd = ({ style = { } }: any) => (
+export const LogoOneHd = ({ style = {} }: any) => (
   <LogoContainer style={style} src={ONE_HD_LOGO} srcHD={ONE_HD_LOGO_2X}>
     <img height={style.height} src={ONE_HD_LOGO} />
   </LogoContainer>
 )
 
-export const LogoOneHdSmall = ({ style = { } }: any) => (
-  <LogoContainer style={style} src={ONE_HD_LOGO_SMALL} srcHD={ONE_HD_LOGO_SMALL_2X}>
+export const LogoOneHdSmall = ({ style = {} }: any) => (
+  <LogoContainer
+    style={style}
+    src={ONE_HD_LOGO_SMALL}
+    srcHD={ONE_HD_LOGO_SMALL_2X}
+  >
     <img height={style.height} src={ONE_HD_LOGO_SMALL} />
   </LogoContainer>
 )

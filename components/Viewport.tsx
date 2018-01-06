@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import { MENUBAR_HEIGHT } from './Menubar';
+import { MENUBAR_HEIGHT, VIEWPORT_MAX_WIDTH } from './theme';
 
-const VIEWPORT_MAX_WIDTH = 1024
+
 
 
 export const DefaultViewport = styled.div`
