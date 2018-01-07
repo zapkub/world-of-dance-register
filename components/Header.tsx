@@ -38,3 +38,11 @@ export const HeaderOne: React.SFC<HeaderPropTypes> = styled.h1`
   ${(props: HeaderPropTypes ) => props.withBorder ? withBottomBorder : ''}
   ${(props: HeaderPropTypes ) => props.center ? center : ''}
 ` as any
+
+export const HeaderTwo: React.SFC<HeaderPropTypes> = styled.h1`
+  ${HeaderRoot}
+  font-size: 1.725em;
+  margin: 13px 0px;
+  ${(props: HeaderPropTypes ) => props.withBorder ? withBottomBorder : ''}
+  ${(props: HeaderPropTypes ) => props.center ? center : ''}
+` as any

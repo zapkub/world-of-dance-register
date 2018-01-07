@@ -6,7 +6,7 @@ import theme, { MENUBAR_HEIGHT } from './theme'
 import { DefaultViewport } from './Viewport'
 import MenuListData from './landing/components/MenuListData'
 import routes from '../routes'
-
+import bp from 'styled-components-breakpoint'
 
 const MenubarContainer = styled.div`
   height: ${MENUBAR_HEIGHT}px;
@@ -31,6 +31,20 @@ const MenubarContainerWithStick = styled(MenubarContainer)`
   .stick-menubar__top {
     background-color: ${theme.blackBlue};
   }
+  .menu-toggle {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    font-size: 1.128rem;
+    color: ${theme.blue};
+    ${bp('mobile')`
+      display: block;
+    `} ${bp('desktop')`
+      display: none;
+    `};
+  }
   .stick-menubar__content {
     display: flex;
     align-items: center;
@@ -39,33 +53,94 @@ const MenubarContainerWithStick = styled(MenubarContainer)`
     height: ${MENUBAR_HEIGHT}px;
   }
   .stick-menubar__content-inner {
+    position: relative;
     display: flex;
     flex-direction: row;
+    ${bp('mobile')`
+      align-item: center;
+      justify-content: center;
+    `} ${bp('tablet')`
+      justify-content: flex-start;
+    `};
+  }
+  &.noFixed {
+    position: static;
   }
 `
 
 const MenuListWrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin: 0 38px;
+  ${bp('mobile')`
+    position: fixed;
+    height: 100vh;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    background: white;
+    margin: 0 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    a {
+      font-size: 1.728rem;
+      line-height: 1.71em;
+    }
+    &.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+  `} 
+  
+  ${bp('tablet')`
+    margin: 0 38px;
+    flex-direction: row;
+    align-items: center;
+    position: static;
+    opacity: 1;
+    height: auto;
+    pointer-events: all;
+    a {
+      font-size: 1.1rem;
+    }
+  `};
+
+  .close-button {
+    position: absolute;
+    top: 13px;
+    right: 13px;
+    font-size: 2rem;
+    ${bp('mobile')`
+      display: block;
+    `}
+    ${bp('tablet')`
+      display: none;
+    `}
+  }
 `
 const MenuListItem = styled.div`
   font-weight: bold;
   font-family: 'WOD', 'Thonburi', 'Thonburi', sans-serif;
   margin: 0 ${21 / 2}px;
 `
-const MenuList = () => (
-  <MenuListWrapper>
+const MenuList = (
+  props: React.HTMLAttributes<any> & { onClose: () => void }
+) => (
+  <MenuListWrapper className={props.className}>
+    <div className='close-button' onClick={props.onClose}>
+      <i className="far fa-times-circle" />
+    </div>
     {MenuListData.map((item, key) => (
-      <MenuListItem key={key}>
+      <MenuListItem key={key} onClick={props.onClose}>
         {item.id !== 'audition' ? (
           <Link href={`/#${item.id}`}>
-            <a>{item.label}</a>
+            <a >{item.label}</a>
           </Link>
         ) : (
           <routes.Link route="profile">
-            <a>{item.label}</a>
+            <a onClick={props.onClose}>{item.label}</a>
           </routes.Link>
         )}
       </MenuListItem>
@@ -74,9 +149,11 @@ const MenuList = () => (
 )
 interface MenubarPropTypes {
   noSticky?: boolean
+  noFixed?: boolean
 }
 interface MenubarStateTypes {
-  isStickToTop: boolean
+  isStickToTop?: boolean
+  isMenuVisible?: boolean
 }
 
 export default class Menubar extends React.Component<
@@ -86,7 +163,8 @@ export default class Menubar extends React.Component<
   constructor(props) {
     super(props)
     this.state = {
-      isStickToTop: false
+      isStickToTop: false,
+      isMenuVisible: false
     }
     this.handleScroll = this.handleScroll.bind(this)
   }
@@ -121,7 +199,9 @@ export default class Menubar extends React.Component<
   render() {
     const Sticky = (
       <MenubarContainerWithStick
-        className={this.state.isStickToTop || this.props.noSticky ? 'show' : ''}
+        className={`${
+          this.state.isStickToTop || this.props.noSticky ? 'show' : ''
+        } ${this.props.noFixed ? 'noFixed' : ''}`}
         key="stick-menubar"
       >
         <div className="stick-menubar__top">
@@ -130,8 +210,23 @@ export default class Menubar extends React.Component<
         <div className="stick-menubar__content">
           <DefaultViewport style={{ width: '100%', padding: 0 }}>
             <div className="stick-menubar__content-inner">
-              <Logo />
-              <MenuList />
+              <div
+                className="menu-toggle"
+                onClick={() =>
+                  this.setState({ isMenuVisible: !this.state.isMenuVisible })
+                }
+              >
+                {'Menu'}
+              </div>
+              <routes.Link route="index">
+                <a>
+                  <Logo />
+                </a>
+              </routes.Link>
+              <MenuList
+                onClose={() => this.setState({ isMenuVisible: false })}
+                className={this.state.isMenuVisible ? 'visible' : ''}
+              />
             </div>
           </DefaultViewport>
         </div>

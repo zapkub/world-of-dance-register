@@ -10,7 +10,6 @@ import { ApolloLink } from 'apollo-link'
 import gql from 'graphql-tag'
 import apolloLogger from 'apollo-link-logger';
 
-import { resolvers as AuditionFormResolvers } from '../components/auditionForm/auditionForm.state'
 
 const introspectionQueryResultData = require('../fragmentTypes.json')
 const fetch = require('isomorphic-fetch')

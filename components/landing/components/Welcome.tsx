@@ -1,10 +1,14 @@
 import * as React from 'react'
 import { compose } from 'recompose'
+import bp from 'styled-components-breakpoint'
 import { Button } from '../../Button'
 import theme from '../../theme'
 import styled from 'styled-components'
 import { LogoFull } from '../../Logo'
 import MenuListData from './MenuListData'
+import { DefaultViewport } from '../../Viewport'
+import routes from '../../../routes'
+import Link from 'next/link'
 
 const LANDING_PAGE_MIN_HEIGHT = 480
 
@@ -14,12 +18,13 @@ const LandingButton = styled(Button)`
   white-space: pre;
   margin: ${21 / 2}px;
 `
-const Container = styled.div`
+const Container = styled(DefaultViewport)`
+  padding-top: 0;
   height: 100vh;
   min-height: ${LANDING_PAGE_MIN_HEIGHT}px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  
   flex-direction: column;
   .logo-subtitle {
     font-family: 'WOD', 'Kanit', sans-serif;
@@ -32,8 +37,26 @@ const Container = styled.div`
   .landing-button-wrapper {
     display: flex;
     flex-wrap: wrap;
-    width: 640px;
+    max-width: 640px;
   }
+  ${bp('mobile')`
+    .landing-button-wrapper {
+      display: block;
+    }
+    .landing-button {
+      display: block;
+      width: 100%;
+    }
+  `} ${bp('tablet')`
+    .landing-button-wrapper {
+      display: flex;
+    }
+    .landing-button {
+      display: flex;
+      width: auto;
+      text-align: center;
+    }
+  `};
 `
 
 export default class LandingPage extends React.Component {
@@ -52,9 +75,22 @@ export default class LandingPage extends React.Component {
           }}
         />
         <div className="landing-button-wrapper">
-          {MenuListData.map((item, key) => (
-            <LandingButton key={key}>{item.label}</LandingButton>
-          ))}
+          {MenuListData.map(
+            (item, key) =>
+              item.id === 'audition' ? (
+                <routes.Link key={item.id} route="profile">
+                  <LandingButton className="landing-button" key={key}>
+                    {item.label}
+                  </LandingButton>
+                </routes.Link>
+              ) : (
+                <Link key={item.id} href={`/#${item.id}`}>
+                  <LandingButton className="landing-button" key={key}>
+                    {item.label}
+                  </LandingButton>
+                </Link>
+              )
+          )}
         </div>
       </Container>
     )

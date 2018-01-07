@@ -8,7 +8,6 @@ import { withBottomBorder, HeaderRoot } from '../../Header';
 const ABOUT_SHOW_MIN_HEIGHT = 480
 
 const Container = styled.div`
-  height: 100vh;
   min-height: ${ABOUT_SHOW_MIN_HEIGHT}px;
   background-color: ${theme.blackBlue};
 `

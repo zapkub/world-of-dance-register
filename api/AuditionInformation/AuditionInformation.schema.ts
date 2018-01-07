@@ -20,6 +20,7 @@ declare global {
     members?: Member[]
     videoURL?: string
     ownerId?: any
+    isConfirm?: boolean
   }
   interface AuditionInformationDocument extends Document, User {}
 }
@@ -45,7 +46,8 @@ const AuditionInformationSchema = new Schema({
   ],
   organizationName: String,
   videoURL: String,
-  ownerId: Schema.Types.ObjectId
+  ownerId: Schema.Types.ObjectId,
+  isConfirm: Boolean
 })
 
 export default AuditionInformationSchema

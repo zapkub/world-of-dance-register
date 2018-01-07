@@ -3,7 +3,9 @@ import { TextInput } from '../../Input'
 import { DefaultViewport } from '../../Viewport'
 import { HeaderOne } from '../../Header'
 import { Button } from '../../Button'
+import th from '../../../i18n/th-th'
 import styled from 'styled-components'
+import bp from 'styled-components-breakpoint'
 
 interface ProfileInfoFormPropTypes extends BasicProfile {
   onChange: (key: string, value: string) => void
@@ -15,7 +17,7 @@ export const InputField = (props: {
   onChange: any
 }) => (
   <div>
-    {props.name}
+    {th[props.name]}
     <TextInput
       style={{ margin: '13px 0' }}
       fluid
@@ -27,6 +29,19 @@ export const InputField = (props: {
 
 const FormContainer = styled.div`
   max-width: 640px;
+  ${bp('mobile')`
+    .profile-info__button {
+      width: 100%;
+      box-sizing: border-box;
+      margin: 3px 0;
+    }
+  `}
+  ${bp('tablet')`
+    .profile-info__button {
+      width: auto;
+      margin: inherit;
+    }
+  `}
 `
 
 export default (props: ProfileInfoFormPropTypes) => {
@@ -42,7 +57,10 @@ export default (props: ProfileInfoFormPropTypes) => {
         />
         <InputField value={props} name={'lastname'} onChange={props.onChange} />
         <InputField value={props} name={'mobileNo'} onChange={props.onChange} />
-        <Button>{'บันทึก'}</Button>
+        <Button className='profile-info__button' style={{marginRight: 8}}>{'บันทึก'}</Button>
+        <a href="/logout">
+          <Button className='profile-info__button'>{'ออกจากระบบ'}</Button>
+        </a>
       </FormContainer>
     </DefaultViewport>
   )

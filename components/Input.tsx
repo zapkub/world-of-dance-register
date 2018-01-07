@@ -37,7 +37,19 @@ export const TextInput: React.SFC<TextInputPropTypes> = styled.input`
   ${RootInput} ${(props: { fluid: boolean }) => (props.fluid ? fluid : '')};
 ` as any
 
-const TextInputWrapper = styled.div``
+const TextInputWrapper = styled.div`
+  margin: 8px 0;
+  .TextInput__input {
+    min-width: 320px;
+  }
+`
+const TextInputLabel = styled.label`
+  font-size: 1rem;
+  line-height: 1.7128em;
+  font-weight: bold;
+  display: inline-block;
+  width: 290px;
+`
 export const TextInputWithLabel = (props: {
   label: string
   onChange: (e) => void
@@ -45,8 +57,52 @@ export const TextInputWithLabel = (props: {
 }) => {
   return (
     <TextInputWrapper>
-      {props.label}
-      <TextInput onChange={props.onChange} value={props.value} />
+      <TextInputLabel>{props.label}</TextInputLabel>
+      <TextInput
+        className="TextInput__input"
+        onChange={props.onChange}
+        value={props.value}
+      />
     </TextInputWrapper>
+  )
+}
+
+const Container = styled.div`
+  border-radius: 4px;
+  display: inline-block;
+  color: ${theme.blue};
+  font-size: 1.5em;
+  position: relative;
+`
+// ghost native input for Form input
+const InputCheck = styled.input`
+  opacity: 0;
+  position: absolute;
+`
+interface CheckboxPropTypes {
+  className?: any
+  style?: any
+  onClick?: any
+  type?: any
+  checked?: any
+  name?: any
+}
+export const Checkbox = ({
+  className,
+  style,
+  onClick,
+  type,
+  checked,
+  name
+}: CheckboxPropTypes) => {
+  return (
+    <Container className={className} style={style} onClick={onClick}>
+      {checked ? (
+        <i className="far fa-check-square" />
+      ) : (
+        <i className="far fa-square" />
+      )}
+      <InputCheck type="checkbox" name={name} checked={checked || false} />
+    </Container>
   )
 }

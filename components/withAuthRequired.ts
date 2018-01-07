@@ -31,7 +31,7 @@ export default function withData(redirectPath: string): any {
          * Prepare state for fetch data
          */
         if (typeof window !== 'undefined') {
-          ;(window as any).user = props.user
+          (window as any).user = props.user
         }
       }
       componentDidMount() {

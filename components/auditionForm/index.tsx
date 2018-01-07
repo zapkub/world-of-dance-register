@@ -6,20 +6,17 @@ import withVideoUpload from '../withVideoUpload'
 import AuditionForm from './components/AuditionForm'
 import withFormState, { defaultFormInfo } from './auditionForm.state'
 import gql from 'graphql-tag'
-import withAuthRequired from '../../utils/withAuthRequired';
-
+import withAuthRequired from '../withAuthRequired'
 
 const AuditionFormWithData = compose<{ url: any }, { url: any }>(
-  withAuthRequired('/login'),
-  withVideoUpload,
-  withFormState
+  withFormState,
 )(AuditionForm)
 
-export default props => {
+export default withAuthRequired('/login')(props => {
   return (
     <div>
-      <Menubar noSticky />
+      <Menubar noSticky noFixed />
       <AuditionFormWithData url={props.url} />
     </div>
   )
-}
+})

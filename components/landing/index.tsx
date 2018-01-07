@@ -5,6 +5,7 @@ import Welcome from './components/Welcome'
 import AboutShow from './components/AboutShow'
 import Menubar from '../Menubar'
 import AuditionType from './components/AuditionType';
+import Process from './components/Process'
 
 const LandingPage = () => (
   <div>
@@ -12,6 +13,7 @@ const LandingPage = () => (
     <Welcome />
     <AboutShow />
     <AuditionType />
+    <Process />
   </div>
 )
 

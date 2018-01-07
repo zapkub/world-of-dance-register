@@ -7,14 +7,12 @@ import enhanceUploadAPI from './upload'
 import createGraphQL from './graphql'
 
 declare global {
-  interface Models {
-    User: mongoose.Model<UserDocument>
-  }
+  
   interface APIContext {
     logger: Logger
     config: AppConfig
     connection: any
-    models: Models
+    models: GraphQL.Models
   }
 }
 

@@ -1,11 +1,21 @@
 import styled from 'styled-components'
 import { MENUBAR_HEIGHT, VIEWPORT_MAX_WIDTH } from './theme';
-
+import bp from 'styled-components-breakpoint'
 
 
 
 export const DefaultViewport = styled.div`
-  padding: ${MENUBAR_HEIGHT + 38}px 0;
   max-width:${VIEWPORT_MAX_WIDTH}px;
   margin:0 auto;
+
+  ${bp('mobile')`
+    padding: ${MENUBAR_HEIGHT + 38}px 8px;
+  `}
+  ${bp('tablet')`
+    padding: ${MENUBAR_HEIGHT + 38}px 8px;
+  `}
+
+  ${bp('desktop')`
+    padding: ${MENUBAR_HEIGHT + 38}px 8px;
+  `}
 `

@@ -12,9 +12,18 @@ const facebookLoginStrategy = (exports.facebookLoginStrategy = (
       clientID: context.config.facebook.id,
       clientSecret: context.config.facebook.secret,
       callbackURL: context.config.facebook.callbackUrl,
-      profileFields: ['id', 'displayName', 'birthday', 'email', 'link', 'first_name', 'gender', 'last_name']
+      profileFields: [
+        'id',
+        'displayName',
+        'birthday',
+        'email',
+        'link',
+        'first_name',
+        'gender',
+        'last_name'
+      ]
     },
-    async function (accessToken, refreshToken, _, fbProfile, cb) {
+    async function(accessToken, refreshToken, _, fbProfile, cb) {
       try {
         console.log(fbProfile)
         const profile = fbProfile._json
@@ -43,7 +52,7 @@ const facebookLoginStrategy = (exports.facebookLoginStrategy = (
               name: profile.name,
               facebookUrl: profile.link,
               facebookId: profile.id
-            }) 
+            })
             return cb(null, newUser)
           } catch (e) {
             return cb(null, false, 'create new user error: ' + e.toString())
@@ -65,7 +74,7 @@ const deserializeSession = (exports.deserializeSession = (
    * Actual session is this logic
    */
   const user = await User.findById(id, {
-    _id: true,
+    _id: true
   }).lean()
   return done(null, user)
 })
@@ -76,10 +85,7 @@ const serializeSession = (exports.serializeSession = (
   done(null, user._id)
 })
 
-export default function enchanceSession(
-  app: any,
-  context: APIContext
-) {
+export default function enchanceSession(app: any, context: APIContext) {
   app.use(
     session({
       secret: context.config.cookieSecret || 'development',
@@ -95,6 +101,12 @@ export default function enchanceSession(
   passport.deserializeUser(deserializeSession(context))
   passport.serializeUser(serializeSession(context))
   passport.use(facebookLoginStrategy(context))
+  app.get('/logout', (req, res) => {
+    req.session.destroy(function(err) {
+      req.logout()
+      res.redirect('/')
+    })
+  })
   app.get(
     '/facebook',
     passport.authenticate('facebook', {
@@ -106,7 +118,7 @@ export default function enchanceSession(
     '/facebook/callback',
     passport.authenticate('facebook'),
     (req, res: express.Response) => {
-     res.redirect('/profile') 
+      res.redirect('/profile')
     }
   )
 

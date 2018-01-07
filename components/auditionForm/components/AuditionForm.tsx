@@ -3,19 +3,28 @@ import { DefaultViewport } from '../../Viewport'
 import { HeaderOne } from '../../Header'
 import theme from '../../theme'
 import styled from 'styled-components'
-import { TextInput, TextInputMultipleLine } from '../../Input'
+import th from '../../../i18n/th-th'
+import {
+  TextInput,
+  TextInputMultipleLine,
+  TextInputWithLabel,
+  Checkbox
+} from '../../Input'
 import withVideoUpload from '../../withVideoUpload'
 import VideoUpload from './VideoUpload'
 import MemberItem from './MemberItem'
 import { Button } from '../../Button'
 
-const VideoUploadWithData = withVideoUpload(VideoUpload)
+const VideoUploadWithData = withVideoUpload((url, props) => {
+  console.log(url)
+  props.onChange(url)
+})(VideoUpload)
 const AuditionFormContainer = styled(DefaultViewport)`
   .video-upload-wrapper {
     margin: 21px 0;
     display: flex;
     .item {
-      flex: 1 1 auto;
+      flex: 1 1 50%;
       padding: 0 8px;
       &:first-child {
         padding-left: 0;
@@ -23,6 +32,21 @@ const AuditionFormContainer = styled(DefaultViewport)`
       &:last-child {
         padding-right: 0;
       }
+    }
+  }
+  .agreement-wrapper {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    right: 0;
+    padding: 8px 0;
+    background: white;
+    display: flex;
+    justify-content: center;
+    p {
+      margin: 0 13px;
+      line-height: 1.71em;
     }
   }
 `
@@ -43,10 +67,12 @@ interface AuditionFormPropTypes
   }
 }
 export default (props: AuditionFormPropTypes) => {
+  const isMemberFull = props.maxMember === props.auditionInfo.members.length
+  console.log(props.auditionInfo)
   return (
     <AuditionFormContainer>
       <HeaderOne withBorder>
-        {'สมัครออดิชั่นแบบ'}
+        {'สมัครออดิชั่นประเภท '}
         <span style={{ color: theme.blue }}>{props.url.query.type}</span>
       </HeaderOne>
       <TeamNameInput
@@ -57,7 +83,18 @@ export default (props: AuditionFormPropTypes) => {
       />
       <div className="video-upload-wrapper">
         <div className="item">
-          <VideoUploadWithData />
+          <VideoUploadWithData
+            onResetVideoURL={() => {
+              const confirmRemove = confirm('ยืนยัน ต้องการล้างคลิปวีดีโอ ?')
+              if (confirmRemove) {
+                props.onFormChange('videoURL', null)
+              }
+            }}
+            preUpload={props.saveForm}
+            value={props.auditionInfo.videoURL}
+            type={props.auditionInfo.auditionType}
+            onChange={(url: any) => props.onFormChange('videoURL', url)}
+          />
         </div>
         <div className="item">
           <TextInputMultipleLine
@@ -70,19 +107,20 @@ export default (props: AuditionFormPropTypes) => {
         </div>
       </div>
       <div>
+        <HeaderOne withBorder>{'รายละเอียด'}</HeaderOne>
         {['dancingStyle', 'coachName', 'mobileNo', 'organizationName'].map(
           name => (
-            <div key={name}>
-              {name}
-              <TextInput
-                onChange={e => props.onFormChange(name, e.target.value)}
-                value={props.auditionInfo[name]}
-              />
-            </div>
+            <TextInputWithLabel
+              label={th[name]}
+              onChange={e => props.onFormChange(name, e.target.value)}
+              key={name}
+              value={props.auditionInfo[name]}
+            />
           )
         )}
       </div>
 
+      <HeaderOne withBorder>{'สมาชิก'}</HeaderOne>
       <div>
         {props.auditionInfo.members.map((member, index) => (
           <MemberItem
@@ -90,11 +128,38 @@ export default (props: AuditionFormPropTypes) => {
             key={member._id}
             {...member}
             index={index}
+            type={props.auditionInfo.auditionType}
           />
         ))}
+        <Button onClick={props.onCreateNewMember} fluid disabled={isMemberFull}>
+          {!isMemberFull
+            ? '+ เพิ่มสมาชิกในทีม' +
+              `${props.auditionInfo.members.length}/${props.maxMember}`
+            : 'สมาชิกครบแล้ว'}
+        </Button>
       </div>
 
-      <Button onClick={props.confirmSubmitForm}>{'ยืนยันส่งใบสมัคร'}</Button>
+      <div className="agreement-wrapper">
+        <Checkbox
+          checked={props.isAcceptTerm || props.auditionInfo.isConfirm}
+          onClick={() => props.setIsAcceptTerm(!props.isAcceptTerm)}
+        />
+        <p
+          style={{ color: theme.gray }}
+          dangerouslySetInnerHTML={{
+            __html: `
+            ข้าพเจ้าได้อ่านและยอมรับ <a href='#'>ข้อตกลงการเข้าสมัคร</a><br />และ <a href='#'>เงื่อนไขการออดิชั่น</a> เป็นที่เรียบร้อยแล้ว
+          `
+          }}
+        />
+        <Button
+          loading={props.saving}
+          disabled={!props.isAcceptTerm && !props.auditionInfo.isConfirm}
+          onClick={props.confirmSubmitForm}
+        >
+          {!props.auditionInfo.isConfirm ? 'ยืนยันส่งใบสมัคร' : 'อัพเดทข้อมูล'}
+        </Button>
+      </div>
     </AuditionFormContainer>
   )
 }

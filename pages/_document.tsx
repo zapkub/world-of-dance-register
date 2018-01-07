@@ -26,6 +26,9 @@ export default class PageDocument extends Document {
           <meta charSet="utf-8" className="next-head" />
           <link href="https://fonts.googleapis.com/css?family=Kanit:400,400i,500,700,700i&amp;subset=thai" rel="stylesheet" />
           <link href="/static/fonts/wod/stylesheet.css" rel="stylesheet" />
+          <link href='/static/fonts/awesome/regular.min.css' rel='stylesheet' />
+          <link href='/static/fonts/awesome/stylesheet.min.css' rel='stylesheet' />
+          <link href='/static/cropper.min.css' rel='stylesheet' />
           <meta
             id="vp"
             name="viewport"

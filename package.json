@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "nodemon",
     "watch": "tsc -w",
+    "build": "sh scripts/build.bash",
+    "docker:build": "sh scripts/docker:build.bash",
+    "start": "NODE_ENV=production node index.js",
     "clean": "scripts bin/clean.sh",
     "db:start": "docker-compose -f docker-compose.db.yaml up -d",
     "storybook": "start-storybook -p 9001 -s . -c .storybook"
@@ -61,6 +64,8 @@
     "passport-facebook": "^2.1.1",
     "react": "^16.2.0",
     "react-apollo": "^2.0.4",
+    "react-avatar-editor": "^10.3.0",
+    "react-cropper": "^1.0.1",
     "react-dom": "^16.2.0",
     "recompose": "^0.26.0",
     "redux": "^3.7.2",

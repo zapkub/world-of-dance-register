@@ -25,6 +25,10 @@ export default {
       /**
        * Find document of type from user
        */
+      if(!rp.args.filter) {
+        rp.args.filter = {}
+      }
+      rp.args.filter.auditionType = rp.args.record.auditionType
       const auditionInfo = await model.findOne({
         ownerId: rp.context.user._id,
         auditionType: rp.args.record.auditionType
@@ -41,6 +45,8 @@ export default {
       }
     })
     const updateOne = TC.getResolver('updateOne')
+    updateOne.removeOtherArgs(['filter','record'])
+    updateOne.getArgTC('record').removeField('ownerId')
     return TC
   }
 } as GraphQL.ComposerStrategy<AuditionInformationDocument>

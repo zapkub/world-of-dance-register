@@ -10,6 +10,7 @@ import gql from 'graphql-tag'
 import { HeaderOne } from '../Header'
 import { ApolloClient } from 'apollo-client'
 import AuditionMenu from './components/AuditionMenu'
+import { DefaultViewport } from '../Viewport'
 
 interface ProfilePagePropTypes
   extends WithVideoUploadPropType,
@@ -32,6 +33,9 @@ class ProfilePage extends React.Component<ProfilePagePropTypes, any> {
           onChange={this.props.onProfileChange}
           {...this.props.me}
         />
+        <DefaultViewport style={{paddingTop: 0, paddingBottom: 0}}>
+          <HeaderOne withBorder>{'สมัครออดิชั่น'}</HeaderOne>
+        </DefaultViewport>
         <AuditionMenu />
       </div>
     )

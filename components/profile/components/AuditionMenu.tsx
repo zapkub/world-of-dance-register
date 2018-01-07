@@ -2,9 +2,10 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { Text } from '../../Text'
 import { DefaultViewport } from '../../Viewport'
-import { Button } from '../../Button';
-import theme from '../../theme';
-import routes from '../../../routes';
+import { Button } from '../../Button'
+import theme from '../../theme'
+import routes from '../../../routes'
+import bp from 'styled-components-breakpoint'
 
 const AuditionInfoList: AuditionInfo[] = [
   {
@@ -13,7 +14,8 @@ const AuditionInfoList: AuditionInfo[] = [
     ageLabel: 'อยู่ในช่วงระหว่างอายุ 8-16 ปี',
     memberAmountLabel: 'จำนวนผู้เข้าแข่งขัน 1-20 คน',
     description: `ประเภทเด็ก สามารถมาในรูปแบบเดี่ยวและกลุ่ม โดยสมาชิกในกลุ่มจะต้องไม่เกิน 20 คน ไม่จำกัดเพศและสไตล์การเต้นใดๆทั้งสิ้น โดยผู้เข้าสมัครแข่งขันประเภทเด็ก จะต้องมีอายุระหว่าง 8-16 ปี (เกิดระหว่าง พ.ศ. 2545 – พ.ศ. 2553)`
-  },{
+  },
+  {
     title: 'Upper',
     subtitle: 'บุคคลทั่วไป',
     ageLabel: 'อายุ 17 ปี ขึ้นไป',
@@ -42,8 +44,25 @@ interface AuditionMenuPropTypes {
 }
 
 const AuditionItemContainer = styled.div`
-  width: calc(100% / 3);
-  padding: 0 ${55/2}px;
+  ${bp('mobile')`
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 34px;
+
+    .audition-menu__button {
+      width: 100%;
+    }
+  `}
+  ${bp('tablet')`
+    width: calc(100% / 3);
+    padding: 0 13px;
+    .audition-menu__button {
+      width: inherit;
+    }
+  `}
+  ${bp('desktop')`
+    padding: 0 ${55 / 2}px;
+  `}
   display: flex;
   flex-direction: column;
   &:nth-chid-first(1) {
@@ -55,8 +74,9 @@ const AuditionItemContainer = styled.div`
   h1 {
     font-family: 'WOD', 'Kanit', sans-serif;
     color: ${theme.blue};
-    font-size: ${50/14}em;
+    font-size: ${50 / 14}em;
     line-height: 1.2;
+    font-weight: bold;
     text-transform: uppercase;
   }
   h2 {
@@ -78,17 +98,33 @@ const AuditionItemContainer = styled.div`
 const AuditionMenuContainer = styled(DefaultViewport)`
   display: flex;
   align-items: stetch;
+  ${bp('mobile')`
+    flex-direction: column;
+  `}
+
+  ${bp('tablet')`
+    flex-direction: row;
+  `}
 `
 const AuditionItem = (props: AuditionInfo) => (
   <AuditionItemContainer>
     <h1>{props.title}</h1>
     <h2>{props.subtitle}</h2>
-    <Text className='age-label' dangerouslySetInnerHTML={{ __html: props.ageLabel }} />
-    <Text className='audition-menu__description' dangerouslySetInnerHTML={{ __html: props.description }} />
-    <routes.Link route={'register'} params={{type: props.title.toLowerCase()}}>
+    <Text
+      className="age-label"
+      dangerouslySetInnerHTML={{ __html: props.ageLabel }}
+    />
+    <Text
+      className="audition-menu__description"
+      dangerouslySetInnerHTML={{ __html: props.description }}
+    />
+    <routes.Link
+      route={'register'}
+      params={{ type: props.title.toLowerCase() }}
+    >
       <a>
-    <Button>{'สมัครออดิชั่น'}</Button>
-    </a>
+        <Button className='audition-menu__button'>{'สมัครออดิชั่น'}</Button>
+      </a>
     </routes.Link>
   </AuditionItemContainer>
 )
@@ -96,7 +132,7 @@ const AuditionItem = (props: AuditionInfo) => (
 export default class AuditionMenu extends React.Component {
   render() {
     return (
-      <AuditionMenuContainer>
+      <AuditionMenuContainer style={{ paddingTop: 0 }}>
         {AuditionInfoList.map(audition => (
           <AuditionItem {...audition} key={audition.title} />
         ))}

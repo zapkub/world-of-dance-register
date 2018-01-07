@@ -23,12 +23,12 @@ declare global {
       updatedAt?: string
     }
     interface TypeComposers {
-     User: TypeComposer
-     AuditionInformation: TypeComposer
+      User: TypeComposer
+      AuditionInformation: TypeComposer
     }
     interface Models {
-     User: mongoose.Model<UserDocument> 
-     AuditionInformation: mongoose.Model<AuditionInformationDocument>
+      User: mongoose.Model<UserDocument>
+      AuditionInformation: mongoose.Model<AuditionInformationDocument>
     }
 
     interface Context {
@@ -72,12 +72,13 @@ interface InitContext {
 export default function createGraphQLSchema(context: InitContext) {
   // Create model from mongoose connection
   context.logger.log('GraphQL: create models...')
-  const strategies = {
- 
-  }
+  const strategies = {}
   const models = {
     User: context.connection.model<UserDocument>('User', UserStrategy.schema),
-    AuditionInformation: context.connection.model<AuditionInformationDocument>('AuditionInformation', AuditionInformationStrategy.schema)
+    AuditionInformation: context.connection.model<AuditionInformationDocument>(
+      'AuditionInformation',
+      AuditionInformationStrategy.schema
+    )
   }
 
   /**
@@ -90,7 +91,10 @@ export default function createGraphQLSchema(context: InitContext) {
   }
   const typeComposers: GraphQL.TypeComposers = {
     User: UserStrategy.createTypeComposer(models.User, context),
-    AuditionInformation: AuditionInformationStrategy.createTypeComposer(models.AuditionInformation, context)
+    AuditionInformation: AuditionInformationStrategy.createTypeComposer(
+      models.AuditionInformation,
+      context
+    )
   }
 
   // create relation
@@ -112,6 +116,19 @@ export default function createGraphQLSchema(context: InitContext) {
       }
     }
   }
+  function requireAdminWrapper(next) {
+    return rp => {
+      if (rp.context.user) {
+        if (rp.context.user.role) {
+          return next(rp)
+        } else {
+          throw new Error('unauthorized (permission denial)')
+        }
+      } else {
+        throw new Error('unauthorized (session not found)')
+      }
+    }
+  }
   GQC.rootQuery().addFields(
     wrapResolvers(
       {
@@ -121,13 +138,25 @@ export default function createGraphQLSchema(context: InitContext) {
       requireSessionWrapper
     )
   )
+  GQC.rootQuery().addFields(
+    wrapResolvers(
+      {
+        auditionInfoList: typeComposers.AuditionInformation.getResolver(
+          'findMany'
+        )
+      },
+      requireAdminWrapper
+    )
+  )
   GQC.rootMutation().addFields(
     wrapResolvers(
       {
-        updateAuditionInfo: typeComposers.AuditionInformation.getResolver('updateOne')
+        updateAuditionInfo: typeComposers.AuditionInformation.getResolver(
+          'updateOne'
+        )
       },
       requireSessionWrapper
-    ) 
+    )
   )
 
   return {
