@@ -1,4 +1,4 @@
-import logger from '../utils/logger'
+import logger from '../utils/Logger'
 import * as mongoose from 'mongoose'
 import * as path from 'path'
 import { GQC, TypeComposer } from 'graphql-compose'
