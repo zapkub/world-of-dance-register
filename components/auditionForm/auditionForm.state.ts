@@ -96,6 +96,7 @@ export const defaultFormInfo = (
   dancingStyle: '',
   organizationName: '',
   auditionType: type,
+  isConfirm: false,
   __typename: 'AuditionInformation'
 })
 declare global {

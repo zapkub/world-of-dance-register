@@ -8,6 +8,7 @@ import * as AvatarEditor from 'react-avatar-editor'
 import theme from '../../theme'
 import { UploadButton, Button } from '../../Button'
 import { Text } from '../../Text'
+import bp from 'styled-components-breakpoint'
 
 const Container = styled.div`
   display: flex;
@@ -17,6 +18,8 @@ const Container = styled.div`
   .avatar-upload__button-wrap {
     display: flex;
   }
+
+
 `
 const AvatarUploaderContainer = styled.div`
   background-color: ${theme.blue};
@@ -37,7 +40,6 @@ const AvatarUploaderContainer = styled.div`
     bottom: 0;
     position: absolute;
     cursor: pointer;
-
     opacity: 0;
   }
 `
@@ -224,6 +226,13 @@ const InputFields = ['mobileNo', 'firstname', 'lastname', 'email', 'age']
 const MemberItemContainer = styled.div`
   display: flex;
   margin: 8px 0;
+  ${bp('mobile')`
+    flex-direction: column;
+    align-items: center;
+  `}
+  ${bp('tablet')`
+    flex-direction: row;
+  `}
 `
 const MemberItem: React.SFC<MemberItemPropTypes> = (
   props: MemberItemPropTypes
@@ -241,6 +250,7 @@ const MemberItem: React.SFC<MemberItemPropTypes> = (
         <div className="member-item__input">
           {InputFields.map(name => (
             <TextInputWithLabel
+              
               key={name}
               label={th[name]}
               onChange={e => props.onChange(props._id, name, e.target.value)}

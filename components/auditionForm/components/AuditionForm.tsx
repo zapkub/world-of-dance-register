@@ -14,27 +14,38 @@ import withVideoUpload from '../../withVideoUpload'
 import VideoUpload from './VideoUpload'
 import MemberItem from './MemberItem'
 import { Button } from '../../Button'
+import bp from 'styled-components-breakpoint'
 
 const VideoUploadWithData = withVideoUpload((url, props) => {
   console.log(url)
   props.onChange(url)
 })(VideoUpload)
 const AuditionFormContainer = styled(DefaultViewport)`
+  padding-top: 13px;
   .video-upload-wrapper {
     margin: 21px 0;
     display: flex;
-    .item {
-      flex: 1 1 50%;
-      padding: 0 8px;
-      &:first-child {
-        padding-left: 0;
+    ${bp('mobile')`
+      flex-direction: column;
+      .item {
+        flex: 1 1 50%;
+        padding: 13px 8px;
       }
-      &:last-child {
-        padding-right: 0;
+    `} ${bp('tablet')`
+      flex-direction: row;
+      .item {
+        padding: 0 8px;
+        &:first-child {
+          padding-left: 0;
+        }
+        &:last-child {
+          padding-right: 0;
+        }
       }
-    }
+    `};
   }
   .agreement-wrapper {
+    border-top: 1px solid ${theme.blue};
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -48,6 +59,17 @@ const AuditionFormContainer = styled(DefaultViewport)`
       margin: 0 13px;
       line-height: 1.71em;
     }
+    .checkbox-agreement {
+      display: flex;
+      align-items: center;
+    }
+    ${bp('mobile')`
+      flex-direction: column;
+      padding: 8px 13px;
+      box-sizing: border-box;
+    `} ${bp('tablet')`
+      flex-direction:row;
+    `};
   }
 `
 const TeamNameInput = styled(TextInput)`
@@ -140,18 +162,20 @@ export default (props: AuditionFormPropTypes) => {
       </div>
 
       <div className="agreement-wrapper">
-        <Checkbox
-          checked={props.isAcceptTerm || props.auditionInfo.isConfirm}
-          onClick={() => props.setIsAcceptTerm(!props.isAcceptTerm)}
-        />
-        <p
-          style={{ color: theme.gray }}
-          dangerouslySetInnerHTML={{
-            __html: `
+        <div className="checkbox-agreement">
+          <Checkbox
+            checked={props.isAcceptTerm || props.auditionInfo.isConfirm}
+            onClick={() => props.setIsAcceptTerm(!props.isAcceptTerm)}
+          />
+          <p
+            style={{ color: theme.gray, display: 'inline-block' }}
+            dangerouslySetInnerHTML={{
+              __html: `
             ข้าพเจ้าได้อ่านและยอมรับ <a href='#'>ข้อตกลงการเข้าสมัคร</a><br />และ <a href='#'>เงื่อนไขการออดิชั่น</a> เป็นที่เรียบร้อยแล้ว
           `
-          }}
-        />
+            }}
+          />
+        </div>
         <Button
           loading={props.saving}
           disabled={!props.isAcceptTerm && !props.auditionInfo.isConfirm}

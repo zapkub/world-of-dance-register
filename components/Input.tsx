@@ -102,7 +102,7 @@ export const Checkbox = ({
       ) : (
         <i className="far fa-square" />
       )}
-      <InputCheck type="checkbox" name={name} checked={checked || false} />
+      <InputCheck type="checkbox" name={name} onChange={() => {}} checked={checked || false} />
     </Container>
   )
 }

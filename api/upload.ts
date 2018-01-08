@@ -46,7 +46,7 @@ export default async function(
               destination: `/${req.params.type}/${req.user._id}/video`
             })
             console.log(
-              'upload file to storage complete, write url to audition form'
+              req.user._id, 'upload file to storage complete, write url to audition form'
             )
             if (result[0]) {
               await result[0].makePublic()
@@ -77,7 +77,6 @@ export default async function(
         '/upload-image/member/:type/:index',
         multipartMiddleware,
         async function(req: any, res) {
-          console.log(req.files)
           if (req.files.image) {
             console.log('upload image...', req.files)
             const result = await bucket.upload(req.files.image.path, {

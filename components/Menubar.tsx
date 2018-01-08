@@ -17,15 +17,13 @@ const MenubarContainerWithStick = styled(MenubarContainer)`
   top: 0;
   left: 0;
   right: 0;
-  transform: translateY(-100%);
   opacity: 0;
   height: auto;
   z-index: 100;
   background-color: white;
-  will-change: transform, opacity;
+  will-change: opacity;
   transition: 0.2222s all ease-in-out;
   &.show {
-    transform: translateY(0);
     opacity: 1;
   }
   .stick-menubar__top {
@@ -33,12 +31,17 @@ const MenubarContainerWithStick = styled(MenubarContainer)`
   }
   .menu-toggle {
     position: absolute;
+    font-family: 'WOD', sans-serif;
     left: 10px;
     top: 50%;
     transform: translateY(-50%);
     font-weight: bold;
     font-size: 1.128rem;
     color: ${theme.blue};
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
     ${bp('mobile')`
       display: block;
     `} ${bp('desktop')`
@@ -64,7 +67,7 @@ const MenubarContainerWithStick = styled(MenubarContainer)`
     `};
   }
   &.noFixed {
-    position: static;
+    position: relative;
   }
 `
 
@@ -72,7 +75,6 @@ const MenuListWrapper = styled.div`
   display: flex;
   ${bp('mobile')`
     position: fixed;
-    height: 100vh;
     top:0;
     right:0;
     left:0;
@@ -84,6 +86,7 @@ const MenuListWrapper = styled.div`
     align-items: center;
     opacity: 0;
     pointer-events: none;
+    z-index:99;
     a {
       font-size: 1.728rem;
       line-height: 1.71em;
@@ -98,7 +101,7 @@ const MenuListWrapper = styled.div`
     margin: 0 38px;
     flex-direction: row;
     align-items: center;
-    position: static;
+    position: relative;
     opacity: 1;
     height: auto;
     pointer-events: all;
@@ -216,7 +219,7 @@ export default class Menubar extends React.Component<
                   this.setState({ isMenuVisible: !this.state.isMenuVisible })
                 }
               >
-                {'Menu'}
+                {'MENU'}
               </div>
               <routes.Link route="index">
                 <a>
