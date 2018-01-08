@@ -8,8 +8,7 @@ import { withClientState } from 'apollo-link-state'
 import logger from './Logger'
 import { ApolloLink } from 'apollo-link'
 import gql from 'graphql-tag'
-import apolloLogger from 'apollo-link-logger';
-
+import apolloLogger from 'apollo-link-logger'
 
 const introspectionQueryResultData = require('../fragmentTypes.json')
 const fetch = require('isomorphic-fetch')
@@ -41,8 +40,12 @@ function create(initialState, host, cookie?) {
     cache: cache as any,
     resolvers: {}
   })
+  let uri = '/graphql'
+  if (typeof window === 'undefined') {
+    uri = host ? `${host}/graphql` : 'http://localhost:3000/graphql'
+  }
   const httpLink = new HttpLink({
-    uri: host ? `${host}/graphql` : 'http://localhost:3000/graphql',
+    uri,
     headers: {
       cookie
     },
