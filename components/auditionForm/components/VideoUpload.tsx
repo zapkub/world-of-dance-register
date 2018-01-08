@@ -24,7 +24,12 @@ export default (props: WithVideoUploadPropType) => {
               <div className="rect4" />
               <div className="rect5" />
             </div>
-            <div dangerouslySetInnerHTML={{__html: 'กำลังอยู่ระหว่างประมวลผล คลิปวีดีโอ<br />แบบฟอร์มถูกบันทึกไว้แล้ว คุณสามารถ Reload หน้านี้ได้'}} />
+            <div
+              dangerouslySetInnerHTML={{
+                __html:
+                  'กำลังอยู่ระหว่างประมวลผล คลิปวีดีโอ<br />แบบฟอร์มถูกบันทึกไว้แล้ว คุณสามารถ Reload หน้านี้ได้'
+              }}
+            />
           </UploadButton>
         ) : (
           <UploadButton style={{ padding: '21px 13px', fontSize: '1.428em' }}>
@@ -38,13 +43,15 @@ export default (props: WithVideoUploadPropType) => {
             >
               <source src={props.value} />
               <p className="vjs-no-js">
-                To view this video please enable JavaScript, and consider
-                upgrading to a web browser that
+                {
+                  ' To view this video please enable JavaScript, and consider upgrading to a web browser that '
+                }
                 <a
                   href="http://videojs.com/html5-video-support/"
                   target="_blank"
                 >
-                  supports HTML5 video
+                  {' '}
+                  {' supports HTML5 video '}
                 </a>
               </p>
             </video>
@@ -89,10 +96,10 @@ export default (props: WithVideoUploadPropType) => {
       <br />
       <Button
         fluid
-        disabled={!props.videoFile}
+        disabled={!props.videoFile || props.loading < 100}
         onClick={props.confirmUploadVideo}
       >
-        {'อัพโหลด'}
+        {props.loading < 100 ? `กำลังอัพโหลด... (${props.loading})` : 'อัพโหลด'}
       </Button>
     </Container>
   )
