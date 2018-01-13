@@ -109,7 +109,7 @@ export default (props: AuditionFormPropTypes) => {
             onResetVideoURL={() => {
               const confirmRemove = confirm('ยืนยัน ต้องการล้างคลิปวีดีโอ ?')
               if (confirmRemove) {
-                props.onFormChange('videoURL', null)
+                props.onResetVideoURL()
               }
             }}
             preUpload={props.saveForm}
@@ -167,8 +167,7 @@ export default (props: AuditionFormPropTypes) => {
             checked={props.isAcceptTerm || props.auditionInfo.isConfirm}
             onClick={() => props.setIsAcceptTerm(!props.isAcceptTerm)}
           />
-          <p
-            style={{ color: theme.gray, display: 'inline-block' }}
+          <p style={{ color: theme.gray, display: 'inline-block' }}
             dangerouslySetInnerHTML={{
               __html: `
             ข้าพเจ้าได้อ่านและยอมรับ <a href='#'>ข้อตกลงการเข้าสมัคร</a><br />และ <a href='#'>เงื่อนไขการออดิชั่น</a> เป็นที่เรียบร้อยแล้ว

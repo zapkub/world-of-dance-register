@@ -19,9 +19,9 @@ declare global {
 }
 
 const UserSchema = new Schema({
-  email: { type: String, required: true },
+  email: { type: String },
   mobileNo: { type: String },
-  facebookId: { type: String },
+  facebookId: { type: String, required: true, unique: true },
   firstname: { type: String },
   lastname: { type: String },
   gender: { type: String },

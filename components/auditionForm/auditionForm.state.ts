@@ -104,6 +104,7 @@ declare global {
     onFormChange: (key: string, value: string) => void
     onMemberChange: (_id: string, key: string, value: string) => void
     onCreateNewMember: () => void
+    onResetVideoURL?: () => void
     saveForm?: () => void
     confirmSubmitForm: () => void
     auditionInfo: AuditionInformation
@@ -201,7 +202,6 @@ export default compose<any, any>(
           }
         },
         onMemberChange: (_id: string, key: string, value: string) => {
-          console.log(value)
           const data = getData()
           const members = data.auditionInfo.members.map(member => {
             if (member._id === _id) {
@@ -244,6 +244,22 @@ export default compose<any, any>(
   ),
   graphql<any, { auditionInfo: AuditionInformation, setSaving: (value: boolean) => void }>(AUDITION_INFO_MUTATION, {
     props: ({ mutate, ownProps }) => ({
+      onResetVideoURL: async () => {
+        await mutate({
+          variables:{
+            record: {
+              ...ownProps.auditionInfo,
+              members: ownProps.auditionInfo.members.map(member => ({
+                ...member,
+                __typename: undefined
+              })),
+              videoURL: null,
+              __typename: undefined,
+              _id: undefined
+            }
+          }
+        })
+      },
       saveForm: async () => {
         /** save form without confirm */
         await mutate({
@@ -282,11 +298,11 @@ export default compose<any, any>(
       }
     })
   }),
-  lifecycle<{ auditionInfo: AuditionInformation, reloadForm: () => void }, any>({
+  lifecycle<{ auditionInfo: AuditionInformation, saveForm: () => void }, any>({
     componentDidUpdate(prevProps) {
       if (this.props.auditionInfo.videoURL === 'PROCESSING') {
         console.log('refresh video status....')
-        setTimeout(this.props.reloadForm, 5000) 
+        setTimeout(this.props.saveForm, 5000) 
       }
     }
   })
