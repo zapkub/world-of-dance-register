@@ -2,7 +2,7 @@ import thTh from '../i18n/th-th'
 import * as path from 'path'
 
 import * as fs from 'fs'
-import { Response } from 'express';
+import { Response } from 'express'
 var pdf = require('html-pdf')
 const jszip = require('jszip')
 var archiver = require('archiver')
@@ -31,6 +31,7 @@ export function renderFormToHTML(auditionInfo: AuditionInformation) {
       return `
       <h2>สมาชิกคนที่ ${index + 1}</h2>
       <img src='${member['profileImageURL']}' width='150' />
+      <a href='${member['profileImageURL']}'>${member['profileImageURL']}</a>
       <div style='display: inline-block'>
       ${fields}
       </div>
@@ -52,17 +53,28 @@ export function renderFormToHTML(auditionInfo: AuditionInformation) {
     .join('')
 
   return (
+    `
+    <html>
+    <head>
+    <meta charSet="utf-8" className="next-head" />
+    </head>
+    <body>
+    ` +
     members +
     `
       <h2> รายละเอียด </h2>
       ${detail}
+    ` +
+    `
+    </body>
+    </html>
     `
   )
 }
 export function renderFormToPDF(auditionInfo: AuditionInformation, folderName) {
   return new Promise((resolve, reject) => {
     const html = renderFormToHTML(auditionInfo)
-    var options = { format: 'Letter' }
+    var options = { format: 'A4' }
     pdf
       .create(html, options)
       .toFile(`${folderName}/${auditionInfo._id}.pdf`, function(err, res) {
@@ -75,11 +87,11 @@ export default function enhancePdfAPI(app, context: APIContext) {
   const handler = async (req, res: Response) => {
     const timestamp = Date.now()
     const ids = req.body.ids.split(',')
-    if(!ids){
+    if (!ids) {
       res.status(403).end()
       return
     }
-    if(ids.length === 0) {
+    if (ids.length === 0) {
       res.status(403).end()
       return
     }
@@ -87,7 +99,8 @@ export default function enhancePdfAPI(app, context: APIContext) {
       _id: { $in: ids }
     }).lean()
 
-    const folderName = `/tmp/wod-${timestamp}`
+    const folderName = `./static/wod-${timestamp}`
+    // const output = fs.createWriteStream(path.join(folderName, ))
 
     mkdirp(folderName, async function(err) {
       if (err) console.error(err)
@@ -101,16 +114,20 @@ export default function enhancePdfAPI(app, context: APIContext) {
       /** ZIP file */
       res.on('finish', function() {
         console.log('response end')
-        setTimeout(() => rimraf(folderName,function(er) {
-          if(er) console.error(er)
-        }),1000)
+        setTimeout(
+          () =>
+            rimraf(folderName, function(er) {
+              if (er) console.error(er)
+            }),
+          1000
+        )
       })
       var archive = archiver('zip', {
         zlib: { level: 9 } // Sets the compression level.
       })
-      archive.pipe(res);
-      archive.directory(`${folderName}`, false);
-      archive.finalize();
+      archive.pipe(res)
+      archive.directory(`${folderName}`, false)
+      archive.finalize()
     })
   }
 

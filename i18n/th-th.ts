@@ -1,4 +1,4 @@
-import theme from "../components/theme";
+import theme from '../components/theme'
 
 const th = {
   dancingStyle: 'สไตล์การเต้น',
@@ -33,13 +33,48 @@ const th = {
   married: 'แต่งงาน',
   devoiced: 'หย่าร้าง',
   lineId: 'ไลน์',
-  instagramUrl: 'อินสตราแกรม',
-  facebookUrl: `เฟซบุ้ก <span style="font-weight: 400;font-size:1rem;color:${theme.blue}">www.facebook.com/</span>`,
+  instagramUrl: 'อินสตาแกรม',
+  facebookUrl: `เฟซบุ้ก <span style="font-weight: 400;font-size:1rem;color:${
+    theme.blue
+  }">www.facebook.com/</span>`,
   emergencyContactName: 'กรณีเร่งด่วนสามารถติดต่อได้ที่คุณ',
   emergencyContactRelationAs: 'โดยมีความเกี่ยวข้องกับผู้สมัครเป็น',
   emergencyContentMobileNo: 'เบอร์โทรศัพท์',
   isAlreadyTrainByInstitutionName: 'คุณเคยผ่านการเรียนเต้น / การแสดง หรือไม่',
   isAlreadyHasEntertainingProfile: 'คุณเคยมีผลงานในวงการบันเทิงหรือไม่'
 }
+
+declare global {
+  interface AuditionInfo {
+    title: string
+    subtitle: string
+    description: string
+    ageLabel: string
+    memberAmountLabel: string
+  }
+}
+export const AuditionInfoList: AuditionInfo[] = [
+  {
+    title: 'Junior',
+    subtitle: 'เด็ก',
+    ageLabel: 'อยู่ในช่วงระหว่างอายุ 8-16 ปี',
+    memberAmountLabel: 'จำนวนผู้เข้าแข่งขัน 1-20 คน',
+    description: `ประเภทเด็ก สามารถมาในรูปแบบเดี่ยวและกลุ่ม โดยสมาชิกในกลุ่มจะต้องไม่เกิน 20 คน ไม่จำกัดเพศและสไตล์การเต้นใดๆทั้งสิ้น โดยผู้เข้าสมัครแข่งขันประเภทเด็ก จะต้องมีอายุระหว่าง 8-16 ปี (เกิดระหว่าง ค.ศ. 2002 – ค.ศ. 2010)`
+  },
+  {
+    title: 'Upper',
+    subtitle: 'บุคคลทั่วไป',
+    ageLabel: 'อายุ 17 ปี ขึ้นไป',
+    memberAmountLabel: 'จำนวนผู้เข้าแข่งขัน 1-4 คน',
+    description: `ประเภทบุคคลทั่วไป สามารถมาในรูปแบบเดี่ยวและกลุ่ม โดยถ้าเป็นกลุ่ม สมาชิกในกลุ่มจะต้องไม่เกิน 4 คน ไม่จำกัดเพศและสไตล์การเต้นใดๆทั้งสิ้น โดยผู้เข้าสมัครแข่งขันประเภทบุคคลทั่วไป จะต้องมีอายุ 17 ปีขึ้นไป (ผู้ที่เกิดในปี ค.ศ. 2001 และ ผู้ที่เกิดก่อนปี ค.ศ.2001)`
+  },
+  {
+    title: 'Team',
+    subtitle: 'กลุ่ม',
+    ageLabel: 'อายุ 17 ปี ขึ้นไป',
+    memberAmountLabel: 'จำนวนผู้เข้าแข่งขันในกลุ่ม 5-20 คน',
+    description: `ประเภทกลุ่ม ต้องมีสมาชิกในกลุ่มไม่ต่ำกว่า 5 คน และจะต้องไม่เกิน 20 คน ไม่จำกัดเพศและสไตล์การเต้นใดๆทั้งสิ้น  โดยผู้เข้าสมัครแข่งขันประเภทกลุ่ม จะต้องมีอายุ 17 ปีขึ้นไปทุกคน (ผู้ที่เกิดในปี ค.ศ. 2001 และ ผู้ที่เกิดก่อนปี ค.ศ.2001)`
+  }
+]
 
 export default th

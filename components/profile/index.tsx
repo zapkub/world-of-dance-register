@@ -17,6 +17,13 @@ interface ProfilePagePropTypes
     WithSessionPropTypes {
   me: User
   onProfileChange: (key: string, value: string) => void
+  auditionInfoList: {
+    junior?: any
+    junior_team?: any
+    upper?: any
+    upper_team?: any
+    team?: any
+  }
 }
 
 class ProfilePage extends React.Component<ProfilePagePropTypes, any> {
@@ -29,10 +36,10 @@ class ProfilePage extends React.Component<ProfilePagePropTypes, any> {
     return (
       <div>
         <Menubar noSticky />
-        <DefaultViewport style={{paddingBottom: 0}}>
+        <DefaultViewport style={{ paddingBottom: 0 }}>
           <HeaderOne withBorder>{'สมัครออดิชั่น'}</HeaderOne>
         </DefaultViewport>
-        <AuditionMenu />
+        <AuditionMenu isConfirmList={this.props.auditionInfoList} />
         <ProfileInfoForm
           onChange={this.props.onProfileChange}
           {...this.props.me}
@@ -71,7 +78,7 @@ export default compose(
       }
     }
   }),
-  graphql<{ me: User }>(
+  graphql<any>(
     gql`
       ${PROFILE_FRAGMENT}
       query {
@@ -79,11 +86,38 @@ export default compose(
           _id
           ...ProfileData
         }
+        junior: auditionInfo(filter: { auditionType: junior }) {
+          _id
+        }
+
+        junior_team: auditionInfo(filter: { auditionType: junior_team }) {
+          _id
+        }
+        upper: auditionInfo(filter: { auditionType: upper }) {
+          _id
+        }
+        upper_team: auditionInfo(filter: { auditionType: upper_team }) {
+          _id
+        }
+
+        team: auditionInfo(filter: { auditionType: team }) {
+          _id
+        }
       }
     `,
     {
+      options: props => ({
+        fetchPolicy: 'cache-and-network'
+      }),
       props: ({ data }) => ({
-        me: data.me
+        me: data.me,
+        auditionInfoList: {
+          junior: !!data.junior,
+          junior_team: !!data.junior_team,
+          upper: !!data.upper,
+          upper_team: !!data.upper_team,
+          team: !!data.team
+        }
       })
     }
   )

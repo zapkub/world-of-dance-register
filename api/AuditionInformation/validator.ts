@@ -73,7 +73,7 @@ export default (auditionInfo: AuditionInformation) => {
       if (year < afterYear) {
         const e = new Error()
         e.message = `สมาชิกคนที่ ${index +
-          1} อายุ มากกว่ากำหนด (ต้องเกิดหลังปี 2002)`
+          1} อายุ มากกว่ากำหนด (ผู้สมัครต้องเกิดตั้งแต่ปี 2002)`
         e.name = 'validate-error'
         throw e
       }

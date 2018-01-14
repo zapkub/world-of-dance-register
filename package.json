@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon",
     "watch": "tsc -w",
-    "build": "sh scripts/build.bash",
+    "build": "sh scripts/build.bash&&sh scripts/bundle.bash",
     "deploy": "sh scripts/deploy-with-rsync.bash",
     "docker:build": "sh scripts/docker:build.bash",
     "start": "NODE_ENV=production node index.js",
@@ -53,6 +53,7 @@
     "express": "^4.16.2",
     "express-ping": "^1.4.0",
     "express-session": "^1.15.6",
+    "googleapis": "^24.0.0",
     "graphql": "^0.12.3",
     "graphql-compose": "^2.10.1",
     "graphql-compose-mongoose": "^1.10.0",

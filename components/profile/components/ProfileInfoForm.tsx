@@ -47,17 +47,15 @@ const FormContainer = styled.div`
 export default (props: ProfileInfoFormPropTypes) => {
   return (
     <DefaultViewport style={{paddingTop: 0}}>
-      <HeaderOne withBorder>{'บัญชีของฉัน'}</HeaderOne>
+      {/* <HeaderOne withBorder>{'บัญชีของฉัน'}</HeaderOne> */}
       <FormContainer>
-        <InputField value={props} name={'email'} onChange={props.onChange} />
-        <InputField
+      {/*  <InputField
           value={props}
           name={'firstname'}
           onChange={props.onChange}
         />
         <InputField value={props} name={'lastname'} onChange={props.onChange} />
-        <InputField value={props} name={'mobileNo'} onChange={props.onChange} />
-        <Button className='profile-info__button' style={{marginRight: 8}}>{'บันทึก'}</Button>
+        <Button className='profile-info__button' style={{marginRight: 8}}>{'บันทึก'}</Button> */}
         <a href="/logout">
           <Button className='profile-info__button'>{'ออกจากระบบ'}</Button>
         </a>

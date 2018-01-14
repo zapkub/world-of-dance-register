@@ -57,6 +57,7 @@ export default () => injectGlobal`
   }
   a {
     color: ${theme.blue};
+    text-decoration: none;
   }
   .spinner {
   margin: 40px auto;

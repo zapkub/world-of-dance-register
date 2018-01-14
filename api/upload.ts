@@ -116,16 +116,21 @@ export default async function(
             const result = await bucket.upload(req.files.image.path, {
               destination: `/${req.params.type}/${req.user._id}/member-${
                 req.params.index
-              }`
+              }`,
+              metadata: {
+                contentType: 'image/jpeg'
+              }
             })
             if (result[0]) {
               await result[0].makePublic()
               const meta = await result[0].getMetadata()
               if (meta[0]) {
                 const k = meta[0] as any
-                res.json({ msg: 'done', url: k.mediaLink })
-                await fs.unlink(req.files.vid.path, function() {
-                  console.info('remove tmp image', req.files.vid.path)
+                const url = `https://storage.googleapis.com/${k.bucket}/${ k.name }`
+                console.log(url)
+                res.json({ msg: 'done', url })
+                await fs.unlink(req.files.image.path, function() {
+                  console.info('remove tmp image', req.files.image.path)
                 })
               }
             }

@@ -32,7 +32,7 @@ const ButtonRoot = css`
   font-family: 'WOD', 'Kanit', sans-serif;
   font-weight: 500;
   padding: 0px 21px;
-  height: 48px;
+  min-height: 48px;
   border: none;
   min-width: 250px;
   font-size: 14px;
