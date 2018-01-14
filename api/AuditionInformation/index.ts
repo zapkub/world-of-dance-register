@@ -2,6 +2,7 @@ import schema from './AuditionInformation.schema'
 import composeWithMongoose from 'graphql-compose-mongoose'
 import TypeComposer from 'graphql-compose/lib/typeComposer'
 import { Types } from 'mongoose'
+import validator from './validator';
 
 export default {
   schema,
@@ -28,17 +29,26 @@ export default {
       if(!rp.args.filter) {
         rp.args.filter = {}
       }
+
+      delete rp.args.record.videoURL
       rp.args.filter.auditionType = rp.args.record.auditionType
       const auditionInfo = await model.findOne({
         ownerId: rp.context.user._id,
         auditionType: rp.args.record.auditionType
       })
+      if(rp.args.record.isConfirm) {
+        /**
+         * Validate form
+         */
+        console.log('AuditionForm: Validate ', rp.context.user._id)
+        rp.args.record.videoURL = auditionInfo.videoURL
+        validator(rp.args.record)
+      }
       if (!auditionInfo) {
         const result = await model.create({
           ...rp.args.record,
           ownerId: rp.context.user._id
         })
-        console.log('create', result)
         return next(rp)
       } else {
         return next(rp)
@@ -47,6 +57,7 @@ export default {
     const updateOne = TC.getResolver('updateOne')
     updateOne.removeOtherArgs(['filter','record'])
     updateOne.getArgTC('record').removeField('ownerId')
+    updateOne.getArgTC('record').removeField('videoURL')
     return TC
   }
 } as GraphQL.ComposerStrategy<AuditionInformationDocument>

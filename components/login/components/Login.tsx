@@ -23,8 +23,7 @@ export default () => (
         <a href="/facebook">
           <FacebookButton>{'สมัครออดิชั่นด้วยบัญชี Facebook'}</FacebookButton>
         </a>
-
-        <LoginLabel>{'มีปัญหาเกี่ยวกับการสมัคร ?'}</LoginLabel>
+        {/* <LoginLabel>{'มีปัญหาเกี่ยวกับการสมัคร ?'}</LoginLabel> */}
       </div>
     </DefaultViewport>
   </div>

@@ -13,10 +13,8 @@ import Link from 'next/link'
 const LANDING_PAGE_MIN_HEIGHT = 480
 
 const LandingButton = styled(Button)`
-  flex: 1 1 auto;
   min-width: 0;
   white-space: pre;
-  margin: ${21 / 2}px;
 `
 const Container = styled(DefaultViewport)`
   padding-top: 0;
@@ -24,7 +22,8 @@ const Container = styled(DefaultViewport)`
   min-height: ${LANDING_PAGE_MIN_HEIGHT}px;
   display: flex;
   align-items: center;
-  
+  justify-content: center;
+
   flex-direction: column;
   .logo-subtitle {
     font-family: 'WOD', 'Kanit', sans-serif;
@@ -38,6 +37,11 @@ const Container = styled(DefaultViewport)`
     display: flex;
     flex-wrap: wrap;
     max-width: 640px;
+    .item {
+      padding: ${21 / 2}px;
+      flex: 0 0 50%;
+      box-sizing: border-box;
+    }
   }
   ${bp('mobile')`
     .landing-button-wrapper {
@@ -45,6 +49,7 @@ const Container = styled(DefaultViewport)`
     }
     .landing-button {
       display: block;
+      text-align: center;
       width: 100%;
     }
   `} ${bp('tablet')`
@@ -52,8 +57,6 @@ const Container = styled(DefaultViewport)`
       display: flex;
     }
     .landing-button {
-      display: flex;
-      width: auto;
       text-align: center;
     }
   `};
@@ -75,22 +78,23 @@ export default class LandingPage extends React.Component {
           }}
         />
         <div className="landing-button-wrapper">
-          {MenuListData.map(
-            (item, key) =>
-              item.id === 'audition' ? (
+          {MenuListData.map((item, key) => (
+            <div className='item'>
+              {item.id === 'audition' ? (
                 <routes.Link key={item.id} route="profile">
-                  <LandingButton className="landing-button" key={key}>
+                  <LandingButton fluid className="landing-button" key={key}>
                     {item.label}
                   </LandingButton>
                 </routes.Link>
               ) : (
                 <Link key={item.id} href={`/#${item.id}`}>
-                  <LandingButton className="landing-button" key={key}>
+                  <LandingButton fluid className="landing-button" key={key}>
                     {item.label}
                   </LandingButton>
                 </Link>
-              )
-          )}
+              )}
+            </div>
+          ))}
         </div>
       </Container>
     )

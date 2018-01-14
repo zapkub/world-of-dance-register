@@ -103,13 +103,13 @@ export default async function(
     })
     const closeConnection = () => {
       context.logger.log('try to close connection...')
-      __connection.close(() => {
-        console.log('Mongoose disconnected on app termination')
-        process.exit(0)
-      })
+      // __connection.close(() => {
+      //   console.log('Mongoose disconnected on app termination')
+      //   process.exit(0)
+      // })
     }
-    process.on('SIGINT', closeConnection)
-    process.on('SIGUSR2', closeConnection)
-    process.on('SIGTERM', closeConnection)
+    // process.on('SIGINT', closeConnection)
+    // process.on('SIGUSR2', closeConnection)
+    // process.on('SIGTERM', closeConnection)
   })
 }

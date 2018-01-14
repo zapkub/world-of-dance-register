@@ -6,6 +6,7 @@ declare global {
     firstname?: string
     lastname?: string
     mobileNo?: string
+    dateOfBirth?: Date
     profileImageURL?: string
   }
   interface User extends BasicProfile {
@@ -14,6 +15,7 @@ declare global {
     facebookUrl?: string
     name: string
     gender?: string
+    password?: string
   }
   interface UserDocument extends Document, User {}
 }
@@ -26,6 +28,8 @@ const UserSchema = new Schema({
   lastname: { type: String },
   gender: { type: String },
   facebookUrl: { type: String },
+  password: { type: String },
+  role: { type: String, enum: ['ADMIN', 'USER'], default: 'USER' },
   profileImageURL: {
     type: String
   }

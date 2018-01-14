@@ -1,14 +1,45 @@
-export default {
+import theme from "../components/theme";
+
+const th = {
   dancingStyle: 'สไตล์การเต้น',
   coachName: 'ชื่อผู้ควบคุมการแสดง',
   mobileNo: 'เบอร์โทรศัพท์',
   title: 'ชื่อทีม',
+  auditionType: 'ประเภท',
   description: 'คำอธิบาย',
+  _id: 'รหัส',
+  dateOfBirth: 'วันเกิด',
   members: 'สมาชิก',
+  gender: 'เพศ',
   email: 'อีเมล',
   firstname: 'ชื่อจริง',
   age: 'อายุ',
   lastname: 'นามสกุล',
   nickname: 'ชื่อเล่น/ชื่อเรียก',
   organizationName: 'โรงเรียน /หน่วยงาน / สถาบัน',
+  height: 'ส่วนสูง',
+  weight: 'น้ำหนัก',
+  videoURL: 'ลิ้ง Clip video',
+  profileImageURL: 'ภาพโปรไฟล์',
+  nationality: 'สัญชาติ',
+  origin: 'เชื้อชาติ',
+  relationshipType: 'สถานะ',
+  educationBackground: 'ระดับการศึกษา',
+  occupation: 'อาชีพ',
+  address: 'ที่อยู่',
+  male: 'ชาย',
+  female: 'หญิง',
+  single: 'โสด',
+  married: 'แต่งงาน',
+  devoiced: 'หย่าร้าง',
+  lineId: 'ไลน์',
+  instagramUrl: 'อินสตราแกรม',
+  facebookUrl: `เฟซบุ้ก <span style="font-weight: 400;font-size:1rem;color:${theme.blue}">www.facebook.com/</span>`,
+  emergencyContactName: 'กรณีเร่งด่วนสามารถติดต่อได้ที่คุณ',
+  emergencyContactRelationAs: 'โดยมีความเกี่ยวข้องกับผู้สมัครเป็น',
+  emergencyContentMobileNo: 'เบอร์โทรศัพท์',
+  isAlreadyTrainByInstitutionName: 'คุณเคยผ่านการเรียนเต้น / การแสดง หรือไม่',
+  isAlreadyHasEntertainingProfile: 'คุณเคยมีผลงานในวงการบันเทิงหรือไม่'
 }
+
+export default th

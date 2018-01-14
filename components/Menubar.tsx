@@ -10,6 +10,10 @@ import bp from 'styled-components-breakpoint'
 
 const MenubarContainer = styled.div`
   height: ${MENUBAR_HEIGHT}px;
+  position: absolute;
+  top:0;
+  left:0;
+  right:0;
 `
 const MenubarContainerWithStick = styled(MenubarContainer)`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
@@ -23,8 +27,10 @@ const MenubarContainerWithStick = styled(MenubarContainer)`
   background-color: white;
   will-change: opacity;
   transition: 0.2222s all ease-in-out;
+  pointer-events: none;
   &.show {
     opacity: 1;
+    pointer-events: all;
   }
   .stick-menubar__top {
     background-color: ${theme.blackBlue};
@@ -104,7 +110,7 @@ const MenuListWrapper = styled.div`
     position: relative;
     opacity: 1;
     height: auto;
-    pointer-events: all;
+    pointer-events: inherit;
     a {
       font-size: 1.1rem;
     }
@@ -179,7 +185,7 @@ export default class Menubar extends React.Component<
     if (LandingPageDOM) {
       const heightValue = LandingPageDOM.getBoundingClientRect().height
       const scrollPositionY = window.scrollY
-      if (scrollPositionY > heightValue) {
+      if (scrollPositionY + 20 > heightValue ) {
         this.setState({
           isStickToTop: true
         })

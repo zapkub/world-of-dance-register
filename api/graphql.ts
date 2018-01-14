@@ -119,7 +119,8 @@ export default function createGraphQLSchema(context: InitContext) {
   function requireAdminWrapper(next) {
     return rp => {
       if (rp.context.user) {
-        if (rp.context.user.role) {
+        console.log(rp.context.user)
+        if (rp.context.user.role === 'ADMIN') {
           return next(rp)
         } else {
           throw new Error('unauthorized (permission denial)')
@@ -167,7 +168,13 @@ export default function createGraphQLSchema(context: InitContext) {
       context: {
         ...req,
         ...GraphQLContext
-      }
+      },
+      // formatError: (error) => {
+      //   console.log('error occurs')
+      //   return {
+      //     error: 'there is error'
+      //   }
+      // }
     }))
   }
 }

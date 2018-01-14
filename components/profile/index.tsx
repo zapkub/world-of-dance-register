@@ -29,14 +29,14 @@ class ProfilePage extends React.Component<ProfilePagePropTypes, any> {
     return (
       <div>
         <Menubar noSticky />
+        <DefaultViewport style={{paddingBottom: 0}}>
+          <HeaderOne withBorder>{'สมัครออดิชั่น'}</HeaderOne>
+        </DefaultViewport>
+        <AuditionMenu />
         <ProfileInfoForm
           onChange={this.props.onProfileChange}
           {...this.props.me}
         />
-        <DefaultViewport style={{paddingTop: 0, paddingBottom: 0}}>
-          <HeaderOne withBorder>{'สมัครออดิชั่น'}</HeaderOne>
-        </DefaultViewport>
-        <AuditionMenu />
       </div>
     )
   }

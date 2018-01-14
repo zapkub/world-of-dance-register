@@ -32,9 +32,10 @@ export default class AboutShow extends React.Component {
         <DefaultViewport>
           <HeaderOne withBorder> {' ขั้นตอนการสมัคร '} </HeaderOne>
           <Text dangerouslySetInnerHTML={{ __html: PARAGRAPH_1 }} />
+          <br />
           <HeaderOne withBorder>{'วิธีการสมัคร'}</HeaderOne>
           <Text dangerouslySetInnerHTML={{ __html: PARAGRAPH_2 }} />
-          <ol style={{listStyle: 'decimal', lineHeight: '1.71em', marginTop: 34, color: theme.text}} dangerouslySetInnerHTML={{ __html: PARAGRAPH_3 }} />
+          <ol style={{paddingLeft: 21, listStyle: 'decimal', lineHeight: '1.71em', marginTop: 34, color: theme.text}} dangerouslySetInnerHTML={{ __html: PARAGRAPH_3 }} />
         </DefaultViewport>
       </Container>
     )

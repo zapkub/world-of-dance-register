@@ -4,7 +4,7 @@ import { compose, withProps } from 'recompose'
 import Menubar from '../Menubar'
 import withVideoUpload from '../withVideoUpload'
 import AuditionForm from './components/AuditionForm'
-import withFormState, { defaultFormInfo } from './auditionForm.state'
+import withFormState, {  } from './auditionForm.state'
 import gql from 'graphql-tag'
 import withAuthRequired from '../withAuthRequired'
 

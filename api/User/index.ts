@@ -7,6 +7,8 @@ export default {
   schema,
   createTypeComposer: (model: mongoose.Model<UserDocument>) => {
     const TC = composeWithMongoose(model) as TypeComposer
+    TC.removeField('password')
+    TC.removeField('role')
     TC.addResolver({
       name: 'getUserProfile',
       type: TC,

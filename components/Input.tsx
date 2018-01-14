@@ -1,6 +1,9 @@
 import styled, { css, StyledFunction } from 'styled-components'
 import * as React from 'react'
 import theme from './theme'
+import DatePicker from 'react-datepicker'
+import * as moment from 'moment'
+import { withState, compose, lifecycle } from 'recompose'
 
 const fluid = css`
   display: block;
@@ -37,35 +40,73 @@ export const TextInput: React.SFC<TextInputPropTypes> = styled.input`
   ${RootInput} ${(props: { fluid: boolean }) => (props.fluid ? fluid : '')};
 ` as any
 
-const TextInputWrapper = styled.div`
+export const TextInputWrapper = styled.div`
   margin: 8px 0;
   .TextInput__input {
     min-width: 320px;
   }
+  .react-datepicker-wrapper {
+    input {
+      ${RootInput};
+    }
+  }
 `
-const TextInputLabel = styled.label`
+export const TextInputLabel = styled.label`
   font-size: 1rem;
   line-height: 1.7128em;
   font-weight: bold;
   display: inline-block;
   width: 290px;
 `
+
 export const TextInputWithLabel = (props: {
   label: string
   onChange: (e) => void
   value: any
+  type?: any
+  placeholder?: any
+  style?: any
 }) => {
   return (
-    <TextInputWrapper>
-      <TextInputLabel>{props.label}</TextInputLabel>
+    <TextInputWrapper style={props.style}>
+      <TextInputLabel dangerouslySetInnerHTML={{__html:props.label}} />
       <TextInput
+        placeholder={props.placeholder}
         className="TextInput__input"
         onChange={props.onChange}
         value={props.value}
+        type={props.type || 'text'}
       />
     </TextInputWrapper>
   )
 }
+interface DateInputProp {
+  label: string
+  selected: any
+  onChange: any
+  isMount?: any
+}
+export const DateInputWithLabel = compose<DateInputProp, DateInputProp>(
+  withState('isMount', 'setMount', false),
+    lifecycle<any, any>({
+    componentDidMount() {
+      this.props.setMount(true)
+    }
+  })
+)((props: DateInputProp) => {
+  if(!props.isMount){
+    return <div />
+  }
+  return (
+    <TextInputWrapper>
+      <TextInputLabel dangerouslySetInnerHTML={{__html:props.label}} />
+      <div style={{ display: 'inline-block' }}>
+        <DatePicker selected={props.selected} onChange={props.onChange} />
+      </div>
+      <span style={{color: theme.blue, marginLeft: 8}}>{'อายุ ' + (moment().year() - props.selected.year()) + ' ปี'}</span>
+    </TextInputWrapper>
+  )
+})
 
 const Container = styled.div`
   border-radius: 4px;
@@ -102,7 +143,120 @@ export const Checkbox = ({
       ) : (
         <i className="far fa-square" />
       )}
-      <InputCheck type="checkbox" name={name} onChange={() => {}} checked={checked || false} />
+      <InputCheck
+        type="checkbox"
+        name={name}
+        onChange={() => {}}
+        checked={checked || false}
+      />
     </Container>
+  )
+}
+
+const Select = styled.select`
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: calc(100% - 0px);
+  height: 100%;
+  -webkit-appearance: none;
+`
+
+const ValueInput = styled(TextInput)`
+  text-overflow: ellipsis;
+  padding-right: 20px;
+  &:disabled {
+    opacity: 1;
+    color: ${props => props.theme.matteBlack};
+  }
+  -webkit-appearance: none;
+`
+const Option = styled.option`
+  width: auto;
+`
+const UISelectContainer = styled.div`
+  position: relative;
+  // margin: 0 3px;
+  left: 0;
+  right: 0;
+`
+const Arrow = styled.span`
+  border-color: #999 transparent transparent;
+  border-style: solid;
+  border-width: 5px 5px 2.5px;
+  display: inline-block;
+  height: 0;
+  width: 0;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  pointer-events: none;
+  transform: translateY(-50%);
+`
+interface SelectInputPropTypes {
+  value?: any
+  onChange?: (value: any) => void
+  containerStyle?: any
+  placeholder?: string
+  disabled?: boolean
+  name?: string
+  options?: any[]
+}
+export class SelectorInput extends React.Component<SelectInputPropTypes, any> {
+  onChange(e) {
+    this.props.onChange(e.target.value)
+  }
+  get selectedItem() {
+    for (const item of this.props.options) {
+      if (this.props.value === item.value) {
+        return item
+      }
+    }
+    return { label: '' }
+  }
+  render() {
+    const selectedValue = this.props.value || this.props.placeholder
+    return (
+      <UISelectContainer style={this.props.containerStyle}>
+        <ValueInput
+          disabled
+          placeholder={this.props.placeholder}
+          fluid
+          readOnly
+          value={this.selectedItem.label}
+        />
+        <Select
+          value={selectedValue}
+          disabled={this.props.disabled}
+          onChange={this.onChange.bind(this)}
+          name={this.props.name || 'name-is-not-set'}
+        >
+          <option value={this.props.placeholder} disabled>
+            {this.props.placeholder}
+          </option>
+          {this.props.options.map(option => (
+            <Option value={option.value} key={option.value}>
+              {option.label}
+            </Option>
+          ))}
+        </Select>
+        <Arrow />
+      </UISelectContainer>
+    )
+  }
+}
+export const SelectorInputWithLabel = (
+  props: SelectInputPropTypes & { label?: string }
+) => {
+  return (
+    <TextInputWrapper>
+      <TextInputLabel>{props.label}</TextInputLabel>
+      <div style={{ display: 'inline-block' }}>
+        <SelectorInput {...props} />
+      </div>
+    </TextInputWrapper>
   )
 }

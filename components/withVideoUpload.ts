@@ -3,7 +3,7 @@ import { compose, withProps, withState, ComponentEnhancer } from 'recompose'
 declare global {
   interface WithVideoUploadPropType extends React.HTMLAttributes<any> {
     setFiles?: (files: FileList) => void
-    confirmUploadVideo?: () => void
+    confirmUploadVideo?: (files?: any) => void
     videoFile?: any
     loading?: number
     value?: string
@@ -36,13 +36,13 @@ export default (
         }
       },
       videoFile: props.files ? props.files[0] : undefined,
-      confirmUploadVideo: async () => {
-        if(props.preUpload) {
-          await props.preUpload()
-        }
+      confirmUploadVideo: async (files) => {
+        // if(props.preUpload) {
+        //   await props.preUpload()
+        // }
         props.setLoading(0)
         const formData = new FormData()
-        formData.append('vid', props.files[0])
+        formData.append('vid', files[0] || props.files[0])
         var xhr = new XMLHttpRequest()
 
         xhr.open('post', `/upload-video/${props.type}`, true)

@@ -1,5 +1,11 @@
 import * as React from 'react'
-import { TextInputWithLabel } from '../../Input'
+import * as moment from 'moment'
+import {
+  TextInputWithLabel,
+  SelectorInput,
+  SelectorInputWithLabel,
+  DateInputWithLabel
+} from '../../Input'
 import th from '../../../i18n/th-th'
 import { HeaderTwo } from '../../Header'
 import styled from 'styled-components'
@@ -9,6 +15,7 @@ import theme from '../../theme'
 import { UploadButton, Button } from '../../Button'
 import { Text } from '../../Text'
 import bp from 'styled-components-breakpoint'
+import { members } from '../../../api/AuditionInformation/auditionInfoFields'
 
 const Container = styled.div`
   display: flex;
@@ -18,8 +25,6 @@ const Container = styled.div`
   .avatar-upload__button-wrap {
     display: flex;
   }
-
-
 `
 const AvatarUploaderContainer = styled.div`
   background-color: ${theme.blue};
@@ -50,7 +55,16 @@ const AvatarButton = styled(Button)`
   min-width: 80px;
   margin: 0 3px;
 `
-
+const RemoveMember = styled.div`
+  font-size: 1rem;
+  color: ${theme.blue};
+  display: inline-block;
+  margin-left: 8px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+`
 class AvatarUploader extends React.Component<
   {
     type: string
@@ -142,7 +156,8 @@ class AvatarUploader extends React.Component<
     }
   }
   clear() {
-    this.setState({ result: undefined, file: undefined })
+    this.setState({ result: null, file: null })
+    this.props.onChange(null)
   }
   render() {
     if (this.state.result) {
@@ -211,7 +226,11 @@ class AvatarUploader extends React.Component<
               </AvatarButton>
             </div>
           </div>
-        ) : <div style={{marginTop: 8}}>{this.state.loading ? 'กำลังอัพโหลด...' : ''}</div>}
+        ) : (
+          <div style={{ marginTop: 8 }}>
+            {this.state.loading ? 'กำลังอัพโหลด...' : ''}
+          </div>
+        )}
       </Container>
     )
   }
@@ -220,7 +239,9 @@ class AvatarUploader extends React.Component<
 interface MemberItemPropTypes extends Member {
   index: number
   type: string
+  isRemovable?: boolean
   onChange: (_id: string, key: string, value: string) => void
+  onRemove?: (_id: string) => void
 }
 const InputFields = ['mobileNo', 'firstname', 'lastname', 'email', 'age']
 const MemberItemContainer = styled.div`
@@ -229,35 +250,68 @@ const MemberItemContainer = styled.div`
   ${bp('mobile')`
     flex-direction: column;
     align-items: center;
-  `}
-  ${bp('tablet')`
+  `} ${bp('tablet')`
     flex-direction: row;
-  `}
+  `};
 `
 const MemberItem: React.SFC<MemberItemPropTypes> = (
   props: MemberItemPropTypes
 ) => {
   return (
     <div>
-      <HeaderTwo>{'สมาชิกคนที่ ' + (props.index + 1)}</HeaderTwo>
+      <HeaderTwo>
+        {'สมาชิกคนที่ ' + (props.index + 1)}{' '}
+        {props.isRemovable ? (
+          <RemoveMember onClick={() => props.onRemove(props._id)}>
+            {'ลบ'}
+          </RemoveMember>
+        ) : (
+          ''
+        )}
+      </HeaderTwo>
       <MemberItemContainer>
+        <div className="member-item__input">
+          <DateInputWithLabel 
+            label={th['dateOfBirth']}
+            onChange={e => props.onChange(props._id, 'dateOfBirth', e)}
+            selected={moment(props['dateOfBirth']) || moment()}
+          />
+          {Object.keys(members)
+            .filter(key => members[key].isForm)
+            .filter(key => members[key].type !== Date)
+            .map(
+              name =>
+                !members[name].enum ? (
+                  <TextInputWithLabel
+                    key={name}
+                    type={members[name].type === String ? 'text' : 'number'}
+                    label={th[name]}
+                    placeholder={members[name].placeholder}
+                    onChange={e =>
+                      props.onChange(props._id, name, e.target.value)
+                    }
+                    value={props[name] || ''}
+                  />
+                ) : (
+                  <SelectorInputWithLabel
+                    onChange={value => props.onChange(props._id, name, value)}
+                    key={name}
+                    label={th[name]}
+                    value={props[name]}
+                    options={members[name].enum.map(item => ({
+                      label: th[item],
+                      value: item
+                    }))}
+                  />
+                )
+            )}
+        </div>
         <AvatarUploader
           index={props.index}
           type={props.type}
           value={props.profileImageURL}
           onChange={url => props.onChange(props._id, 'profileImageURL', url)}
         />
-        <div className="member-item__input">
-          {InputFields.map(name => (
-            <TextInputWithLabel
-              
-              key={name}
-              label={th[name]}
-              onChange={e => props.onChange(props._id, name, e.target.value)}
-              value={props[name] || ''}
-            />
-          ))}
-        </div>
       </MemberItemContainer>
     </div>
   )

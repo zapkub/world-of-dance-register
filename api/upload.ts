@@ -2,6 +2,8 @@ import * as express from 'express'
 import * as fs from 'fs'
 import * as path from 'path'
 import * as Storage from '@google-cloud/storage'
+import converter from './video-converter'
+import { defaultFormInfo } from './AuditionInformation/generateDefault'
 
 const multipart = require('connect-multiparty')
 
@@ -25,10 +27,21 @@ export default async function(
       )
     } else {
       server.post(
-        '/upload-video/:type(junior|upper|team)',
+        '/upload-video/:type(junior|upper|team|junior_team|upper_team)',
         multipartMiddleware,
         async function(req: any, res) {
-          await context.models.AuditionInformation.findOneAndUpdate(
+          let auditionInfo = await context.models.AuditionInformation.findOne({
+            auditionType: req.params.type,
+            ownerId: req.user._id
+          }).lean()
+          if (!auditionInfo) {
+            auditionInfo = await context.models.AuditionInformation.create({
+              ...defaultFormInfo(req.params.type),
+              _id: undefined,
+              ownerId: req.user._id
+            })
+          }
+          auditionInfo = await context.models.AuditionInformation.findOneAndUpdate(
             {
               auditionType: req.params.type,
               ownerId: req.user._id
@@ -37,16 +50,31 @@ export default async function(
               $set: {
                 videoURL: 'PROCESSING'
               }
+            },
+            {
+              upsert: true,
+              new: true
             }
-          )
-          res.json({ msg: 'done, your file is under processing...', url: 'PROCESSING' })
+          ).lean()
+          res.json({
+            msg: 'done, your file is under processing...',
+            url: 'PROCESSING',
+            record: auditionInfo
+          })
           if (req.files.vid) {
-            console.log('upload file..', req.files)
-            const result = await bucket.upload(req.files.vid.path, {
-              destination: `/${req.params.type}/${req.user._id}/video`
+            const path = await converter(
+              req.files.vid.path,
+              req.user._id + req.params.type
+            )
+            const result = await bucket.upload(path, {
+              destination: `/${req.params.type}/${req.user._id}/video`,
+              metadata: {
+                contentType: 'video/mp4'
+              }
             })
             console.log(
-              req.user._id, 'upload file to storage complete, write url to audition form'
+              req.user._id,
+              'upload file to storage complete, write url to audition form'
             )
             if (result[0]) {
               await result[0].makePublic()
@@ -67,6 +95,12 @@ export default async function(
                     }
                   }
                 )
+                console.log('update audition url file complete: ', k.mediaLink)
+                fs.unlink(req.files.vid.path, () => {
+                  fs.unlink(path, () => {
+                    console.log('unlink tmp files: ', path, req.files.vid.path)
+                  })
+                })
               }
             }
           }
@@ -74,7 +108,7 @@ export default async function(
       )
 
       server.post(
-        '/upload-image/member/:type/:index',
+        '/upload-image/member/:type(junior|upper|team|junior_team|upper_team)/:index',
         multipartMiddleware,
         async function(req: any, res) {
           if (req.files.image) {
@@ -90,6 +124,9 @@ export default async function(
               if (meta[0]) {
                 const k = meta[0] as any
                 res.json({ msg: 'done', url: k.mediaLink })
+                await fs.unlink(req.files.vid.path, function() {
+                  console.info('remove tmp image', req.files.vid.path)
+                })
               }
             }
           } else {

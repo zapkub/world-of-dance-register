@@ -9,6 +9,7 @@ const ABOUT_SHOW_MIN_HEIGHT = 480
 
 const Container = styled.div`
   min-height: ${ABOUT_SHOW_MIN_HEIGHT}px;
+  height: 100vh;
   background-color: ${theme.blackBlue};
 `
 

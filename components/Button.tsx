@@ -17,6 +17,7 @@ export const UploadButton = styled.div`
   border: 2px solid ${theme.blue};
   color: ${theme.blue};
 
+
   input {
     position: absolute;
     top: 0;
@@ -39,6 +40,11 @@ const ButtonRoot = css`
   ${bp('tablet')`
     min-width: 0;
   `}
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 4px ${theme.blue};
+  }
 `
 
 const FacebookButtonComponent = styled.button`
@@ -93,7 +99,7 @@ const LoadingSpinner = () => (
 export const Button = (props: ButtonPropTypes) => {
   return (
     <ButtonComponent disabled={props.disabled} onClick={props.onClick} fluid={props.fluid} className={props.className} style={props.style}>
-      {!props.loading ? props.children : LoadingSpinner}
+      {!props.loading ? props.children : <LoadingSpinner />}
     </ButtonComponent>
   )
 }

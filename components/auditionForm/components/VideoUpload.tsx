@@ -9,7 +9,21 @@ const CLOUDE_ICON_2X = '/static/images/cloud-upload-icon@2x.png'
 
 const Container = styled.div`
   width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
   box-sizing: border-box;
+`
+const ReUploadButton = styled(Button)`
+  position: relative;
+  input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    width: 100%;
+  }
 `
 export default (props: WithVideoUploadPropType) => {
   if (props.value) {
@@ -25,9 +39,10 @@ export default (props: WithVideoUploadPropType) => {
               <div className="rect5" />
             </div>
             <div
+              style={{lineHeight: 1.7}}
               dangerouslySetInnerHTML={{
                 __html:
-                  'กำลังอยู่ระหว่างประมวลผล คลิปวีดีโอ<br />แบบฟอร์มถูกบันทึกไว้แล้ว คุณสามารถ Reload หน้านี้ได้'
+                  'กำลังอยู่ระหว่างประมวลผล คลิปวีดีโอ <br /> แบบฟอร์มนี้บันทึกอัตโนมัติ <br /> คุณสามารถกรอกแบบฟอร์มด้านล่างต่อไปได้เลย'
               }}
             />
           </UploadButton>
@@ -57,9 +72,17 @@ export default (props: WithVideoUploadPropType) => {
             </video>
           </UploadButton>
         )}
-        <Button fluid onClick={props.onResetVideoURL} style={{ marginTop: 8 }}>
+        <UploadButton style={{ marginTop: 8, padding: '13px 21px' }}>
           {'อัพโหลดใหม่'}
-        </Button>
+          <input
+            type="file"
+            accept="video/mp4,video/x-m4v,video/*"
+            name="vid"
+            onChange={e => {
+              props.confirmUploadVideo(e.target.files)
+            }}
+          />
+        </UploadButton>
       </Container>
     )
   }
@@ -99,7 +122,7 @@ export default (props: WithVideoUploadPropType) => {
         disabled={!props.videoFile || props.loading < 100}
         onClick={props.confirmUploadVideo}
       >
-        {props.loading < 100 ? `กำลังอัพโหลด... (${props.loading})` : 'อัพโหลด'}
+        {props.loading < 100 ? `กำลังอัพโหลด... (${typeof props.loading === 'number' ? props.loading.toFixed(2) : ''} %)` : 'อัพโหลด'}
       </Button>
     </Container>
   )

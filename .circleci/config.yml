@@ -1,0 +1,39 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: node:8.9
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: yarn
+      - run: sh ./scripts/build.bash
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - repo
+  deploy:
+    docker:
+      - image: node:8.9
+    working_directory: ~/repo
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: apt-get update -y
+      - run: apt-get install -y rsync
+      - run: cd ~/repo
+      - run: export DEPLOY_TARGET=$DEVELOP_TARGET&&sh ./bin/deploy-with-rsync.bash
+
+
+workflows:
+  version: 2
+  buld-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+

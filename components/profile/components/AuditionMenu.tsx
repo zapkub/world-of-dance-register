@@ -57,7 +57,7 @@ const AuditionItemContainer = styled.div`
     width: calc(100% / 3);
     padding: 0 13px;
     .audition-menu__button {
-      width: inherit;
+      
     }
   `}
   ${bp('desktop')`
@@ -123,9 +123,18 @@ const AuditionItem = (props: AuditionInfo) => (
       params={{ type: props.title.toLowerCase() }}
     >
       <a>
-        <Button className='audition-menu__button'>{'สมัครออดิชั่น'}</Button>
+        <Button fluid className='audition-menu__button'>{'สมัครออดิชั่น'}</Button>
       </a>
     </routes.Link>
+    {props.title !== 'Team' ? 
+    <routes.Link
+      route={'register'}
+      params={{ type: props.title.toLowerCase()+ '_team' }}
+    >
+      <a>
+        <Button fluid style={{marginTop: 8}} className='audition-menu__button'>{'สมัครออดิชั่น มากกว่า 1 คน'}</Button>
+      </a>
+    </routes.Link> : null }
   </AuditionItemContainer>
 )
 

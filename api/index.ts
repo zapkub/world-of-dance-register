@@ -5,9 +5,9 @@ import config from '../config'
 import enhanceAuthentication from './authentication'
 import enhanceUploadAPI from './upload'
 import createGraphQL from './graphql'
+import enhancePdfAPI from './pdf-generate'
 
 declare global {
-  
   interface APIContext {
     logger: Logger
     config: AppConfig
@@ -22,14 +22,12 @@ export async function prepare(app: any) {
     config
   })
 
-
- 
-  const  { graphiqlHandler,models, graphqlHandler } = createGraphQL({
+  const { graphiqlHandler, models, graphqlHandler } = createGraphQL({
     connection,
     logger,
-    config,
+    config
   })
- const context = {
+  const context = {
     logger,
     config,
     connection,
@@ -37,10 +35,8 @@ export async function prepare(app: any) {
   }
   enhanceAuthentication(app, context)
   enhanceUploadAPI(app, context)
+  enhancePdfAPI(app, context)
+
   app.all('/graphql', graphqlHandler)
   app.get('/graphiql', graphiqlHandler)
 }
-
-
-
-

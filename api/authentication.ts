@@ -1,9 +1,32 @@
 import * as express from 'express'
 const session = require('express-session')
 const FacebookStrategy = require('passport-facebook')
+const LocalStrategy = require('passport-local')
 const passport = require('passport')
 const MongoStore = require('connect-mongo')(session)
+const bcrypt = require('bcrypt-nodejs')
 
+const localStrategy = (exports.localStrategy = (context: APIContext) => {
+  return new LocalStrategy(async function(username, password, done) {
+    if (!username || !password) {
+      done(new Error('usernane, password is not provided'))
+    }
+    try {
+      const user = await context.models.User.findOne({ email: username })
+      if (!user) {
+        done(null, false, 'email not found')
+      } else {
+        if (bcrypt.compareSync(password, user.password)) {
+          done(null, user)
+        } else {
+          done(null, false, 'password not correct')
+        }
+      }
+    } catch (e) {
+      done(e)
+    }
+  })
+})
 const facebookLoginStrategy = (exports.facebookLoginStrategy = (
   context: APIContext
 ) => {
@@ -74,7 +97,8 @@ const deserializeSession = (exports.deserializeSession = (
    * Actual session is this logic
    */
   const user = await User.findById(id, {
-    _id: true
+    _id: true,
+    role: true
   }).lean()
   return done(null, user)
 })
@@ -101,6 +125,8 @@ export default function enchanceSession(app: any, context: APIContext) {
   passport.deserializeUser(deserializeSession(context))
   passport.serializeUser(serializeSession(context))
   passport.use(facebookLoginStrategy(context))
+  passport.use(localStrategy(context))
+
   app.get('/logout', (req, res) => {
     req.session.destroy(function(err) {
       req.logout()
@@ -113,6 +139,13 @@ export default function enchanceSession(app: any, context: APIContext) {
       scope: ['email', 'public_profile', 'user_birthday'],
       authType: 'rerequest'
     })
+  )
+  app.get(
+    '/login',
+    passport.authenticate('local', { failureRedirect: '/admin' }),
+    function(req, res) {
+      res.redirect('/admin')
+    }
   )
   app.get(
     '/facebook/callback',

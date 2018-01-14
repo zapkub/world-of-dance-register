@@ -46,7 +46,7 @@ const FormContainer = styled.div`
 
 export default (props: ProfileInfoFormPropTypes) => {
   return (
-    <DefaultViewport>
+    <DefaultViewport style={{paddingTop: 0}}>
       <HeaderOne withBorder>{'บัญชีของฉัน'}</HeaderOne>
       <FormContainer>
         <InputField value={props} name={'email'} onChange={props.onChange} />
