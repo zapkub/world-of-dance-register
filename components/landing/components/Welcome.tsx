@@ -36,6 +36,7 @@ const Container = styled(DefaultViewport)`
     display: flex;
     flex-wrap: wrap;
     max-width: 640px;
+    animation-delay: 2.5s;
     .item {
       padding: ${21 / 2}px;
       flex: 0 1 50%;
@@ -47,8 +48,10 @@ const Container = styled(DefaultViewport)`
     width: 100%;
     flex: 0 1 200px;
     background-position: center;
+    animation-delay: 1.2s;
   }
   .tagline {
+    animation-delay: 2.0s;
     width: 100%;
     height: 220px;
     background-position: center;
@@ -89,7 +92,7 @@ export default class LandingPage extends React.Component {
   render() {
     return (
       <div style={{ backgroundColor: 'black' }}>
-        <Container id="landing-page-section">
+        <Container id="landing-page-section" className="animated fadeInDown">
           <LogoOneHd style={{ zIndex: 1 }} />
           {/* <p
             className="logo-subtitle"
@@ -103,17 +106,17 @@ export default class LandingPage extends React.Component {
           /> */}
           <Image 
             disabledAutoSize
-            className='logo'
+            className='logo animated fadeIn'
             src={WOD_FULL_LOGO_URL}
             srcHD={WOD_FULL_LOGO_URL_2X}
           />
           <Image
-            className="tagline"
+            className="tagline animated fadeIn"
             disabledAutoSize
             src={'/static/images/wod-tagline.jpg'}
             srcHD={'/static/images/wod-tagline@2x.jpg'}
           />
-          <div className="landing-button-wrapper">
+          <div className="landing-button-wrapper animated fadeIn">
             {MenuListData.map((item, key) => (
               <div className="item" key={key}>
                 {item.id === 'audition' ? (

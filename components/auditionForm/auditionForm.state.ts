@@ -115,6 +115,7 @@ export default compose<any, any>(
         return
       }
       /** save form without confirm */
+      console.log('save form....', result.auditionInfo)
       await props.client.mutate({
         mutation: AUDITION_INFO_MUTATION,
         variables: {
@@ -408,7 +409,7 @@ export default compose<any, any>(
         }
         ownProps.setSaving(true)
         try {
-          validator(ownProps.auditionInfo)
+          // validator(ownProps.auditionInfo)
           await mutate({
             variables: {
               record: {

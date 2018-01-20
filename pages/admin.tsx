@@ -133,6 +133,7 @@ const AUDITION_FORM_LIST_QUERY = gql`
       isAlreadyTrainByInstitutionName
       isAlreadyHasEntertainingProfile
       updatedAt
+      createdAt
     }
   }
 `

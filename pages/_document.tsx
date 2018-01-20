@@ -29,6 +29,7 @@ export default class PageDocument extends Document {
           <link href='/static/fonts/awesome/regular.min.css' rel='stylesheet' />
           <link href='/static/fonts/awesome/stylesheet.min.css' rel='stylesheet' />
           <link href='/static/cropper.min.css' rel='stylesheet' />
+          <link href='/static/animate.css' rel='stylesheet' />
           <link href='/static/react-datepicker.min.css' rel='stylesheet' />
           <meta
             id="vp"

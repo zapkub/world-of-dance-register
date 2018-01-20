@@ -3,8 +3,9 @@ import { TextInputWithLabel, DateInputWithLabel } from './Input'
 import thTh from '../i18n/th-th'
 import { HeaderOne } from './Header'
 import * as moment from 'moment'
-import { DefaultViewport } from './Viewport';
+import { DefaultViewport } from './Viewport'
 import styled from 'styled-components'
+import { Button } from './Button'
 
 const Viewport = styled(DefaultViewport)`
   input {
@@ -16,8 +17,11 @@ const Viewport = styled(DefaultViewport)`
 
 export default (auditionInfo: AuditionInformation) => (
   <Viewport>
+    <a href={auditionInfo.videoURL}>
+      <Button>{'ดูคลิป video'}</Button>
+    </a>
+    <br />
     <HeaderOne withBorder>{'สมาชิก'}</HeaderOne>
-
     {auditionInfo.members.map(member => {
       const fields = Object.keys(member)
         .filter(key => key !== '__typename')
@@ -39,10 +43,10 @@ export default (auditionInfo: AuditionInformation) => (
       return (
         <div key={member._id}>
           <img width="200" src={member['profileImageURL']} />
-          <DateInputWithLabel 
+          <DateInputWithLabel
             selected={moment(member['dateOfBirth'])}
             onChange={() => {}}
-            label='วันเกิด'
+            label="วันเกิด"
           />
           {fields}
         </div>

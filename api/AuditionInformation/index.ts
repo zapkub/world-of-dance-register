@@ -61,10 +61,8 @@ export default {
 
       delete rp.args.record.videoURL
       rp.args.filter.auditionType = rp.args.record.auditionType
-      const auditionInfo = await model.findOne({
-        ownerId: rp.context.user._id,
-        auditionType: rp.args.record.auditionType
-      })
+      rp.args.filter.ownerId = rp.context.user._id
+      const auditionInfo = await model.findOne(rp.args.filter)
       if (rp.args.record.isConfirm) {
         /**
          * Validate form

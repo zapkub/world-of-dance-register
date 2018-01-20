@@ -45,6 +45,7 @@ export function renderFormToHTML(auditionInfo: AuditionInformation) {
     .filter(key => key !== '__v')
     .filter(key => key !== '__v')
     .filter(key => key !== 'isConfirm')
+    .filter(key => key !== 'createdAt' && key !== 'updatedAt')
     .filter(key => key !== 'ownerId')
     .map(key => {
       if (auditionInfo[key]) {
