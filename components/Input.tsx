@@ -18,6 +18,10 @@ const RootInput = css`
     outline: 2px ${theme.blue} solid;
     box-shadow: 0 0 4px ${theme.blue};
   }
+  &:disabled{
+    cursor: not-allowed;
+
+  }
 `
 
 interface TextInputMultipleLinePropTypes
@@ -28,8 +32,10 @@ interface TextInputMultipleLinePropTypes
 export const TextInputMultipleLine: React.SFC<
   TextInputMultipleLinePropTypes
 > = styled.textarea`
-  ${RootInput} ${(props: { fluid: boolean }) =>
-      props.fluid ? fluid : ''} resize: none;
+    ${RootInput} 
+    ${(props: { fluid: boolean }) =>
+    props.fluid ? fluid : ''} 
+    resize: none;
 ` as any
 
 interface TextInputPropTypes
@@ -37,7 +43,8 @@ interface TextInputPropTypes
   fluid?: boolean
 }
 export const TextInput: React.SFC<TextInputPropTypes> = styled.input`
-  ${RootInput} ${(props: { fluid: boolean }) => (props.fluid ? fluid : '')};
+  ${RootInput};
+  ${(props: { fluid: boolean }) => (props.fluid ? fluid : '')};
 ` as any
 
 export const TextInputWrapper = styled.div`
@@ -85,6 +92,7 @@ interface DateInputProp {
   selected: any
   onChange: any
   isMount?: any
+  disabled?: boolean
 }
 export const DateInputWithLabel = compose<DateInputProp, DateInputProp>(
   withState('isMount', 'setMount', false),

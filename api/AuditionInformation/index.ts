@@ -1,17 +1,46 @@
 import schema from './AuditionInformation.schema'
+import * as moment from 'moment'
 import composeWithMongoose from 'graphql-compose-mongoose'
 import TypeComposer from 'graphql-compose/lib/typeComposer'
+import { GraphQLDate } from 'graphql-compose'
 import { Types } from 'mongoose'
-import validator from './validator';
+import validator from './validator'
 
 export default {
   schema,
   createTypeComposer: model => {
     const TC = composeWithMongoose(model) as TypeComposer
-    TC.wrapResolverResolve('findOne', next => rp => {
+    const memberTC = TC.getFieldTC('members')
+    // memberTC.extendField('dateOfBirth', {
+    //   type: 'String',
+    //   description: '',
+    //   resolve: source => {
+    //     console.log(source)
+    //     return moment(source.dateOfBirth).format('dd/mm/yyyy')
+    //   }
+    // })
+
+    TC.wrapResolverResolve('findOne', next => async rp => {
       const { context } = rp
       rp.args.filter.ownerId = context.user._id
-      return next(rp)
+      rp.projection.ownerId = true
+
+      if (!rp.args.filter.ownerId) {
+        const e = new Error()
+        e.message = 'no session found...'
+        e.name = 'owner-id-error'
+        throw e
+      }
+      const result = await next(rp)
+      if (!result) {
+        return undefined
+      }
+      if (result.ownerId.toString() === context.user._id.toString())
+        return result
+      else {
+        console.log('error invalid ownerId access', context.user._id)
+        return undefined
+      }
     })
     TC.getResolver('findOne')
       .getArgTC('filter')
@@ -26,7 +55,7 @@ export default {
       /**
        * Find document of type from user
        */
-      if(!rp.args.filter) {
+      if (!rp.args.filter) {
         rp.args.filter = {}
       }
 
@@ -36,7 +65,7 @@ export default {
         ownerId: rp.context.user._id,
         auditionType: rp.args.record.auditionType
       })
-      if(rp.args.record.isConfirm) {
+      if (rp.args.record.isConfirm) {
         /**
          * Validate form
          */
@@ -55,7 +84,7 @@ export default {
       }
     })
     const updateOne = TC.getResolver('updateOne')
-    updateOne.removeOtherArgs(['filter','record'])
+    updateOne.removeOtherArgs(['filter', 'record'])
     updateOne.getArgTC('record').removeField('ownerId')
     updateOne.getArgTC('record').removeField('videoURL')
     return TC

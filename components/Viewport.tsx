@@ -9,13 +9,13 @@ export const DefaultViewport = styled.div`
   margin:0 auto;
 
   ${bp('mobile')`
-    padding: ${MENUBAR_HEIGHT + 38}px 8px 21px 8px;
+    padding: ${MENUBAR_HEIGHT + 48}px 8px 21px 8px;
   `}
   ${bp('tablet')`
-    padding: ${MENUBAR_HEIGHT + 38}px 8px 21px 8px;
+    padding: ${MENUBAR_HEIGHT + 48}px 8px 21px 8px;
   `}
 
   ${bp('desktop')`
-    padding: ${MENUBAR_HEIGHT + 38}px 8px 21px 8px;
+    padding: ${MENUBAR_HEIGHT + 48}px 8px 21px 8px;
   `}
 `

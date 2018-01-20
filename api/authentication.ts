@@ -141,7 +141,7 @@ export default function enchanceSession(app: any, context: APIContext) {
     })
   )
   app.get(
-    '/login',
+    '/admin-login',
     passport.authenticate('local', { failureRedirect: '/admin' }),
     function(req, res) {
       res.redirect('/admin')

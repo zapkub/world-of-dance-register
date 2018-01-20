@@ -11,9 +11,9 @@ import bp from 'styled-components-breakpoint'
 const MenubarContainer = styled.div`
   height: ${MENUBAR_HEIGHT}px;
   position: absolute;
-  top:0;
-  left:0;
-  right:0;
+  top: 0;
+  left: 0;
+  right: 0;
 `
 const MenubarContainerWithStick = styled(MenubarContainer)`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
@@ -50,7 +50,8 @@ const MenubarContainerWithStick = styled(MenubarContainer)`
     }
     ${bp('mobile')`
       display: block;
-    `} ${bp('desktop')`
+    `};
+    ${bp('tablet')`
       display: none;
     `};
   }
@@ -68,7 +69,8 @@ const MenubarContainerWithStick = styled(MenubarContainer)`
     ${bp('mobile')`
       align-item: center;
       justify-content: center;
-    `} ${bp('tablet')`
+    `};
+    ${bp('tablet')`
       justify-content: flex-start;
     `};
   }
@@ -101,8 +103,7 @@ const MenuListWrapper = styled.div`
       opacity: 1;
       pointer-events: all;
     }
-  `} 
-  
+  `};
   ${bp('tablet')`
     margin: 0 38px;
     flex-direction: row;
@@ -123,29 +124,32 @@ const MenuListWrapper = styled.div`
     font-size: 2rem;
     ${bp('mobile')`
       display: block;
-    `}
+    `};
     ${bp('tablet')`
       display: none;
-    `}
+    `};
   }
 `
 const MenuListItem = styled.div`
   font-weight: bold;
   font-family: 'WOD', 'Thonburi', 'Thonburi', sans-serif;
   margin: 0 ${21 / 2}px;
+  a {
+    color: ${theme.blue};
+  }
 `
 const MenuList = (
   props: React.HTMLAttributes<any> & { onClose: () => void }
 ) => (
   <MenuListWrapper className={props.className}>
-    <div className='close-button' onClick={props.onClose}>
+    <div className="close-button" onClick={props.onClose}>
       <i className="far fa-times-circle" />
     </div>
     {MenuListData.map((item, key) => (
       <MenuListItem key={key} onClick={props.onClose}>
         {item.id !== 'audition' ? (
           <Link href={`/#${item.id}`}>
-            <a >{item.label}</a>
+            <a>{item.label}</a>
           </Link>
         ) : (
           <routes.Link route="profile">
@@ -185,7 +189,7 @@ export default class Menubar extends React.Component<
     if (LandingPageDOM) {
       const heightValue = LandingPageDOM.getBoundingClientRect().height
       const scrollPositionY = window.scrollY
-      if (scrollPositionY + 20 > heightValue ) {
+      if (scrollPositionY + 20 > heightValue) {
         this.setState({
           isStickToTop: true
         })
@@ -214,10 +218,10 @@ export default class Menubar extends React.Component<
         key="stick-menubar"
       >
         <div className="stick-menubar__top">
-          <LogoOneHdSmall style={{ margin: 8 }} />
+          <LogoOneHd style={{ margin: 5, width: 80 }} />
         </div>
         <div className="stick-menubar__content">
-          <DefaultViewport style={{ width: '100%', padding: 0 }}>
+          <DefaultViewport style={{ width: '100%', padding: '0 8px' }}>
             <div className="stick-menubar__content-inner">
               <div
                 className="menu-toggle"
@@ -244,11 +248,6 @@ export default class Menubar extends React.Component<
     if (this.props.noSticky) {
       return Sticky
     }
-    return [
-      <MenubarContainer key="top-menubar">
-        <LogoOneHd />
-      </MenubarContainer>,
-      Sticky
-    ]
+    return [<MenubarContainer key="top-menubar" />, Sticky]
   }
 }

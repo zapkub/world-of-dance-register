@@ -10,11 +10,14 @@ import { Text, TextLabel } from '../../Text'
 const LoginLabel = styled(TextLabel)`
   margin: 21px 0;
 `
+const Container = styled(DefaultViewport)`
+  text-align:center;
+`
 
 export default () => (
   <div>
     <Menubar noSticky />
-    <DefaultViewport>
+    <Container>
       <HeaderOne withBorder>{'สมัครออดิชั่น'}</HeaderOne>
       <div>
         <LoginLabel>
@@ -25,6 +28,6 @@ export default () => (
         </a>
         {/* <LoginLabel>{'มีปัญหาเกี่ยวกับการสมัคร ?'}</LoginLabel> */}
       </div>
-    </DefaultViewport>
+    </Container>
   </div>
 )

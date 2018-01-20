@@ -3,6 +3,7 @@ import {
   IntrospectionFragmentMatcher
 } from 'apollo-cache-inmemory'
 import { ApolloClient } from 'apollo-client'
+import { onError } from "apollo-link-error";
 import { HttpLink } from 'apollo-link-http'
 import { withClientState } from 'apollo-link-state'
 import logger from './Logger'
@@ -54,10 +55,19 @@ function create(initialState, host, cookie?) {
       credentials: 'same-origin' // Additional fetch() options like `credentials` or `headers`
     }
   })
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors)
+      graphQLErrors.map(({ message, locations, path }) =>
+        console.log(
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        )
+      );
+    if (networkError) console.log(`[Network error]: ${networkError}`);
+  });
   return new ApolloClient({
     connectToDevTools: isBrowser,
     ssrMode: !isBrowser, // Disables forceFetch on the server (so queries are only run once)
-    link: ApolloLink.from([apolloLogger, stateLink, httpLink]),
+    link: ApolloLink.from([errorLink, apolloLogger, stateLink, httpLink]),
     cache
   })
 }

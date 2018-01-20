@@ -16,7 +16,6 @@ export default function withData(redirectPath: string): any {
         }
         if (component.getInitialProps) {
           const componentInitProps = await component.getInitialProps(ctx)
-          console.log(componentInitProps)
           return {
             ...componentInitProps,
             ...initialProps
@@ -43,7 +42,7 @@ export default function withData(redirectPath: string): any {
 
       render() {
         if (!this.props.user) {
-          return React.createElement('div', {}, 'unauthorized')
+          return React.createElement('div', {}, 'กำลัง redirect...')
         }
         return React.createElement(component, {
           ...this.props

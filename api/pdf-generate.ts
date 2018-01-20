@@ -3,6 +3,8 @@ import * as path from 'path'
 
 import * as fs from 'fs'
 import { Response } from 'express'
+import { Buffer } from 'buffer'
+const fetch = require('isomorphic-fetch')
 var pdf = require('html-pdf')
 const jszip = require('jszip')
 var archiver = require('archiver')
@@ -71,9 +73,40 @@ export function renderFormToHTML(auditionInfo: AuditionInformation) {
     `
   )
 }
+async function downloadAndSaveFile(url, path) {
+  return new Promise(async (resolve) => {
+    const response = await fetch(url)
+    const output = fs.createWriteStream(path)
+    response.body.pipe(output)
+    output.on('finish', function() {
+      resolve(path)
+    })
+  })
+}
 export function renderFormToPDF(auditionInfo: AuditionInformation, folderName) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
+    /**
+     * Fetch profileImage
+     */
+    fs.mkdirSync(path.join(folderName, auditionInfo._id.toString()))
+    folderName = path.join(folderName, auditionInfo._id.toString()) 
+    let memberCount = 0
+    for (let member of auditionInfo.members) {
+      if (member.profileImageURL) {
+        try {
+          const imgPath = `${folderName}/member.${memberCount}.jpg`
+          await downloadAndSaveFile(member.profileImageURL, imgPath)
+          member.profileImageURL = `file://${imgPath}`
+        } catch (e) {
+          console.error(e)
+          console.log(member)
+        }
+
+        memberCount++
+      }
+    }
     const html = renderFormToHTML(auditionInfo)
+    fs.writeFileSync(`${folderName}/index.html`, html)
     var options = { format: 'A4' }
     pdf
       .create(html, options)
@@ -86,7 +119,7 @@ export function renderFormToPDF(auditionInfo: AuditionInformation, folderName) {
 export default function enhancePdfAPI(app, context: APIContext) {
   const handler = async (req, res: Response) => {
     const timestamp = Date.now()
-    const ids = req.body.ids.split(',')
+    const ids = req.body.ids
     if (!ids) {
       res.status(403).end()
       return
@@ -98,35 +131,50 @@ export default function enhancePdfAPI(app, context: APIContext) {
     const results: any = await context.models.AuditionInformation.find({
       _id: { $in: ids }
     }).lean()
+    const folderAbsolute = `/static/tmp/wod-${timestamp}`
+    const folderName = path.join(__dirname, `..${folderAbsolute}`)
 
-    const folderName = `./static/wod-${timestamp}`
-    // const output = fs.createWriteStream(path.join(folderName, ))
-
-    mkdirp(folderName, async function(err) {
+    mkdirp(folderName + '/files', async function(err) {
+      const output = fs.createWriteStream(
+        path.join(folderName, 'documents.zip')
+      )
       if (err) console.error(err)
       const fileList = []
+
+      res.setHeader('X-Content-Type-Options', 'nosniff')
+      res.setHeader('Content-Type', 'text/plain')
+      res.setHeader('Transfer-Encoding', 'chunked')
+      res.write(
+        JSON.stringify({
+          current: 0,
+          total: results.length
+        })
+      )
       for (let info of results) {
         console.log('generate....', info._id)
-        const path = await renderFormToPDF(info, folderName)
+        const path = await renderFormToPDF(info, folderName + '/files')
         fileList.push(path)
-      }
-      console.log(fileList)
-      /** ZIP file */
-      res.on('finish', function() {
-        console.log('response end')
-        setTimeout(
-          () =>
-            rimraf(folderName, function(er) {
-              if (er) console.error(er)
-            }),
-          1000
+        res.write(
+          '|' +
+            JSON.stringify({
+              current: fileList.length,
+              total: results.length
+            })
         )
-      })
+      }
+      res.write(
+        '|' +
+          JSON.stringify({
+            url: folderAbsolute + '/documents.zip'
+          })
+      )
+      res.end()
+      /** ZIP file */
       var archive = archiver('zip', {
         zlib: { level: 9 } // Sets the compression level.
       })
-      archive.pipe(res)
-      archive.directory(`${folderName}`, false)
+      archive.pipe(output)
+      archive.directory(`${folderName}/files`, false)
       archive.finalize()
     })
   }

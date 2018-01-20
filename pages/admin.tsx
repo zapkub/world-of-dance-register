@@ -145,10 +145,46 @@ interface AdminPagePropTypes {
   selectedItems: { [id: string]: boolean }
 }
 class AdminPage extends React.Component<AdminPagePropTypes, any> {
+  constructor(props) {
+    super(props)
+    this.download = this.download.bind(this)
+    this.state = {
+      isPrepare: false,
+      current: 0,
+      total: 0,
+      url: undefined
+    }
+  }
+  download() {
+    this.setState({
+      isPrepare: true
+    })
+    const ids = Object.keys(this.props.selectedItems).map(key => key)
+    const xhr = new XMLHttpRequest()
+    xhr.open('post', '/documents.zip')
+    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+    xhr.onprogress = () => {
+      console.log('PROGRESS:', xhr.responseText)
+      const res = (xhr.responseText.toString().split('|'))
+      const result = JSON.parse(res[res.length-1])
+      if(result.url) {
+        result.isPrepare = false  
+      }
+      this.setState({
+        ...result
+      })
+    }
+    xhr.onload = () => {}
+    xhr.send(
+      JSON.stringify({
+        ids
+      })
+    )
+  }
   render() {
     if (!this.props.user) {
       return (
-        <form action="/login">
+        <form action="/admin-login">
           <input name="username" placeholder="username" />
           <input name="password" placeholder="password" type="password" />
           <input type="submit" value="Login" />
@@ -177,6 +213,18 @@ class AdminPage extends React.Component<AdminPagePropTypes, any> {
               {
                 label: 'junior',
                 value: 'junior'
+              },
+              {
+                value: 'junior_team',
+                label:'junior มากกว่า 1 คน'
+              },
+              {
+                value: 'upper_team',
+                label: 'upper มากกว่า 1 คน'
+              },
+              {
+                value: 'team',
+                label: 'team'
               }
             ]}
           />
@@ -225,10 +273,16 @@ class AdminPage extends React.Component<AdminPagePropTypes, any> {
               ))}
             </div>
           </div>
-          <form action="/documents.zip" method='POST'>
+          {/* <form action="/documents.zip" method='POST'>
             <input type='hidden' name='ids' value={Object.keys(this.props.selectedItems).map(key => key)} />
             <input type="submit" value="download" />
-          </form>
+          </form> */}
+          <Button onClick={this.download}>{'download'}</Button>
+          {this.state.isPrepare
+            ? `
+            กำลังรวบรวมไฟล์ ${this.state.current}/${this.state.total}
+          `
+            : <a href={this.state.url}> {this.state.url} </a>}
         </DefaultViewport>
       )
     }
@@ -258,6 +312,10 @@ export default compose(
       }
     `,
     {
+      options: props => {
+        return {
+        }
+      },
       props: ({ data }) => {
         return {
           user: data.me

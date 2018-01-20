@@ -132,7 +132,7 @@ export default class AuditionMenu extends React.Component<
         {AuditionInfoList.map(audition => (
           <AuditionItem
             {...audition}
-            isConfirmList={this.props.isConfirmList}
+            isConfirmList={this.props.isConfirmList || {}}
             key={audition.title}
           />
         ))}

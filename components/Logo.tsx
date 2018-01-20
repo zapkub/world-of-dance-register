@@ -5,11 +5,11 @@ import styled from 'styled-components'
 const WOD_LOGO_URL = '/static/images/wod-logo.png'
 const WOD_LOGO_URL_2X = '/static/images/wod-logo@2x.png'
 
-const WOD_FULL_LOGO_URL = '/static/images/wod-logo-full.png'
-const WOD_FULL_LOGO_URL_2X = '/static/images/wod-logo-full@2x.png'
+export const WOD_FULL_LOGO_URL = '/static/images/wod-hero.jpg'
+export const WOD_FULL_LOGO_URL_2X = '/static/images/wod-hero@2x.jpg'
 
-const ONE_HD_LOGO = '/static/images/one-hd-logo.png'
-const ONE_HD_LOGO_2X = '/static/images/one-hd-logo@2x.png'
+export const ONE_HD_LOGO = '/static/images/one-hd-logo.png'
+export const ONE_HD_LOGO_2X = '/static/images/one-hd-logo@2x.png'
 
 const ONE_HD_LOGO_SMALL = '/static/images/one-hd-logo-small.png'
 const ONE_HD_LOGO_SMALL_2X = '/static/images/one-hd-logo-small@2x.png'
@@ -31,9 +31,9 @@ export const LogoContainer = styled.div`
   }
 ` as any
 
-export const Image = ( props: { src: string, srcHD: string } ) => (
-  <LogoContainer src={props.src} srcHD={props.srcHD}>
-    <img src={props.src} />
+export const Image = ( { className, style = {}, srcHD, src, disabledAutoSize }: { className?:any, src: string, srcHD: string, style?: any, disabledAutoSize?: boolean } ) => (
+  <LogoContainer className={className} src={src} srcHD={srcHD}>
+    {disabledAutoSize ? null : <img src={src} width={style.width} />}
   </LogoContainer>
 )
 
@@ -44,14 +44,14 @@ export const Logo = props => (
 )
 
 export const LogoFull = props => (
-  <LogoContainer src={WOD_FULL_LOGO_URL} srcHD={WOD_FULL_LOGO_URL_2X}>
+  <LogoContainer style={props.style} src={WOD_FULL_LOGO_URL} srcHD={WOD_FULL_LOGO_URL_2X}>
     <img src={WOD_FULL_LOGO_URL} />
   </LogoContainer>
 )
 
 export const LogoOneHd = ({ style = {} }: any) => (
   <LogoContainer style={style} src={ONE_HD_LOGO} srcHD={ONE_HD_LOGO_2X}>
-    <img height={style.height} src={ONE_HD_LOGO} />
+    <img width={style.width} height={style.height} src={ONE_HD_LOGO} />
   </LogoContainer>
 )
 
