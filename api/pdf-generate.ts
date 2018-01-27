@@ -136,6 +136,7 @@ export default function enhancePdfAPI(app, context: APIContext) {
     const folderName = path.join(__dirname, `..${folderAbsolute}`)
 
     mkdirp(folderName + '/files', async function(err) {
+      
       const output = fs.createWriteStream(
         path.join(folderName, 'documents.zip')
       )

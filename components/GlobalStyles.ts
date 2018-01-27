@@ -52,7 +52,7 @@ export default () => injectGlobal`
   }
   body {
     -webkit-font-smoothing: antialiased;
-    font-size: 14px;
+    font-size: 18px;
     font-family: 'Helvetica Neue', 'Helvetica', 'Thonburi', 'Tahoma', sans-serif;
   }
   a {

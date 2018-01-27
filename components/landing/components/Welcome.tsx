@@ -4,7 +4,13 @@ import bp from 'styled-components-breakpoint'
 import { Button } from '../../Button'
 import theme from '../../theme'
 import styled from 'styled-components'
-import { LogoFull, LogoOneHd, Image, WOD_FULL_LOGO_URL, WOD_FULL_LOGO_URL_2X } from '../../Logo'
+import {
+  LogoFull,
+  LogoOneHd,
+  Image,
+  WOD_FULL_LOGO_URL,
+  WOD_FULL_LOGO_URL_2X
+} from '../../Logo'
 import MenuListData from './MenuListData'
 import { DefaultViewport } from '../../Viewport'
 import routes from '../../../routes'
@@ -16,9 +22,41 @@ const LandingButton = styled(Button)`
   min-width: 0;
   white-space: pre;
 `
+const Background = styled.div`
+  position: relative;
+  background-image: url('/static/images/hero-background@2x.png');
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
+  .decorate-left {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    z-index: 2;
+    transform: translateY(-50%);
+  }
+  .decorate-right {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+  .spray-left {
+    position: absolute;
+    left: 0;
+    bottom: 0%;
+  }
+  .spray-right {
+    position: absolute;
+    right: 0;
+    bottom: 0%;
+  }
+`
 const Container = styled(DefaultViewport)`
-  padding-top: 0;
-  height: 100vh;
+  padding-top: 51px;
+  overflow: hidden;
+  height: auto;
   min-height: ${LANDING_PAGE_MIN_HEIGHT}px;
   display: flex;
   align-items: center;
@@ -44,39 +82,37 @@ const Container = styled(DefaultViewport)`
     }
   }
   .logo {
-    height: 200px;
-    width: 100%;
-    flex: 0 1 200px;
+    height: auto;
+    flex: 0 1 auto;
     background-position: center;
     animation-delay: 1.2s;
+    margin-top: -61px;
+    width: 870px;
   }
   .tagline {
-    animation-delay: 2.0s;
-    width: 100%;
-    height: 220px;
+    margin-top: -141px;
+    animation-delay: 2s;
+    width: 820px;
     background-position: center;
-    flex: 0 2 220px;
+    flex: 0 2 auto;
+  }
+  .text {
+    color: white;
+    font-family: 'WOD', 'Kanit', sans-serif;
+    font-size: 2rem;
+    text-align: center;
+    h1 {
+      font-size: 3rem;
+      margin: 21px 0;
+    }
+    .highlight-text {
+      color: ${theme.blue};
+      font-size: 3rem;
+    }
   }
   ${bp('mobile')`
     .landing-button-wrapper {
       display: block;
-    }
-    .landing-button {
-      display: block;
-      text-align: center;
-      width: 100%;
-      color: ${theme.glowBlue}; 
-      border-color: ${theme.glowBlue};
-      border-image: linear-gradient(to bottom right,${theme.darkblue},${theme.glowBlue}) 1;
-      border-width: 1px;
-
-      &:hover {
-        color: white;
-        border-width: 2px;
-        border-color: ${theme.glowBlue};
-        background-color: rgba(0,0,0,0);
-        box-shadow: 1px 1px 35px ${theme.shadow};
-      }
     }
   `} ${bp('tablet')`
     .landing-button-wrapper {
@@ -91,8 +127,8 @@ const Container = styled(DefaultViewport)`
 export default class LandingPage extends React.Component {
   render() {
     return (
-      <div style={{ backgroundColor: 'black' }}>
-        <Container id="landing-page-section" className="animated fadeInDown">
+      <Background>
+        <Container id="landing-page-section" className="">
           <LogoOneHd style={{ zIndex: 1 }} />
           {/* <p
             className="logo-subtitle"
@@ -104,17 +140,31 @@ export default class LandingPage extends React.Component {
           `
             }}
           /> */}
-          <Image 
-            disabledAutoSize
-            className='logo animated fadeIn'
+          <Image
+            className="logo animated fadeIn"
             src={WOD_FULL_LOGO_URL}
             srcHD={WOD_FULL_LOGO_URL_2X}
           />
           <Image
             className="tagline animated fadeIn"
-            disabledAutoSize
-            src={'/static/images/wod-tagline.jpg'}
-            srcHD={'/static/images/wod-tagline@2x.jpg'}
+            src={'/static/images/wod-judge.png'}
+            srcHD={'/static/images/wod-judge@2x.png'}
+          />
+          <div
+            className="text"
+            dangerouslySetInnerHTML={{
+              __html: `
+              <span class='highlight-text'>นักเต้นสายแดนซ์</span> ทุกประเภท<br/>
+              เพื่อร่วมรายการ<span class='highlight-text'>แข่งขันเต้นระดับโลก</span><br />
+              <h1>ชิงเงินรางวัล</h1>
+            `
+            }}
+          />
+
+          <Image
+            style={{ marginBottom: 45, position: 'relative', maxWidth: 800 }}
+            src={'/static/images/prize-pool.png'}
+            srcHD={'/static/images/prize-pool@2x.png'}
           />
           <div className="landing-button-wrapper animated fadeIn">
             {MenuListData.map((item, key) => (
@@ -136,7 +186,28 @@ export default class LandingPage extends React.Component {
             ))}
           </div>
         </Container>
-      </div>
+
+        <Image
+          className="animated fadeIn decorate-right"
+          src={'/static/images/decorate-right-top.png'}
+          srcHD={'/static/images/decorate-right-top@2x.png'}
+        />
+        <Image
+          className="animated fadeIn decorate-left"
+          src={'/static/images/decorate-left-top.png'}
+          srcHD={'/static/images/decorate-left-top@2x.png'}
+        />
+        <Image
+          className="animated fadeIn spray-left"
+          src={'/static/images/spray-left.png'}
+          srcHD={'/static/images/spray-left@2x.png'}
+        />
+        <Image
+          className="animated fadeIn spray-right"
+          src={'/static/images/spray-right.png'}
+          srcHD={'/static/images/spray-right@2x.png'}
+        />
+      </Background>
     )
   }
 }

@@ -4,16 +4,43 @@ import styled from 'styled-components'
 import { Text } from '../../Text'
 import { DefaultViewport } from '../../Viewport'
 import { withBottomBorder, HeaderRoot, HeaderOne } from '../../Header'
+import { Image } from '../../Logo';
 
 const ABOUT_SHOW_MIN_HEIGHT = 480
 
 const Container = styled.div`
+  background-image: url(/static/images/process-bg.png);
+  background-position: center center;
+  background-repeat: no-repeat;
   min-height: ${ABOUT_SHOW_MIN_HEIGHT}px;
   font-size: 1.1rem;
+  position:relative;
+  h1 {
+    color: white;
+    font-weight: normal;
+    text-align: center;
+  }
+
+  .spray-left {
+    position: absolute;
+    left: 0;
+    bottom: 0%;
+  }
+  .spray-right {
+    position: absolute;
+    right: 0;
+    bottom: 0%;
+  }
 `
 
+const PARAGRAPH_1 = `
+<h1 style="margin:21px 0;"><span class="highlight">ไม่ว่าคุณจะเป็นใคร อายุเท่าไหร่ เพศอะไร ไม่สำคัญ!</span></h1>
+<p style="text-align:center">
+ขอแค่มีหัวใจที่รักการเต้น และพร้อมที่จะแสดงศักยภาพสู่สายตาคนไทยทั้งประเทศ<br />
+ร่วมสมัครเข้าแข่งขันกับ WORLD OF DANCE ได้ทันที<br />
+ถ้าพร้อมแล้ว คลิ๊ก เพื่อลงสมัครกันได้เลย
+</p>
 
-const PARAGRAPH_1 = `รายการ WORLD OF DANCE ค้นหานักเต้นที่มีความสามารถด้านการเต้นทุกรูปแบบ สามารถผสมผสานการเต้นหลากหลายสไตล์ ได้อย่างลงตัว สร้างความโดดเด่น แสดงความคิดสร้างสรรค์ ในการออกแบบท่าเต้น และการเลือกใช้เพลงประกอบการเต้น เพื่อเผยตัวตนที่ชัดเจน ให้เป็นที่น่าจดจำ เพื่อเหมาะสมกับตำแหน่งสุดยอดนักเต้นอันดับหนึ่งของเมืองไทยพร้อมเงินรางวัลหนึ่งล้านบาท
 `
 const PARAGRAPH_2 = `
 ลงทะเบียนและยอมรับเงื่อนไขการแข่งขัน ส่งวีดีโอความสามารถด้านการเต้นของคุณ ประกอบกับการเลือกเสื้อผ้า และสถานที่อย่างเหมาะสม ความยาวไม่เกิน 3 นาที พร้อมกรอกใบสมัคร  และรอการติดต่อกลับจากทางรายการ โดยทางรายการจะติดต่อกลับสำหรับผู้ที่เข้ารอบเท่านั้น
@@ -30,13 +57,43 @@ export default class AboutShow extends React.Component {
     return (
       <Container id="process">
         <DefaultViewport>
-          <HeaderOne withBorder> {' ขั้นตอนการสมัคร '} </HeaderOne>
-          <Text dangerouslySetInnerHTML={{ __html: PARAGRAPH_1 }} />
+          <HeaderOne withLandingBorder> {' ขั้นตอนการสมัคร '} </HeaderOne>
+          <Text
+            style={{ color: 'white', fontSize: '1.5rem' }}
+            dangerouslySetInnerHTML={{ __html: PARAGRAPH_1 }}
+          />
           <br />
-          <HeaderOne withBorder>{'วิธีการสมัคร'}</HeaderOne>
-          <Text dangerouslySetInnerHTML={{ __html: PARAGRAPH_2 }} />
-          <ol style={{paddingLeft: 21, listStyle: 'decimal', lineHeight: '1.71em', marginTop: 34, color: theme.text}} dangerouslySetInnerHTML={{ __html: PARAGRAPH_3 }} />
+          <br />
+          <HeaderOne withLandingBorder>{'วิธีการสมัคร'}</HeaderOne>
+          <Text
+            style={{color:'white', fontSize: '1.5rem' }}
+            dangerouslySetInnerHTML={{ __html: PARAGRAPH_2 }}
+          />
+          <Text 
+            style={{color:'white', fontSize: '1.5rem' }}
+          >
+            <ol
+              style={{
+                paddingLeft: 21,
+                listStyle: 'decimal',
+                lineHeight: '1.71em',
+                marginTop: 34,
+                color: 'white'
+              }}
+              dangerouslySetInnerHTML={{ __html: PARAGRAPH_3 }}
+            />
+          </Text>
         </DefaultViewport>
+        <Image
+          className="animated fadeIn spray-left"
+          src={'/static/images/spray-left.png'}
+          srcHD={'/static/images/spray-left@2x.png'}
+        />
+        <Image
+          className="animated fadeIn spray-right"
+          src={'/static/images/spray-right.png'}
+          srcHD={'/static/images/spray-right@2x.png'}
+        />
       </Container>
     )
   }

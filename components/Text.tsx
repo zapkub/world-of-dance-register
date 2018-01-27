@@ -8,13 +8,13 @@ const TextRoot = css`
   font-weight: 200;
 `
 
-export const TextLabel = styled.p`
+export const TextLabel = styled.div`
   ${TextRoot}
   color: ${theme.gray};
   font-size: 1.1rem;
   line-height: 1.71em;
 `
 
-export const Text = styled.p`
+export const Text = styled.div`
   ${TextRoot}
 `

@@ -62,7 +62,7 @@ const AuditionItemContainer = styled.div`
     font-size: 1.28571rem;
     font-weight: normal;
   }
-  .audition-menu__description {
+  .audition-menu-description__wrapper {
     margin: 21px 0;
     font-size: 1.1428rem;
     flex: 1 1 auto;
@@ -78,29 +78,33 @@ const AuditionMenuContainer = styled(DefaultViewport)`
   `};
 `
 const AuditionItem = (props: AuditionInfo & { isConfirmList?: any }) => (
-  <AuditionItemContainer>
-    <h1>{props.title}</h1>
-    <h2>{props.subtitle}</h2>
-    {console.log(props)}
-    <Text
-      className="age-label"
-      dangerouslySetInnerHTML={{ __html: props.ageLabel }}
-    />
-    <Text
-      style={{ fontWeight: 'bold' }}
-      dangerouslySetInnerHTML={{ __html: props.memberAmountLabel }}
-    />
-    <Text
-      className="audition-menu__description"
-      dangerouslySetInnerHTML={{ __html: props.description }}
-    />
+  <AuditionItemContainer className="audition-menu__item">
+    <h1 className="audition-menu__title">{props.title}</h1>
+    <div className='audition-menu-description__wrapper'>
+      <h2 className="audition-menu__subtitle">{props.subtitle}</h2>
+      <Text
+        className="age-label"
+        dangerouslySetInnerHTML={{ __html: props.ageLabel }}
+      />
+      <Text
+        className="member-amount-label"
+        style={{ fontWeight: 'bold' }}
+        dangerouslySetInnerHTML={{ __html: props.memberAmountLabel }}
+      />
+      <Text
+        className="audition-menu__description"
+        dangerouslySetInnerHTML={{ __html: props.description }}
+      />
+    </div>
     <routes.Link
       route={'register'}
       params={{ type: props.title.toLowerCase() }}
     >
       <a>
         <Button fluid className="audition-menu__button">
-          { props.isConfirmList[props.title.toLowerCase()] ? 'แก้ไขใบสมัคร' : 'สมัครออดิชั่น' }
+          {props.isConfirmList[props.title.toLowerCase()]
+            ? 'แก้ไขใบสมัคร'
+            : 'สมัครออดิชั่น'}
         </Button>
       </a>
     </routes.Link>
@@ -115,11 +119,17 @@ const AuditionItem = (props: AuditionInfo & { isConfirmList?: any }) => (
             style={{ marginTop: 8 }}
             className="audition-menu__button"
           >
-            <span dangerouslySetInnerHTML={{__html: props.isConfirmList[props.title.toLowerCase() + '_team'] ? 'แก้ไขใบสมัคร<br />แบบมากกว่า 1 คน' :  'สมัครออดิชั่น<br/>แบบมากกว่า 1 คน'}} />
+            <span
+              dangerouslySetInnerHTML={{
+                __html: props.isConfirmList[props.title.toLowerCase() + '_team']
+                  ? 'แก้ไขใบสมัคร<br />แบบมากกว่า 1 คน'
+                  : 'สมัครออดิชั่น<br/>แบบมากกว่า 1 คน'
+              }}
+            />
           </Button>
         </a>
       </routes.Link>
-    ) : null}
+    ) : <Button style={{marginTop: 8, opacity: 0}} disabled  className="audition-menu__button">{"สมัครออดิชั่น"}<br />{"มากกว่า"}</Button>}
   </AuditionItemContainer>
 )
 export default class AuditionMenu extends React.Component<

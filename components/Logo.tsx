@@ -5,8 +5,8 @@ import styled from 'styled-components'
 const WOD_LOGO_URL = '/static/images/wod-logo.png'
 const WOD_LOGO_URL_2X = '/static/images/wod-logo@2x.png'
 
-export const WOD_FULL_LOGO_URL = '/static/images/wod-hero.jpg'
-export const WOD_FULL_LOGO_URL_2X = '/static/images/wod-hero@2x.jpg'
+export const WOD_FULL_LOGO_URL = '/static/images/wod-hero.png'
+export const WOD_FULL_LOGO_URL_2X = '/static/images/wod-hero@2x.png'
 
 export const ONE_HD_LOGO = '/static/images/one-hd-logo.png'
 export const ONE_HD_LOGO_2X = '/static/images/one-hd-logo@2x.png'
@@ -18,6 +18,7 @@ export const LogoContainer = styled.div`
   display: inline-block;
   img {
     opacity: 0;
+    width: 100%;
   }
   background-image: url(${(props: any) => props.src});
   background-repeat: no-repeat;
@@ -33,7 +34,7 @@ export const LogoContainer = styled.div`
 
 export const Image = ( { className, style = {}, srcHD, src, disabledAutoSize }: { className?:any, src: string, srcHD: string, style?: any, disabledAutoSize?: boolean } ) => (
   <LogoContainer className={className} src={src} srcHD={srcHD}>
-    {disabledAutoSize ? null : <img src={src} width={style.width} />}
+    {disabledAutoSize ? null : <img style={style} src={src} width={style.width} />}
   </LogoContainer>
 )
 
