@@ -5,8 +5,8 @@ import styled from 'styled-components'
 const WOD_LOGO_URL = '/static/images/wod-logo.png'
 const WOD_LOGO_URL_2X = '/static/images/wod-logo@2x.png'
 
-export const WOD_FULL_LOGO_URL = '/static/images/wod-hero.png'
-export const WOD_FULL_LOGO_URL_2X = '/static/images/wod-hero@2x.png'
+export const WOD_FULL_LOGO_URL = '/static/images/shiny-logo.png'
+export const WOD_FULL_LOGO_URL_2X = '/static/images/shiny-logo@2x.png'
 
 export const ONE_HD_LOGO = '/static/images/one-hd-logo.png'
 export const ONE_HD_LOGO_2X = '/static/images/one-hd-logo@2x.png'

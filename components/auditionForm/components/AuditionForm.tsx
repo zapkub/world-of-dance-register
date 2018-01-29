@@ -37,7 +37,8 @@ const AuditionFormContainer = styled.div`
         flex: 1 1 50%;
         padding: 13px 8px;
       }
-    `} ${bp('tablet')`
+    `};
+    ${bp('tablet')`
       flex-direction: row;
       .item {
         padding: 0 8px;
@@ -75,7 +76,8 @@ const AuditionFormContainer = styled.div`
       flex-direction: column;
       padding: 8px 13px;
       box-sizing: border-box;
-    `} ${bp('tablet')`
+    `};
+    ${bp('tablet')`
       flex-direction:row;
     `};
   }
@@ -219,7 +221,7 @@ export default (props: AuditionFormPropTypes) => {
                       selected={
                         props.auditionInfo[key]
                           ? moment(props.auditionInfo[key])
-                          : moment()
+                          : moment().add(543, 'year')
                       }
                       onChange={value => props.onFormChange(key, value)}
                     />

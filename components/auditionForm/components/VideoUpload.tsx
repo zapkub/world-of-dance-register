@@ -73,7 +73,7 @@ export default (props: WithVideoUploadPropType) => {
           </UploadButton>
         )}
         <UploadButton style={{ marginTop: 8, padding: '13px 21px' }}>
-          {'อัพโหลดใหม่'}
+          {props.loading < 100 ? `กำลังอัพโหลด... (${typeof props.loading === 'number' ? props.loading.toFixed(2) : ''} %)` : 'อัพโหลดอีกครั้ง'}
           <input
             type="file"
             accept="video/mp4,video/x-m4v,video/*"
@@ -108,7 +108,6 @@ export default (props: WithVideoUploadPropType) => {
             {`ขนาดไม่เกิน 300MB`}
           </div>
         )}
-
         <input
           type="file"
           accept="video/mp4,video/x-m4v,video/*"
@@ -122,7 +121,7 @@ export default (props: WithVideoUploadPropType) => {
         disabled={!props.videoFile || props.loading < 100}
         onClick={props.confirmUploadVideo}
       >
-        {props.loading < 100 ? `กำลังอัพโหลด... (${typeof props.loading === 'number' ? props.loading.toFixed(2) : ''} %)` : 'อัพโหลด'}
+        {props.loading < 100 ? `กำลังอัพโหลด... (${typeof props.loading === 'number' ? props.loading.toFixed(2) : ''} %)` : 'คลิปเพื่อยืนยันการอัพโหลด'}
       </Button>
     </Container>
   )

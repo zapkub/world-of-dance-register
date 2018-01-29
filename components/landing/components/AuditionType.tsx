@@ -13,8 +13,21 @@ const AuditionTypeContainer = styled.div`
     padding: 13px 8px;
     margin: 8px 0 21px 0;
   }
+  .audition-menu__container {
+    font-size: 34px;
+  }
+  .audition-menu-description__wrapper {
+    font-size: 1.2em;
+  }
   .audition-menu__description {
     color: white;
+    margin-top: 21px;
+  }
+  .audition-menu__button {
+    line-height: 0.8;
+    .sub-label {
+      font-size: 0.8em;
+    }
   }
   .audition-menu__item {
     padding: 0 13px;
@@ -25,7 +38,7 @@ const AuditionTypeContainer = styled.div`
   }
   .audition-menu__subtitle {
     color: white;
-    font-size: 2rem;
+    font-size: 1.4em;
   }
 
   .audition-menu__title {
@@ -33,10 +46,14 @@ const AuditionTypeContainer = styled.div`
   }
   .age-label {
     color: ${theme.blue};
-    font-size: 1rem;
+    font-size: 1em;
+    font-weight: bold;
   }
   .member-amount-label {
-    font-size: 1rem;
+    font-size: 1em;
+    font-weight: 200;
+    font-family: 'DB Helvethaica X';
+
     color: ${theme.blue};
   }
   .spray-left {
@@ -52,14 +69,14 @@ const AuditionTypeContainer = styled.div`
 `
 export default () => (
   <AuditionTypeContainer>
-    <DefaultViewport id="type-of-audition">
+    <DefaultViewport style={{paddingTop: 21}} id="type-of-audition">
       <HeaderOne withLandingBorder center>
         {'ประเภทของ'}
         {'การสมัคร'}
       </HeaderOne>
-      <AuditionMenu />
+      <AuditionMenu userExtraHead />
     </DefaultViewport>
-    <Image
+    {/* <Image
       className="animated fadeIn spray-left"
       src={'/static/images/spray-left.png'}
       srcHD={'/static/images/spray-left@2x.png'}
@@ -68,6 +85,6 @@ export default () => (
       className="animated fadeIn spray-right"
       src={'/static/images/spray-right.png'}
       srcHD={'/static/images/spray-right@2x.png'}
-    />
+    /> */}
   </AuditionTypeContainer>
 )

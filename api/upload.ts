@@ -34,6 +34,7 @@ export default async function(
             auditionType: req.params.type,
             ownerId: req.user._id
           }).lean()
+
           if (!auditionInfo) {
             auditionInfo = await context.models.AuditionInformation.create({
               ...defaultFormInfo(req.params.type),
@@ -62,46 +63,69 @@ export default async function(
             record: auditionInfo
           })
           if (req.files.vid) {
-            const path = await converter(
+            const queue = converter(
               req.files.vid.path,
               req.user._id + req.params.type
             )
-            const result = await bucket.upload(path, {
-              destination: `/${req.params.type}/${req.user._id}/video`,
-              metadata: {
-                contentType: 'video/mp4'
-              }
-            })
-            console.log(
-              req.user._id,
-              'upload file to storage complete, write url to audition form'
-            )
-            if (result[0]) {
-              await result[0].makePublic()
-              const meta = await result[0].getMetadata()
-              if (meta[0]) {
-                const k = meta[0] as any
-                /**
-                 * Find and write data
-                 */
-                await context.models.AuditionInformation.findOneAndUpdate(
-                  {
-                    auditionType: req.params.type,
-                    ownerId: req.user._id
-                  },
-                  {
-                    $set: {
-                      videoURL: k.mediaLink
+            try {
+              const path = await queue.promise
+              const result = await bucket.upload(path, {
+                destination: `/${req.params.type}/${req.user._id}/video`,
+                metadata: {
+                  contentType: 'video/mp4'
+                }
+              })
+              console.log(
+                req.user._id,
+                'upload file to storage complete, write url to audition form'
+              )
+              if (result[0]) {
+                await result[0].makePublic()
+                const meta = await result[0].getMetadata()
+                if (meta[0]) {
+                  const k = meta[0] as any
+                  /**
+                   * Find and write data
+                   */
+                  await context.models.AuditionInformation.findOneAndUpdate(
+                    {
+                      auditionType: req.params.type,
+                      ownerId: req.user._id
+                    },
+                    {
+                      $set: {
+                        videoURL: k.mediaLink
+                      }
                     }
-                  }
-                )
-                console.log('update audition url file complete: ', k.mediaLink)
-                fs.unlink(req.files.vid.path, () => {
-                  fs.unlink(path, () => {
-                    console.log('unlink tmp files: ', path, req.files.vid.path)
+                  )
+                  console.log(
+                    'update audition url file complete: ',
+                    k.mediaLink
+                  )
+                  fs.unlink(req.files.vid.path, () => {
+                    fs.unlink(path, () => {
+                      console.log(
+                        'unlink tmp files: ',
+                        path,
+                        req.files.vid.path
+                      )
+                    })
                   })
-                })
+                }
               }
+            } catch (e) {
+              console.error('[upload]', e)
+              await context.models.AuditionInformation.findOneAndUpdate(
+                {
+                  auditionType: req.params.type,
+                  ownerId: req.user._id
+                },
+                {
+                  $set: {
+                    videoURL: 'ERROR'
+                  }
+                }
+              )
             }
           }
         }
@@ -126,7 +150,9 @@ export default async function(
               const meta = await result[0].getMetadata()
               if (meta[0]) {
                 const k = meta[0] as any
-                const url = `https://storage.googleapis.com/${k.bucket}/${ k.name }`
+                const url = `https://storage.googleapis.com/${k.bucket}/${
+                  k.name
+                }`
                 console.log(url)
                 res.json({ msg: 'done', url })
                 await fs.unlink(req.files.image.path, function() {

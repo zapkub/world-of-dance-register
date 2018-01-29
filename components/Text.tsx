@@ -3,9 +3,10 @@ import * as React from 'react'
 import theme from './theme';
 
 const TextRoot = css`
-  line-height: 1.71em;
   color: ${theme.text};
   font-weight: 200;
+  line-height: 1.3;
+  font-family: Helvetica, Arial;
 `
 
 export const TextLabel = styled.div`
@@ -15,6 +16,11 @@ export const TextLabel = styled.div`
   line-height: 1.71em;
 `
 
-export const Text = styled.div`
+const TextElement = styled.div`
   ${TextRoot}
 `
+
+export const Text:any = (props: any) => {
+  return <TextElement {...props} className={`${props.className} text-element`} />
+}
+

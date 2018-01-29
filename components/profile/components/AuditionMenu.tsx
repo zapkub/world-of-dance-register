@@ -10,6 +10,7 @@ import { AuditionInfoList } from '../../../i18n/th-th'
 
 interface AuditionMenuPropTypes {
   user?: User
+  userExtraHead?: boolean
   isConfirmList?: {
     junior?: any
     junior_team?: any
@@ -23,20 +24,24 @@ const AuditionItemContainer = styled.div`
   ${bp('mobile')`
     width: 100%;
     box-sizing: border-box;
-    margin-bottom: 34px;
+    margin: 34px auto 0 auto;
+    max-width: 480px;
 
     .audition-menu__button {
       width: 100%;
     }
-  `} ${bp('tablet')`
+  `};
+  ${bp('tablet')`
     width: calc(100% / 3);
     padding: 0 13px;
     .audition-menu__button {
       
     }
-  `} ${bp('desktop')`
+  `};
+  ${bp('desktop')`
     padding: 0 ${55 / 2}px;
-  `} display: flex;
+  `};
+  display: flex;
   flex-direction: column;
   &:nth-chid-first(1) {
     padding-left: 0;
@@ -59,12 +64,15 @@ const AuditionItemContainer = styled.div`
     color: ${theme.blue};
   }
   .age-label {
-    font-size: 1.28571rem;
+    font-size: 1.28571em;
     font-weight: normal;
+  }
+  .sub-label {
+    font-size: 1em;
   }
   .audition-menu-description__wrapper {
     margin: 21px 0;
-    font-size: 1.1428rem;
+    font-size: 1.1428em;
     flex: 1 1 auto;
   }
 `
@@ -73,14 +81,32 @@ const AuditionMenuContainer = styled(DefaultViewport)`
   align-items: stetch;
   ${bp('mobile')`
     flex-direction: column;
-  `} ${bp('tablet')`
+  `};
+  ${bp('tablet')`
     flex-direction: row;
   `};
+  .render-head {
+    width: 100%;
+    position: relative;
+    height: 100px;
+    img {
+      position: absolute;
+      left:50%;
+      width: 400px;
+      transform: translateX(-50%);
+    }
+  }
 `
-const AuditionItem = (props: AuditionInfo & { isConfirmList?: any }) => (
+const AuditionItem = (
+  props: AuditionInfo & { renderHead?: any; isConfirmList?: any }
+) => (
   <AuditionItemContainer className="audition-menu__item">
-    <h1 className="audition-menu__title">{props.title}</h1>
-    <div className='audition-menu-description__wrapper'>
+    {props.renderHead ? (
+      props.renderHead()
+    ) : (
+      <h1 className="audition-menu__title">{props.title}</h1>
+    )}
+    <div className="audition-menu-description__wrapper">
       <h2 className="audition-menu__subtitle">{props.subtitle}</h2>
       <Text
         className="age-label"
@@ -88,7 +114,7 @@ const AuditionItem = (props: AuditionInfo & { isConfirmList?: any }) => (
       />
       <Text
         className="member-amount-label"
-        style={{ fontWeight: 'bold' }}
+        style={{  }}
         dangerouslySetInnerHTML={{ __html: props.memberAmountLabel }}
       />
       <Text
@@ -103,8 +129,8 @@ const AuditionItem = (props: AuditionInfo & { isConfirmList?: any }) => (
       <a>
         <Button fluid className="audition-menu__button">
           {props.isConfirmList[props.title.toLowerCase()]
-            ? 'แก้ไขใบสมัคร'
-            : 'สมัครออดิชั่น'}
+            ? '>> แก้ไขใบสมัคร <<'
+            : '>> สมัครออดิชั่น <<'}
         </Button>
       </a>
     </routes.Link>
@@ -120,16 +146,32 @@ const AuditionItem = (props: AuditionInfo & { isConfirmList?: any }) => (
             className="audition-menu__button"
           >
             <span
+              style={{ lineHeight: 0 }}
               dangerouslySetInnerHTML={{
                 __html: props.isConfirmList[props.title.toLowerCase() + '_team']
-                  ? 'แก้ไขใบสมัคร<br />แบบมากกว่า 1 คน'
-                  : 'สมัครออดิชั่น<br/>แบบมากกว่า 1 คน'
+                  ? '>> แก้ไขใบสมัคร <<<br /><span class="sub-label">แบบมากกว่า 1 คน</span>'
+                  : '>> สมัครออดิชั่น <<<br/> <span class="sub-label">แบบมากกว่า 1 คน</span>'
               }}
             />
           </Button>
         </a>
       </routes.Link>
-    ) : <Button style={{marginTop: 8, opacity: 0}} disabled  className="audition-menu__button">{"สมัครออดิชั่น"}<br />{"มากกว่า"}</Button>}
+    ) : (
+      <Button
+        style={{ marginTop: 8, opacity: 0 }}
+        disabled
+        className="audition-menu__button"
+      >
+        <span
+          style={{ lineHeight: 0 }}
+          dangerouslySetInnerHTML={{
+            __html: props.isConfirmList[props.title.toLowerCase() + '_team']
+              ? '>> แก้ไขใบสมัคร <<<br /><span class="sub-label">แบบมากกว่า 1 คน</span>'
+              : '>> สมัครออดิชั่น <<<br/> <span class="sub-label">แบบมากกว่า 1 คน</span>'
+          }}
+        />
+      </Button>
+    )}
   </AuditionItemContainer>
 )
 export default class AuditionMenu extends React.Component<
@@ -138,14 +180,22 @@ export default class AuditionMenu extends React.Component<
 > {
   render() {
     return (
-      <AuditionMenuContainer style={{ paddingTop: 0 }}>
-        {AuditionInfoList.map(audition => (
-          <AuditionItem
-            {...audition}
-            isConfirmList={this.props.isConfirmList || {}}
-            key={audition.title}
-          />
-        ))}
+      <AuditionMenuContainer className='auditon-menu__container' style={{ paddingTop: 0 }}>
+        {AuditionInfoList.map(audition => {
+          const renderHead = () => (
+            <div className='render-head'>
+              <img src={`/static/images/${audition.title.toLocaleLowerCase()}-header@2x.png`} />
+            </div>
+          )
+          return (
+            <AuditionItem
+              renderHead={!this.props.userExtraHead ? null : renderHead}
+              {...audition}
+              isConfirmList={this.props.isConfirmList || {}}
+              key={audition.title}
+            />
+          )
+        })}
       </AuditionMenuContainer>
     )
   }

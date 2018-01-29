@@ -1,7 +1,10 @@
 var hbjs = require('handbrake-js')
 const vidConvertedJob = {}
-export default async (path, id): Promise<any> => {
-  return new Promise((resolve, reject) => {
+export default (path, id): {
+  promise: Promise<any>,
+  instance: any
+} => {
+  const promise = new Promise((resolve, reject) => {
     if (vidConvertedJob[id]) {
       vidConvertedJob[id].cancel()
     }
@@ -15,7 +18,7 @@ export default async (path, id): Promise<any> => {
       })
       .on('error', function(err) {
         // invalid user input, no video found etc
-        reject(err)
+        resolve(err)
       })
       .on('progress', function(progress) {
         console.log(
@@ -29,7 +32,13 @@ export default async (path, id): Promise<any> => {
       })
       .on('cancelled', () => {
         console.log(`job from ${id} has cancelled`)
+        resolve('cancel')
       })
-      console.log(vidConvertedJob[id].options)
+    console.log(vidConvertedJob[id].options)
   })
+
+  return {
+    promise,
+    instance: vidConvertedJob[id]
+  }
 }

@@ -8,6 +8,7 @@ import {
   HeaderRoot,
   withLandingBottomBorder
 } from '../../Header'
+import bp from 'styled-components-breakpoint'
 import { Image } from '../../Logo'
 
 const ABOUT_SHOW_MIN_HEIGHT = 480
@@ -17,16 +18,28 @@ const Background = styled.div`
     position: absolute;
     left: 0;
     top: 50%;
+
+    ${bp('mobile')`
+      display:none;
+    `};
+    ${bp('desktop')`
+      display: block;
+    `};
   }
   .decorate-right {
     position: absolute;
     right: 0;
     top: 50%;
+    ${bp('mobile')`
+      display:none;
+    `};
+    ${bp('desktop')`
+      display: block;
+    `};
   }
 `
 const Container = styled.div`
   height: auto;
-  min-height: 100vh;
   text-align: center;
   position: relative;
   z-index: 2;
@@ -55,33 +68,31 @@ const Container = styled.div`
 
 // background-color: ${theme.blackBlue};
 const AboutShowTitleHeader = styled.div`
-  margin: 34px auto;
-  ${HeaderRoot};
-  font-weight: normal;
-  color: white;
-  font-size: 50px;
+ 
   .about-header__show {
     padding-left: ${38 + 21}px;
   }
 
-  ${withLandingBottomBorder};
 `
 const AboutShowText = styled(Text)`
   color: ${theme.matteWhite};
   margin: 21px 0;
-  font-size: 1.1428rem;
-  h1 {
-    color: ${theme.blue};
-    font-size: 2.4rem;
-    font-family: 'Kanit', Thonburi, Arial;
-  }
+  font-size: 1.2em;
   .highlight {
-    color: ${theme.glowBlue};
+    color: #41c5f6;
     font-weight: bold;
+  }
+
+  h2.sub-head {
+    color: ${theme.blue};
+    font-size: 55px;
+    font-family: 'DB Helvethaica X Med', Thonburi, Arial;
+    line-height: 1.5em;
+    color: #41c5f6;
   }
 `
 
-const PARAGRAPH_1 = `<h1> “ครั้งแรกในเมืองไทย กับรายการแข่งขันเต้นระดับเวิร์ลคลาส!”</h2> `
+const PARAGRAPH_1 = `<h2 class='sub-head'> “ครั้งแรกในเมืองไทย กับรายการแข่งขันเต้นระดับเวิร์ลคลาส!”</h2> `
 const PARAGRAPH_2 = `
 <span style='font-weight:bold'>WORLD OF DANCE (WOD)</span> รายการประกวดเต้นอันดับหนึ่งจากสหรัฐอเมริกา ที่สร้างชื่อจาก Judge ขาแด๊นซ์ระดับโลกอย่าง
 <br />
@@ -103,11 +114,9 @@ export default class AboutShow extends React.Component {
     return (
       <Background>
         <Container id="about-show">
-          <div className="bg" />
-          <DefaultViewport className="content-wrapper">
+          <DefaultViewport style={{paddingTop: 0}} className="content-wrapper">
             <AboutShowTitleHeader>
-              <div className="about-header__about">{'เกี่ยวกับ'}</div>
-              <div className="about-header__show">{'รายการ'}</div>
+              <h1 className="about-header__about">{'เกี่ยวกับรายการ'}</h1>
             </AboutShowTitleHeader>
             <div>
               <AboutShowText
@@ -123,7 +132,7 @@ export default class AboutShow extends React.Component {
             </div>
           </DefaultViewport>
         </Container>
-        <Image
+        {/* <Image
           className="animated fadeIn decorate-right"
           src={'/static/images/decorate-right-top.png'}
           srcHD={'/static/images/decorate-right-top@2x.png'}
@@ -132,7 +141,7 @@ export default class AboutShow extends React.Component {
           className="animated fadeIn decorate-left"
           src={'/static/images/decorate-left-top.png'}
           srcHD={'/static/images/decorate-left-top@2x.png'}
-        />
+        /> */}
       </Background>
     )
   }

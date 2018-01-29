@@ -17,6 +17,7 @@ export const withLandingBottomBorder = css`
     content: " ";
     position: absolute;
     width: 50%;
+    min-width: 250px;
     height: 30px;
     left: 50%;
     bottom: -50px;

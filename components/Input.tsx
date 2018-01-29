@@ -4,6 +4,7 @@ import theme from './theme'
 import DatePicker from 'react-datepicker'
 import * as moment from 'moment'
 import { withState, compose, lifecycle } from 'recompose'
+const range = require('range')
 
 const fluid = css`
   display: block;
@@ -18,9 +19,9 @@ const RootInput = css`
     outline: 2px ${theme.blue} solid;
     box-shadow: 0 0 4px ${theme.blue};
   }
-  &:disabled{
+  &:disabled {
+    background: white;
     cursor: not-allowed;
-
   }
 `
 
@@ -32,10 +33,9 @@ interface TextInputMultipleLinePropTypes
 export const TextInputMultipleLine: React.SFC<
   TextInputMultipleLinePropTypes
 > = styled.textarea`
-    ${RootInput} 
-    ${(props: { fluid: boolean }) =>
-    props.fluid ? fluid : ''} 
-    resize: none;
+  ${RootInput};
+  ${(props: { fluid: boolean }) => (props.fluid ? fluid : '')};
+  resize: none;
 ` as any
 
 interface TextInputPropTypes
@@ -57,6 +57,13 @@ export const TextInputWrapper = styled.div`
       ${RootInput};
     }
   }
+  .input-row-wrap {
+    display: flex;
+    align-items: center;
+    .input__selector {
+      margin-right: 8px;
+    }
+  }
 `
 export const TextInputLabel = styled.label`
   font-size: 1rem;
@@ -76,7 +83,7 @@ export const TextInputWithLabel = (props: {
 }) => {
   return (
     <TextInputWrapper style={props.style}>
-      <TextInputLabel dangerouslySetInnerHTML={{__html:props.label}} />
+      <TextInputLabel dangerouslySetInnerHTML={{ __html: props.label }} />
       <TextInput
         placeholder={props.placeholder}
         className="TextInput__input"
@@ -94,27 +101,6 @@ interface DateInputProp {
   isMount?: any
   disabled?: boolean
 }
-export const DateInputWithLabel = compose<DateInputProp, DateInputProp>(
-  withState('isMount', 'setMount', false),
-    lifecycle<any, any>({
-    componentDidMount() {
-      this.props.setMount(true)
-    }
-  })
-)((props: DateInputProp) => {
-  if(!props.isMount){
-    return <div />
-  }
-  return (
-    <TextInputWrapper>
-      <TextInputLabel dangerouslySetInnerHTML={{__html:props.label}} />
-      <div style={{ display: 'inline-block' }}>
-        <DatePicker selected={props.selected} onChange={props.onChange} />
-      </div>
-      <span style={{color: theme.blue, marginLeft: 8}}>{'อายุ ' + (moment().year() - props.selected.year()) + ' ปี'}</span>
-    </TextInputWrapper>
-  )
-})
 
 const Container = styled.div`
   border-radius: 4px;
@@ -228,7 +214,10 @@ export class SelectorInput extends React.Component<SelectInputPropTypes, any> {
   render() {
     const selectedValue = this.props.value || this.props.placeholder
     return (
-      <UISelectContainer style={this.props.containerStyle}>
+      <UISelectContainer
+        className="input__selector"
+        style={this.props.containerStyle}
+      >
         <ValueInput
           disabled
           placeholder={this.props.placeholder}
@@ -256,6 +245,66 @@ export class SelectorInput extends React.Component<SelectInputPropTypes, any> {
     )
   }
 }
+
+export const DateInputWithLabel = compose<DateInputProp, DateInputProp>(
+  withState('isMount', 'setMount', false),
+  lifecycle<any, any>({
+    componentDidMount() {
+      this.props.setMount(true)
+    }
+  })
+)((props: DateInputProp) => {
+  if (!props.isMount) {
+    return <div />
+  }
+  const day = props.selected.date()
+  const month = props.selected.month() + 1
+  const year = props.selected.year() + 543
+  const onDateChange = (day, month, year) => {
+    const value = `${moment(month, 'MM').format('MMMM')} ${day}, ${year - 543}`
+    props.onChange(moment(new Date(value)))
+  }
+  return (
+    <TextInputWrapper>
+      <TextInputLabel dangerouslySetInnerHTML={{ __html: props.label }} />
+      {/* <div style={{ display: 'inline-block' }}>
+        <DatePicker selected={props.selected} onChange={props.onChange} />
+      </div> */}
+      <div className="input-row-wrap">
+        <SelectorInput
+          value={day}
+          onChange={value => onDateChange(value, month, year)}
+          options={range
+            .range(1, 32)
+            .map(item => ({ value: item, label: item + '' }))}
+          name="วัน"
+        />
+        <SelectorInput
+          value={month}
+          onChange={value => onDateChange(day, value, year)}
+          options={range.range(1, 13).map(item => ({
+            value: item,
+            label: moment(item, 'MM').format('MMMM')
+          }))}
+          name="วัน"
+        />
+        <SelectorInput
+          value={year}
+          onChange={value => onDateChange(day, month, value)}
+          options={range
+            .range(2400, 2565)
+            .map(item => ({ value: item, label: item }))}
+          name="วัน"
+        />
+
+        <span style={{ color: theme.blue, marginLeft: 8, whiteSpace: 'pre' }}>
+          {'อายุ ' + (moment().year() - props.selected.year()) + ' ปี'}
+        </span>
+      </div>
+    </TextInputWrapper>
+  )
+})
+
 export const SelectorInputWithLabel = (
   props: SelectInputPropTypes & { label?: string }
 ) => {

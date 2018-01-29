@@ -4,6 +4,7 @@ import { withApollo, graphql } from 'react-apollo'
 import { ApolloClient } from 'apollo-client'
 import validator from '../../api/AuditionInformation/validator'
 import singleAuditionProfileFields from '../../api/AuditionInformation/singleAuditionProfileFields'
+import th from '../../i18n/th-th'
 import routes from '../../routes'
 import {
   defaultFormInfo,
@@ -409,7 +410,7 @@ export default compose<any, any>(
         }
         ownProps.setSaving(true)
         try {
-          // validator(ownProps.auditionInfo)
+          validator(ownProps.auditionInfo)
           await mutate({
             variables: {
               record: {
@@ -428,7 +429,7 @@ export default compose<any, any>(
           routes.Router.pushRoute('thankyou')
         } catch (e) {
           if (e.name === 'validate-error') {
-            alert(e.message)
+            alert(th[e.message])
           } else {
             console.error(e)
           }
@@ -439,7 +440,7 @@ export default compose<any, any>(
     })
   }),
   lifecycle<
-    {
+      {
       auditionInfo: AuditionInformation
       setIsMount: (value) => void
       refreshVidStatus: () => void

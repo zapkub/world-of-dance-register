@@ -9,22 +9,46 @@ import Process from './components/Process'
 import styled from 'styled-components'
 import theme from '../theme'
 import { Image } from '../Logo'
+import { withLandingBottomBorder, HeaderRoot } from '../Header';
 const LandingContainer = styled.div`
-  background-image: url(/static/images/bg-pattern-repeat.png);
+  background-position-y: 300px;
+  background-image: url(/static/images/bg-large@2x.jpg);
+  font-family: 'DB Helvethaica X', Thonburi, Arial;
+  background-size: contain;
   color: #eee;
+  font-size: 24px;
+  -webkit-font-smoothing: antialiased;
+  .text-element {
+    color: white;
+    font-family: 'DB Helvethaica X', Thonburi, Arial;
+  }
   p {
     color: #eee;
   }
   h1 {
-    font-size: 2.4rem;
-    color: white;
+    ${HeaderRoot};
+    font-size: 55px;
     font-weight: normal;
-    font-family: 'Kanit', Thonburi, Arial;
+    font-family: 'PSL NatrinthornExtra Pro', Thonburi, Arial;
+    text-align: center;
+    margin: 34px auto;
+    font-weight: normal;
+    color: white;
+    ${withLandingBottomBorder};
+  }
+  h2 {
+    color: ${theme.blue};
+    text-align:center;
+    font-size: 55px;
+    font-family: 'DB Helvethaica X Med', Thonburi, Arial;
+    line-height: 1.5em;
+    color: #41c5f6;
   }
   .highlight {
     color: ${theme.blue};
   }
-  .landing-button, .audition-menu__button {
+  .landing-button,
+  .audition-menu__button {
     display: block;
     text-align: center;
     width: 100%;
@@ -33,8 +57,10 @@ const LandingContainer = styled.div`
     border-color: #fff;
     border-width: 2px;
     border-radius: 20px;
+    font-family: 'PSL NatrinthornExtra Pro', Thonburi, Arial;
     background: #0f141a;
     padding: 13px 18px;
+    font-weight: normal;
     &:hover {
       color: white;
       border-width: 2px;
@@ -43,21 +69,39 @@ const LandingContainer = styled.div`
       box-shadow: 1px 1px 35px ${theme.shadow};
     }
   }
+  .hero {
+    background-image: url(/static/images/hero-bg@2x.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: relative;
+    .wrapper {
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+   
+  }
+  .content {
+    background-size: contain;
+  }
 `
 const LandingPage = () => (
   <LandingContainer style={{ backgroundColor: '#000e19' }}>
-    <div
-      style={{ background: 'url(/static/images/bg-pattern-repeat.png) black' }}
-    >
-      <Welcome />
+    <div className="hero">
+      <div className="wrapper">
+        <Welcome />
+      </div>
     </div>
-    <AboutShow />
-    <Process />
-    <AuditionType />
-    <Image
-      src={'/static/images/decorate-footer.png'}
-      srcHD={'/static/images/decorate-footer@2x.png'}
-    />
+    <div className="content">
+      <AboutShow />
+      <Process />
+      <AuditionType />
+      <Image
+        src={'/static/images/decorate-footer.png'}
+        srcHD={'/static/images/decorate-footer@2x.png'}
+      />
+    </div>
   </LandingContainer>
 )
 

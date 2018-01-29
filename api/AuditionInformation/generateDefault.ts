@@ -1,5 +1,6 @@
 import singleAuditionProfileFields from "./singleAuditionProfileFields";
 const uuid = require('uuid')
+const moment = require('moment')
 
 export  const MEMBER_TYPE_LIMIT = {
   upper: {
@@ -33,7 +34,7 @@ function genDefaultMembers(type: AuditionEnumType) {
       lastname: '',
       mobileNo: '',
       gender: 'male',
-      dateOfBirth: (new Date()),
+      dateOfBirth: (moment()),
       nickname: '',
       profileImageURL: '',
       __typename: 'AuditionInformationMembers'

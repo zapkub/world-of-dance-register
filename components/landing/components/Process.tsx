@@ -1,6 +1,7 @@
 import * as React from 'react'
 import theme from '../../theme'
 import styled from 'styled-components'
+import bp from 'styled-components-breakpoint'
 import { Text } from '../../Text'
 import { DefaultViewport } from '../../Viewport'
 import { withBottomBorder, HeaderRoot, HeaderOne } from '../../Header'
@@ -9,18 +10,12 @@ import { Image } from '../../Logo';
 const ABOUT_SHOW_MIN_HEIGHT = 480
 
 const Container = styled.div`
-  background-image: url(/static/images/process-bg.png);
   background-position: center center;
   background-repeat: no-repeat;
   min-height: ${ABOUT_SHOW_MIN_HEIGHT}px;
-  font-size: 1.1rem;
+  text-align:center;
+  font-size: 1em;
   position:relative;
-  h1 {
-    color: white;
-    font-weight: normal;
-    text-align: center;
-  }
-
   .spray-left {
     position: absolute;
     left: 0;
@@ -31,10 +26,13 @@ const Container = styled.div`
     right: 0;
     bottom: 0%;
   }
+  li {
+    margin: 31px 0;
+  }
 `
 
 const PARAGRAPH_1 = `
-<h1 style="margin:21px 0;"><span class="highlight">ไม่ว่าคุณจะเป็นใคร อายุเท่าไหร่ เพศอะไร ไม่สำคัญ!</span></h1>
+<h2 style="margin:21px 0;"><span class="highlight">ไม่ว่าคุณจะเป็นใคร อายุเท่าไหร่ เพศอะไร ไม่สำคัญ!</span></h2>
 <p style="text-align:center">
 ขอแค่มีหัวใจที่รักการเต้น และพร้อมที่จะแสดงศักยภาพสู่สายตาคนไทยทั้งประเทศ<br />
 ร่วมสมัครเข้าแข่งขันกับ WORLD OF DANCE ได้ทันที<br />
@@ -56,27 +54,27 @@ export default class AboutShow extends React.Component {
   render() {
     return (
       <Container id="process">
-        <DefaultViewport>
-          <HeaderOne withLandingBorder> {' ขั้นตอนการสมัคร '} </HeaderOne>
+        <DefaultViewport style={{paddingTop: 0}}>
+          <h1> {' ขั้นตอนการสมัคร '} </h1>
           <Text
-            style={{ color: 'white', fontSize: '1.5rem' }}
+            style={{ color: 'white', fontSize: '1.2em' }}
             dangerouslySetInnerHTML={{ __html: PARAGRAPH_1 }}
           />
           <br />
           <br />
           <HeaderOne withLandingBorder>{'วิธีการสมัคร'}</HeaderOne>
           <Text
-            style={{color:'white', fontSize: '1.5rem' }}
+            style={{color:'white', fontSize: '1.2em' }}
             dangerouslySetInnerHTML={{ __html: PARAGRAPH_2 }}
           />
           <Text 
-            style={{color:'white', fontSize: '1.5rem' }}
+            style={{color:'white', fontSize: '1.2em' }}
           >
             <ol
               style={{
                 paddingLeft: 21,
                 listStyle: 'decimal',
-                lineHeight: '1.71em',
+                textAlign: 'left',
                 marginTop: 34,
                 color: 'white'
               }}
@@ -84,7 +82,7 @@ export default class AboutShow extends React.Component {
             />
           </Text>
         </DefaultViewport>
-        <Image
+        {/* <Image
           className="animated fadeIn spray-left"
           src={'/static/images/spray-left.png'}
           srcHD={'/static/images/spray-left@2x.png'}
@@ -94,6 +92,7 @@ export default class AboutShow extends React.Component {
           src={'/static/images/spray-right.png'}
           srcHD={'/static/images/spray-right@2x.png'}
         />
+         */}
       </Container>
     )
   }
