@@ -35,7 +35,7 @@ const PARAGRAPH_1 = `
 <h2 style="margin:21px 0;"><span class="highlight">ไม่ว่าคุณจะเป็นใคร อายุเท่าไหร่ เพศอะไร ไม่สำคัญ!</span></h2>
 <p style="text-align:center">
 ขอแค่มีหัวใจที่รักการเต้น และพร้อมที่จะแสดงศักยภาพสู่สายตาคนไทยทั้งประเทศ<br />
-ร่วมสมัครเข้าแข่งขันกับ WORLD OF DANCE Thailand ได้ทันที<br />
+ร่วมสมัครเข้าแข่งขันกับ WORLD OF DANCE THAILAND ได้ทันที<br />
 </p>
 
 `

@@ -103,7 +103,7 @@ const PARAGRAPH_2 = `
 <br />
 เพื่อสร้างอลังการงานโชว์ที่สมบูรณ์แบบที่สุด ในการชิงตำแหน่ง “สุดยอดนักเต้นอันดับหนึ่งของเมืองไทย” พิชิตเงินรางวัล 1 ล้านบาท! 
 <br />
-<span class='highlight'>เตรียมหัวใจไว้สั่นสะเทือนกับ “ WORLD OF DANCE Thailand“   กรกฎาคมนี้ ได้ทาง ช่องone 31  </span>
+<span class='highlight'>เตรียมหัวใจไว้สั่นสะเทือนกับ “ WORLD OF DANCE THAILAND“   กรกฎาคมนี้ ได้ทาง ช่องone 31  </span>
 `
 const PARAGRAPH_3 = ``
 

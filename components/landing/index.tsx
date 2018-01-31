@@ -90,6 +90,7 @@ const LandingContainer = styled.div`
     `}
     ${breakpoint('tablet')`
       width: 100%;
+      max-width: 99999px;
       font-size:32px;
     `}
   }
