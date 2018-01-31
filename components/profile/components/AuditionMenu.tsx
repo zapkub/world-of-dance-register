@@ -21,6 +21,7 @@ interface AuditionMenuPropTypes {
 }
 
 const AuditionItemContainer = styled.div`
+  overflow: hidden;
   ${bp('mobile')`
     width: 100%;
     box-sizing: border-box;
@@ -64,7 +65,7 @@ const AuditionItemContainer = styled.div`
     color: ${theme.blue};
   }
   .age-label {
-    font-size: 1.28571em;
+    font-size: 1em;
     font-weight: normal;
   }
   .sub-label {
@@ -74,6 +75,11 @@ const AuditionItemContainer = styled.div`
     margin: 21px 0;
     font-size: 1.1428em;
     flex: 1 1 auto;
+  }
+  .audition-menu__button{
+    padding: 8px 13px;
+    line-height:1.2;
+    font-size: 1em;
   }
 `
 const AuditionMenuContainer = styled(DefaultViewport)`

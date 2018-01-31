@@ -429,7 +429,7 @@ export default compose<any, any>(
           routes.Router.pushRoute('thankyou')
         } catch (e) {
           if (e.name === 'validate-error') {
-            alert(th[e.message])
+            alert(th[e.message] || e.message)
           } else {
             console.error(e)
           }

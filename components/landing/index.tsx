@@ -7,27 +7,33 @@ import Menubar from '../Menubar'
 import AuditionType from './components/AuditionType'
 import Process from './components/Process'
 import styled from 'styled-components'
+import breakpoint from 'styled-components-breakpoint'
 import theme from '../theme'
 import { Image } from '../Logo'
 import { withLandingBottomBorder, HeaderRoot } from '../Header';
 const LandingContainer = styled.div`
   background-position-y: 300px;
   background-image: url(/static/images/bg-large@2x.jpg);
-  font-family: 'DB Helvethaica X', Thonburi, Arial;
+  font-family: 'DB Helvethaica X Reg', Thonburi, Arial;
   background-size: contain;
   color: #eee;
   font-size: 24px;
   -webkit-font-smoothing: antialiased;
   .text-element {
     color: white;
-    font-family: 'DB Helvethaica X', Thonburi, Arial;
+    font-family: 'DB Helvethaica X Reg', Thonburi, Arial;
   }
+  ${breakpoint('mobile')`
+    font-size: 20px;
+  `}
+  ${breakpoint('tablet')`
+    font-size: 24px;
+  `}
   p {
     color: #eee;
   }
   h1 {
     ${HeaderRoot};
-    font-size: 55px;
     font-weight: normal;
     font-family: 'PSL NatrinthornExtra Pro', Thonburi, Arial;
     text-align: center;
@@ -35,11 +41,22 @@ const LandingContainer = styled.div`
     font-weight: normal;
     color: white;
     ${withLandingBottomBorder};
+    ${breakpoint('mobile')`
+      font-size: 38px;
+    `}
+    ${breakpoint('tablet')`
+      font-size: 55px;
+    `}
   }
   h2 {
     color: ${theme.blue};
     text-align:center;
-    font-size: 55px;
+    ${breakpoint('mobile')`
+      font-size: 38px;
+    `}
+    ${breakpoint('tablet')`
+      font-size: 55px;
+    `}
     font-family: 'DB Helvethaica X Med', Thonburi, Arial;
     line-height: 1.5em;
     color: #41c5f6;
@@ -51,12 +68,11 @@ const LandingContainer = styled.div`
   .audition-menu__button {
     display: block;
     text-align: center;
-    width: 100%;
     color: ${theme.dimBlue};
     border-color: ${theme.glowBlue};
     border-color: #fff;
     border-width: 2px;
-    border-radius: 20px;
+    border-radius: 18px;
     font-family: 'PSL NatrinthornExtra Pro', Thonburi, Arial;
     background: #0f141a;
     padding: 13px 18px;
@@ -68,6 +84,14 @@ const LandingContainer = styled.div`
       background-color: rgba(0, 0, 0, 0);
       box-shadow: 1px 1px 35px ${theme.shadow};
     }
+    ${breakpoint('mobile')`
+      max-width: 300px;
+      font-size:28px;
+    `}
+    ${breakpoint('tablet')`
+      width: 100%;
+      font-size:32px;
+    `}
   }
   .hero {
     background-image: url(/static/images/hero-bg@2x.jpg);

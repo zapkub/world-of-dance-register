@@ -121,7 +121,7 @@ export default (props: WithVideoUploadPropType) => {
         disabled={!props.videoFile || props.loading < 100}
         onClick={props.confirmUploadVideo}
       >
-        {props.loading < 100 ? `กำลังอัพโหลด... (${typeof props.loading === 'number' ? props.loading.toFixed(2) : ''} %)` : 'คลิปเพื่อยืนยันการอัพโหลด'}
+        {props.loading < 100 ? `กำลังอัพโหลด... (${typeof props.loading === 'number' ? props.loading.toFixed(2) : ''} %)` : ( props.videoFile ? 'คลิกเพื่อยืนยันการอัพโหลด' : 'กรุณาเลือกไฟล์')}
       </Button>
     </Container>
   )

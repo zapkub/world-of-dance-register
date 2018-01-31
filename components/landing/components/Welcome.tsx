@@ -101,7 +101,7 @@ const Container = styled(DefaultViewport)`
     background-position: center;
     animation-delay: 1.2s;
     ${bp('mobile')`
-      width: 640px;
+      width: 100%;
       margin-top: -21px;
     `};
     ${bp('desktop')`

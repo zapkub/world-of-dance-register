@@ -3,6 +3,7 @@ import { DefaultViewport } from '../../Viewport'
 import AuditionMenu from '../../profile/components/AuditionMenu'
 import { HeaderOne } from '../../Header'
 import styled from 'styled-components'
+import breakpoint from 'styled-components-breakpoint'
 import theme from '../../theme'
 import { Image } from '../../Logo'
 const AuditionTypeContainer = styled.div`
@@ -23,11 +24,19 @@ const AuditionTypeContainer = styled.div`
     color: white;
     margin-top: 21px;
   }
-  .audition-menu__button {
+  #type-of-audition .audition-menu__button {
     line-height: 0.8;
+    padding: 13px 8px;
+    margin:0 auto;
     .sub-label {
       font-size: 0.8em;
     }
+    ${breakpoint('tablet')`
+      font-size: 1.1em;
+    `}
+    ${breakpoint('desktop')`
+      font-size: 1.4em;
+    `}
   }
   .audition-menu__item {
     padding: 0 13px;
@@ -44,16 +53,15 @@ const AuditionTypeContainer = styled.div`
   .audition-menu__title {
     text-align: center;
   }
-  .age-label {
+  .text-element.age-label {
     color: ${theme.blue};
     font-size: 1em;
     font-weight: bold;
   }
-  .member-amount-label {
+  .text-element.member-amount-label {
     font-size: 1em;
     font-weight: 200;
-    font-family: 'DB Helvethaica X';
-
+    font-family: 'DB Helvethaica X Reg';
     color: ${theme.blue};
   }
   .spray-left {

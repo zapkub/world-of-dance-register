@@ -85,29 +85,27 @@ const AboutShowText = styled(Text)`
 
   h2.sub-head {
     color: ${theme.blue};
-    font-size: 55px;
     font-family: 'DB Helvethaica X Med', Thonburi, Arial;
     line-height: 1.5em;
     color: #41c5f6;
   }
 `
 
-const PARAGRAPH_1 = `<h2 class='sub-head'> “ครั้งแรกในเมืองไทย กับรายการแข่งขันเต้นระดับเวิร์ลคลาส!”</h2> `
+const PARAGRAPH_1 = `<h2 class='sub-head'> ครั้งแรกในเมืองไทย กับรายการแข่งขันเต้นระดับเวิร์ลคลาส!</h2> `
 const PARAGRAPH_2 = `
-<span style='font-weight:bold'>WORLD OF DANCE (WOD)</span> รายการประกวดเต้นอันดับหนึ่งจากสหรัฐอเมริกา ที่สร้างชื่อจาก Judge ขาแด๊นซ์ระดับโลกอย่าง
+<span style='font-weight:bold'>WORLD OF DANCE (WOD)</span> รายการประกวดเต้นอันดับหนึ่งจากสหรัฐอเมริกา ที่สร้างชื่อจาก Judge ขาแด๊นซ์ระดับโลก<br/>
+อย่าง Jennifer Lopez / NE-YO / Derek Hough / Jenna Dewan Tatum กำลังจะมาเขย่าฟลอร์ถึงเมืองไทยแล้ว!
 <br />
-Jennifer Lopez / NE-YO / Derek Hough / Jenna Dewan Tatum กำลังจะมาเขย่าฟลอร์ถึงเมืองไทยแล้ว!
-<br />
-นำทีมโดยกรรมการสายแดนซ์ระดับแถวหน้าของเมืองไทยอย่าง <span style='font-weight:bold'>โจ้ สุธีศักดิ์ , ญิ๋ง รฐา และ ฮั่น อิสริยะ</span> 
+นำทีมโดยกรรมการสายแดนซ์ระดับแถวหน้าของเมืองไทยอย่าง <span style='font-weight:bold'>โจ้ สุธีศักดิ์ , หญิง รฐา และ ฮั่น อิสริยะ</span> 
 <br />
 
 เฟ้นหาสุดยอดนักเต้น จากทั่วทุกมุมของประเทศ มาระเบิดศักยภาพบนเวทีให้ถึงขีดสุด แบบไม่จำกัดสไตล์! ไม่จำกัดเพศ!
 <br />
 เพื่อสร้างอลังการงานโชว์ที่สมบูรณ์แบบที่สุด ในการชิงตำแหน่ง “สุดยอดนักเต้นอันดับหนึ่งของเมืองไทย” พิชิตเงินรางวัล 1 ล้านบาท! 
 <br />
-<span class='highlight'>เตรียมหัวใจไว้สั่นสะเทือนกับ “ WORLD OF DANCE “  ได้ทาง ช่องone 31 กรกฎาคมนี้  </span>
+<span class='highlight'>เตรียมหัวใจไว้สั่นสะเทือนกับ “ WORLD OF DANCE Thailand“   กรกฎาคมนี้ ได้ทาง ช่องone 31  </span>
 `
-const PARAGRAPH_3 = `ติดตามความยิ่งใหญ่ของรายการระดับโลก ได้ที่ ช่อง one 31 เดือนมิถุนายน`
+const PARAGRAPH_3 = ``
 
 export default class AboutShow extends React.Component {
   render() {

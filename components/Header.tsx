@@ -12,7 +12,7 @@ const center = css`
 `
 export const withLandingBottomBorder = css`
   position: relative;
-  margin-bottom: 70px;
+  margin-bottom: 45px;
   &:after {
     content: " ";
     position: absolute;
