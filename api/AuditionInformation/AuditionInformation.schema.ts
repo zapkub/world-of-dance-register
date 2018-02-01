@@ -15,6 +15,8 @@ declare global {
     __typename?: string
   }
   interface AuditionInformation {
+    createdAt?: any
+    updatedAt?: any
     _id: any
     auditionType?: AuditionEnumType
     title?: string
@@ -36,6 +38,7 @@ declare global {
     educationBackground?: string
     occupation?: string
     address?: string
+    confirmAt?: any
     lineId?: string
 
     emergencyContactName?: string
@@ -48,31 +51,34 @@ declare global {
   interface AuditionInformationDocument extends Document, AuditionInformation {}
 }
 
-const AuditionInformationSchema = new Schema({
-  auditionType: {
-    type: String,
-    enum: ['upper', 'junior', 'team', 'upper_team', 'junior_team']
-  },
-  title: { type: String, defualt: '' },
-  description: { type: String, default: '' },
-  mobileNo: { type: String, default: '' },
-  dancingStyle: { type: String, default: '' },
-  coachName: { type: String, default: '' },
-  members: {
-    type: [members],
-    default: []
-  },
-  organizationName: {type: String, default: ''},
-  videoURL: {type: String, default: ''},
-  ownerId: Schema.Types.ObjectId,
-  isConfirm: {type: Boolean, default: false},
+const AuditionInformationSchema = new Schema(
+  {
+    auditionType: {
+      type: String,
+      enum: ['upper', 'junior', 'team', 'upper_team', 'junior_team']
+    },
+    title: { type: String, defualt: '' },
+    description: { type: String, default: '' },
+    mobileNo: { type: String, default: '' },
+    dancingStyle: { type: String, default: '' },
+    coachName: { type: String, default: '' },
+    members: {
+      type: [members],
+      default: []
+    },
+    organizationName: { type: String, default: '' },
+    videoURL: { type: String, default: '' },
+    ownerId: Schema.Types.ObjectId,
+    isConfirm: { type: Boolean, default: false },
+    confirmAt: { type: Date },
+    /** Single audition */
 
-  /** Single audition */
-
-  ...singleAuditionProfileFields
-}, {
-  timestamps: true,
-  minimize: false
-})
+    ...singleAuditionProfileFields
+  },
+  {
+    timestamps: true,
+    minimize: false
+  }
+)
 
 export default AuditionInformationSchema

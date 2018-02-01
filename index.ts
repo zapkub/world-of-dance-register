@@ -5,7 +5,10 @@ import routes from './routes'
 import fragmentMatcher from './utils/fragmentMatcher'
 import 'isomorphic-fetch'
 const next = require('next')
-
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+  // application specific logging, throwing an error, or other logic here
+});
 
 async function start() {
   const server = express()

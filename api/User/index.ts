@@ -1,7 +1,7 @@
 import schema from './User.schema'
 import composeWithMongoose from 'graphql-compose-mongoose'
 import * as mongoose from 'mongoose'
-import TypeComposer from 'graphql-compose/lib/typeComposer'
+import TypeComposer from 'graphql-compose'
 
 export default {
   schema,

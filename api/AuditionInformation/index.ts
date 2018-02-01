@@ -1,7 +1,7 @@
 import schema from './AuditionInformation.schema'
 import * as moment from 'moment'
 import composeWithMongoose from 'graphql-compose-mongoose'
-import TypeComposer from 'graphql-compose/lib/typeComposer'
+import TypeComposer from 'graphql-compose'
 import { GraphQLDate } from 'graphql-compose'
 import { Types } from 'mongoose'
 import validator from './validator'
@@ -20,6 +20,7 @@ export default {
     //   }
     // })
 
+   
     TC.wrapResolverResolve('findOne', next => async rp => {
       const { context } = rp
       rp.args.filter.ownerId = context.user._id
@@ -69,6 +70,7 @@ export default {
          */
         console.log('AuditionForm: Validate ', rp.context.user._id)
         rp.args.record.videoURL = auditionInfo.videoURL
+        rp.args.record.confirmAt = new Date()
         validator(rp.args.record)
       }
       if (!auditionInfo) {
@@ -85,6 +87,14 @@ export default {
     updateOne.removeOtherArgs(['filter', 'record'])
     updateOne.getArgTC('record').removeField('ownerId')
     updateOne.getArgTC('record').removeField('videoURL')
+    updateOne.getArgTC('record').removeField('confirmAt')
+
+    // TC.getResolver('findOne').addSortArg({
+    //   name: 'CREATED_AT_DESC',
+    //   sortTypeNameFallback: '__DATE',
+    //   value: { createdAt: 1, confirmAt: 1 }
+    // })
+
     return TC
   }
 } as GraphQL.ComposerStrategy<AuditionInformationDocument>

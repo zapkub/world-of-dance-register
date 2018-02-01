@@ -6,6 +6,7 @@ import gql from 'graphql-tag'
 import { Button } from '../components/Button'
 import InfoViewer from '../components/InfoViewer'
 import routes from '../routes'
+import * as moment from 'moment'
 import { injectGlobal } from 'styled-components'
 import {
   SelectorInput,
@@ -233,6 +234,7 @@ class AdminPage extends React.Component<AdminPagePropTypes, any> {
             <div className="table">
               <div className="row header">
                 <div className="cell">เลือก</div>
+                <div className="cell">วันที่</div>
                 <div className="cell">ลำดับที่</div>
                 <div className="cell">ชื่อ</div>
                 <div className="cell">ประเภทการออดิชั่น</div>
@@ -252,6 +254,9 @@ class AdminPage extends React.Component<AdminPagePropTypes, any> {
                       }
                     />
                   </div>
+                  <div className="cell" data-title="Date">
+                      {moment(info.createdAt).format('DD/MM/YYYY HH:mm')}
+                  </div>
                   <div className="cell" data-title="Name">
                     {index + 1}
                   </div>
@@ -265,7 +270,6 @@ class AdminPage extends React.Component<AdminPagePropTypes, any> {
                     {info.members.length}
                   </div>
                   <div className="cell" data-title="Location">
-                    {'พิมพ์ '}
                     <routes.Link route="view" params={{ id: info._id }}>
                       <a target={'_blank'}>{'เปิดดู'}</a>
                     </routes.Link>
@@ -328,7 +332,8 @@ export default compose(
     options: props => ({
       variables: {
         filter: {
-          auditionType: props.filter === 'all' ? undefined : props.filter
+          auditionType: props.filter === 'all' ? undefined : props.filter,
+          isConfirm: true
         }
       }
     }),
