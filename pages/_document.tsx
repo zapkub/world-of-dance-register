@@ -37,6 +37,10 @@ export default class PageDocument extends Document {
             name="viewport"
             content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
           />
+          <meta name="title" content="WORLD OF DANCE THAILAND | one31 รายการประกวดเต้นอันดับหนึ่งจากสหรัฐอเมริกา " />
+          <meta name="description" content="รับสมัครนักเต้นสายแดนซ์ทั่วประเทศ เพื่อร่วมการแข่งขันเต้นระดับโลก เฟ้นหาสุดยอดนักเต้นอันดับหนึ่งของเมืองไทย  พิชิตเงินรางวัล 1 ล้านบาทกับ WORLD OF DANCE  ที่ช่อง one31 " />
+          <meta name="keyword" content="WorldOfDance , แข่งเต้น ,ประกวดเต้น , รับสมัครนักเต้น , ออดิชั่น , Contest , Dance , WODTHAI , ช่องวัน , one31  " />
+          <title>{'WORLD OF DANCE THAILAND | one31 รายการประกวดเต้นอันดับหนึ่งจากสหรัฐอเมริกา '}</title>
           <script dangerouslySetInnerHTML={{__html:`
             !function(f,b,e,v,n,t,s)
             {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
