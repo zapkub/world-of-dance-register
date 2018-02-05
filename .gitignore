@@ -7,3 +7,4 @@ bundle.tar
 .env
 .db
 */tmp
+.DS_Store
