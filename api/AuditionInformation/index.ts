@@ -1,7 +1,7 @@
 import schema from './AuditionInformation.schema'
 import * as moment from 'moment'
 import composeWithMongoose from 'graphql-compose-mongoose'
-import TypeComposer from 'graphql-compose'
+import TypeComposer from 'graphql-compose/lib/TypeComposer'
 import { GraphQLDate } from 'graphql-compose'
 import { Types } from 'mongoose'
 import validator from './validator'
