@@ -274,11 +274,11 @@ class AdminPage extends React.Component<AdminPagePropTypes, any> {
                     <routes.Link route="view" params={{ id: info._id }}>
                       <a target={'_blank'}>{'เปิดดู'}</a>
                     </routes.Link>
-                    <button
+                    {/* <button
                       onClick={() => this.props.removeAuditionInfo(info._id)}
                     >
                       {'ลบ'}
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               ))}
