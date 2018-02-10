@@ -18,8 +18,27 @@ const Viewport = styled(DefaultViewport)`
 export default (auditionInfo: AuditionInformation) => (
   <Viewport>
     <a href={auditionInfo.videoURL}>
-      <Button>{'ดูคลิป video'}</Button>
+      <Button>{'โหลดคลิป video'}</Button>
     </a>
+    <br />
+    <video
+      id="my-video"
+      className="video-js"
+      style={{border: "1px solid grey"}}
+      controls
+      preload="none"
+      width="320"
+      data-setup="{}"
+    >
+      <source src={auditionInfo.videoURL} />
+      <p className="vjs-no-js">
+        { ' To view this video please enable JavaScript, and consider upgrading to a web browser that ' }
+        <a href="http://videojs.com/html5-video-support/" target="_blank">
+          {' '}
+          {' supports HTML5 video '}
+        </a>
+      </p>
+    </video>
     <br />
     <HeaderOne withBorder>{'สมาชิก'}</HeaderOne>
     {auditionInfo.members.map(member => {

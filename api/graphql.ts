@@ -160,6 +160,15 @@ export default function createGraphQLSchema(context: InitContext) {
     )
   )
 
+  GQC.rootMutation().addFields(
+    wrapResolvers(
+      {
+        archive: typeComposers.AuditionInformation.getResolver('archiveOne')
+      },
+      requireAdminWrapper
+    )
+  )
+
   return {
     models,
     graphiqlHandler: graphiqlExpress({ endpointURL: '/graphql' }),
@@ -168,7 +177,7 @@ export default function createGraphQLSchema(context: InitContext) {
       context: {
         ...req,
         ...GraphQLContext
-      },
+      }
       // formatError: (error) => {
       //   console.log('error occurs')
       //   return {

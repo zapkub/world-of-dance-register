@@ -145,6 +145,7 @@ interface AdminPagePropTypes {
   auditionInfoList: AuditionInformation[]
   selectedItemId: (id: string, value: boolean) => void
   selectedItems: { [id: string]: boolean }
+  removeAuditionInfo: (_id: string) => void
 }
 class AdminPage extends React.Component<AdminPagePropTypes, any> {
   constructor(props) {
@@ -167,10 +168,10 @@ class AdminPage extends React.Component<AdminPagePropTypes, any> {
     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
     xhr.onprogress = () => {
       console.log('PROGRESS:', xhr.responseText)
-      const res = (xhr.responseText.toString().split('|'))
-      const result = JSON.parse(res[res.length-1])
-      if(result.url) {
-        result.isPrepare = false  
+      const res = xhr.responseText.toString().split('|')
+      const result = JSON.parse(res[res.length - 1])
+      if (result.url) {
+        result.isPrepare = false
       }
       this.setState({
         ...result
@@ -218,7 +219,7 @@ class AdminPage extends React.Component<AdminPagePropTypes, any> {
               },
               {
                 value: 'junior_team',
-                label:'junior มากกว่า 1 คน'
+                label: 'junior มากกว่า 1 คน'
               },
               {
                 value: 'upper_team',
@@ -255,7 +256,7 @@ class AdminPage extends React.Component<AdminPagePropTypes, any> {
                     />
                   </div>
                   <div className="cell" data-title="Date">
-                      {moment(info.createdAt).format('DD/MM/YYYY HH:mm')}
+                    {moment(info.createdAt).format('DD/MM/YYYY HH:mm')}
                   </div>
                   <div className="cell" data-title="Name">
                     {index + 1}
@@ -273,6 +274,11 @@ class AdminPage extends React.Component<AdminPagePropTypes, any> {
                     <routes.Link route="view" params={{ id: info._id }}>
                       <a target={'_blank'}>{'เปิดดู'}</a>
                     </routes.Link>
+                    <button
+                      onClick={() => this.props.removeAuditionInfo(info._id)}
+                    >
+                      {'ลบ'}
+                    </button>
                   </div>
                 </div>
               ))}
@@ -283,11 +289,13 @@ class AdminPage extends React.Component<AdminPagePropTypes, any> {
             <input type="submit" value="download" />
           </form> */}
           <Button onClick={this.download}>{'download'}</Button>
-          {this.state.isPrepare
-            ? `
+          {this.state.isPrepare ? (
+            `
             กำลังรวบรวมไฟล์ ${this.state.current}/${this.state.total}
           `
-            : <a href={this.state.url}> {this.state.url} </a>}
+          ) : (
+            <a href={this.state.url}> {this.state.url} </a>
+          )}
         </DefaultViewport>
       )
     }
@@ -318,8 +326,7 @@ export default compose(
     `,
     {
       options: props => {
-        return {
-        }
+        return {}
       },
       props: ({ data }) => {
         return {
@@ -339,8 +346,34 @@ export default compose(
     }),
     props: ({ data }) => {
       return {
+        refetch: data.refetch,
         auditionInfoList: data.auditionInfoList || []
       }
     }
-  })
+  }),
+  graphql<any, any>(
+    gql`
+      mutation($id: String) {
+        archive(_id: $id)
+      }
+    `,
+    {
+      props: ({ mutate, ownProps }) => {
+        return {
+          removeAuditionInfo: async _id => {
+            const confirmRemove = confirm('ยืนยันการลบ?')
+            if (confirmRemove) {
+              await mutate({
+                variables: {
+                  id: _id
+                }
+              })
+              alert('ลบข้อมูลแล้ว')
+              ownProps.refetch()
+            }
+          }
+        }
+      }
+    }
+  )
 )(AdminPage)

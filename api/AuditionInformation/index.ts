@@ -4,7 +4,7 @@ import composeWithMongoose from 'graphql-compose-mongoose'
 import { GraphQLDate } from 'graphql-compose'
 import { Types } from 'mongoose'
 import validator from './validator'
-import TypeComposer from 'graphql-compose/lib/typeComposer';
+import TypeComposer from 'graphql-compose/lib/typeComposer'
 
 export default {
   schema,
@@ -20,7 +20,27 @@ export default {
     //   }
     // })
 
-   
+    TC.addResolver({
+      type: 'String',
+      name: 'archiveOne',
+      displayName: 'archive',
+      args: {
+        _id: {
+          type: 'String'
+        }
+      },
+      resolve: async rp => {
+        const { context } = rp
+        try {
+          const doc = await model.findByIdAndRemove(rp.args._id).lean()
+          model.db.collection('achivedAuditionInfo').insertOne(doc)
+          return 'done'
+        } catch (e) {
+          return 'error'
+        }
+      }
+    })
+
     TC.wrapResolverResolve('findOne', next => async rp => {
       const { context } = rp
       rp.args.filter.ownerId = context.user._id
