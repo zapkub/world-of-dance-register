@@ -1,6 +1,18 @@
 
 # WOD Register site
 
+## Pre-requisite install
+- docker
+- docker-compose
+- nodejs 9++
+- pm2
+- yarn
+
+## Start service
+```
+$ sh wod-start.bash
+```
+
 
 ## TODO
 - need to do a lot of source code improvement...
